@@ -51,7 +51,7 @@ $zeus['lang']         = 'sv';
 $zeus['title_append'] = ' | KMOM01';
 
 $zeus['header'] = <<<EOD
-<img class='sitelogo' src='img/zeus.png' alt='Zeus Logo'/>
+<img class='sitelogo' src='img/oophp.png' alt='Zeus Logo'/>
 <span class='sitetitle'>OOPHP</span>
 <span class='siteslogan'>Min Me-sida i kursen Databaser och Objektorienterad PHP-programmering</span>
 EOD;
