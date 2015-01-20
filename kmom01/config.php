@@ -48,20 +48,17 @@ $zeus = array();
  *
  */
 $zeus['lang']         = 'sv';
-$zeus['title_append'] = ' | kmom ett';
+$zeus['title_append'] = ' | KMOM01';
 
 $zeus['header'] = <<<EOD
 <img class='sitelogo' src='img/zeus.png' alt='Zeus Logo'/>
-<span class='sitetitle'>KMOM01</span>
-<span class='siteslogan'>Viktor Kjellberg</span>
+<span class='sitetitle'>OOPHP</span>
+<span class='siteslogan'>Min Me-sida i kursen Databaser och Objektorienterad PHP-programmering</span>
 EOD;
 
 $zeus['footer'] = <<<EOD
-<footer><span class='sitefooter'>Webbmall konstruerad utifrån <a href='https://github.com/mosbth/Zeus-base'>Anax</a> som en del av kursen <a href="http://dbwebb.se/oophp/">Databaser och objektorienterad programmering i PHP</a> | <a href='http://validator.w3.org/unicorn/check?ucn_uri=referer&amp;ucn_task=conformance'>Unicorn</a></span></footer>
+<footer><span class='sitefooter'>Webbmall konstruerad utifrån <a href='https://github.com/mosbth/Zeus-base'>Anax</a> | <a href='http://validator.w3.org/unicorn/check?ucn_uri=referer&amp;ucn_task=conformance'>Unicorn</a></span></footer>
 EOD;
-
-$zeus['lang']         = 'sv';
-$zeus['title_append'] = ' | Ändrat: Zeus en webbtemplate';
 
 
 /**
