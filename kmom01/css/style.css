@@ -6,6 +6,11 @@
 /**
  * General elements
  */
+html {
+  margin: 0;
+  padding: 0;
+  overflow-y:scroll; /* Always display the scrollbar, avoid flipping pages */
+}
 body {
   color: #333;
   font-family: arial, sans-serif;
