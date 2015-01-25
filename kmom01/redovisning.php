@@ -15,7 +15,7 @@ $zeus['main'] = <<<EOD
 <h2>KMOM01</h2>
 
 <h3>Utvecklingsmiljö</h3>
-	<p>Använder mig av Sublime 3 för redigering och FileZilla för ftp. Till största del programmerar jag på min laptop som kör Ubuntu 14.04. Synkar med hjälp av Github och kan därför arbeta vidare på min stationära windowsburk när jag är hemma. Också där använder jag mig av kombinationen Sublime 3, FileZilla och Github. </p>
+	<p>Använder mig av XAMPP, Sublime och FileZilla. Till största del programmerar jag på min laptop som kör Ubuntu 14.04. Synkar med hjälp av Github och kan därför arbeta vidare på min stationära windowsburk när jag är hemma. Också där använder jag mig av kombinationen Sublime 3, FileZilla och Github. </p>
 
 <h3>20 steg för att komma igång PHP</h3>
 	<p>Eftersom jag just avslutat kursen HTMLPHP (som för övrigt var väldigt bra) kändes det mesta av guiden naturligt. Hade inte använt mig av ternary operator förut. Gjorde ett par test med det och gillade det skarpt. Praktiskt då det känns snabbare, samtidigt kan jag tänka mig att det gör koden svårare att läsa för den som inte är van med php.</p>

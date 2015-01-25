@@ -57,7 +57,7 @@ $zeus['header'] = <<<EOD
 EOD;
 
 $zeus['footer'] = <<<EOD
-<footer><span class='sitefooter'>Webbmall konstruerad utifrån <a href='https://github.com/mosbth/Zeus-base'>Anax</a> | <a href='http://validator.w3.org/unicorn/check?ucn_uri=referer&amp;ucn_task=conformance'>Unicorn</a></span></footer>
+<footer><span class='sitefooter'>Webbmall konstruerad utifrån <a href='https://github.com/mosbth/Anax-base'>Anax</a> | <a href='http://validator.w3.org/unicorn/check?ucn_uri=referer&amp;ucn_task=conformance'>Unicorn</a></span></footer>
 EOD;
 
 
@@ -87,7 +87,7 @@ $zeus['navbar'] = array(
  */
 //$zeus['stylesheet'] = 'css/style.css';
 $zeus['stylesheets'] = array('css/style.css');
-$zeus['favicon']    = 'favicon.ico';
+$zeus['favicon']    = 'favicon_oophp.ico';
 
 
 /**

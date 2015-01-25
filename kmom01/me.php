@@ -8,7 +8,7 @@ include(__DIR__.'/config.php');
  
 // Do it and store it all in variables in the Zeus container.
 $zeus['title'] = "Om mig";
- 
+
 $zeus['main'] = <<<EOD
 <h1>Om mig</h1>
 <p>Mitt namn är Viktor Kjellberg och det här är min me-sida för kursen Databaser och Objektorienterad PHP-programmering, i fortsättningen benämnd som OOPHP.</p>
