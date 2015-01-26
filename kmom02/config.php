@@ -71,6 +71,7 @@ $zeus['navbar'] = array(
   'items' => array(
     'hem'         => array('text'=>'Hem',         'url'=>'me.php',          'title' => 'Min presentation om mig själv'),
     'redovisning' => array('text'=>'Redovisning', 'url'=>'redovisning.php', 'title' => 'Redovisningar för kursmomenten'),
+    'test'        => array('text'=>'Tester',      'url'=>'test.php',        'title' => 'Tester som utförts under kursmomentet'),
     'kallkod'     => array('text'=>'Källkod',     'url'=>'source.php',      'title' => 'Se källkoden'),
   ),
   'callback_selected' => function($url) {
