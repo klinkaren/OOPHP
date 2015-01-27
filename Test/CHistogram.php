@@ -9,15 +9,9 @@ class CHistogram {
 	 * Print Histogram, skip empty values.
 	 *
 	 */
-	public function GetHistogram($array) {
+	public function GetHistogram(array $array) {
 
-		// Save results in array
-		$res = array();
-		foreach ($array as $value) {
-			@$res[$value]++;
-		}
-
-		ksort($res);
+		$res = $this->PrepareHistogram($array);
 
 		// Print result
 		foreach ($res as $key => $value) {
@@ -27,21 +21,14 @@ class CHistogram {
 			}
 			echo '<br>';
 		}
-
 	}
 
 	/**
 	 * Print Histogram with empty values displayed. 
 	 */
-	public function GetHistogramIncludeEmpty($array, $lenght) {
+	public function GetHistogramIncludeEmpty(array $array, $lenght) {
 
-		// Save results in array
-		$res = array();
-		foreach ($array as $value) {
-			@$res[$value]++;
-		}
-
-		ksort($res);
+		$res = $this->PrepareHistogram($array);
 
 		// Print result
 		for ($i = 0; $i < $lenght; $i++) {
@@ -54,6 +41,19 @@ class CHistogram {
 
 			echo "<br>";
 		}
+	}
+
+	private function PrepareHistogram(array $array){
+
+		// Save results in array
+		$res = array();
+		foreach ($array as $value) {
+			@$res[$value]++;
+		}
+
+		ksort($res);
+
+		return $res;
 	}
  
 }
