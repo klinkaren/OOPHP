@@ -18,11 +18,10 @@ class CDiceImage extends CDice {
 		parent::__construct(self::FACES);
 	}
 
-	public function GetRollsAsImageList() {
+	public function GetRollAsImage() {
 	    $html = "<ul class='dice'>";
-	    foreach($this->rolls as $val) {
-	      $html .= "<li class='dice-{$val}'></li>";
-	    }
+	    $val = $this->getResult();
+	    $html .= "<li class='dice-{$val}'></li>";
 	    $html .= "</ul>";
 	    return $html;
 	}

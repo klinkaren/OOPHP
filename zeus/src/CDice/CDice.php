@@ -9,9 +9,8 @@ class CDice {
    * Properties
    *
    */
-  protected $rolls = array();
   private $faces;
-  private $last;
+  private $result;
 
   /**
    * Constructor
@@ -25,7 +24,7 @@ class CDice {
    * Get the number of faces.
    *
    */
-  public function GetFaces() {
+  public function getFaces() {
     return $this->faces;
   }
 
@@ -33,60 +32,16 @@ class CDice {
    * Get number of faces of dice.
    *
    */
-  public function GetRolls(){
-    return $this->rolls;
+  public function getResult(){
+    return $this->result;
   }
 
   /**
    * Roll the dice
    *
    */
-  public function Roll($times) {
-    $this->rolls = array();
- 
-    for($i = 0; $i < $times; $i++) {
-      $this->last = rand(1, $this->faces);
-      $this->rolls[] = $this->last;
-    }
-    return $this->last;
+  public function roll() {
+    $this->result = rand(1, $this->faces);
   }
 
-   /**
-   * Get the total from the last roll(s).
-   *
-   */
-  public function GetTotal() {
-    return array_sum($this->rolls);
-  }
-
-  /**
-   * Get the mean of the last roll(s).
-   */
-  public function GetMean() {
-  	$count = count($this->rolls); 
-    $sum = array_sum($this->rolls); 
-    $mean = round(($sum / $count),2);
-    return $mean; 
-  }
-  
-  /**
-   * Get the last rolled value.
-   *
-   */
-  public function GetLastRoll() {
-    return $this->last;
-  }
-
-  /**
-   * Get the rolls as a string with each roll separated by a comma.
-   *
-   */
-  public function GetRollsAsSerie() {
-    $html = null;
-    foreach($this->rolls as $val) {
-      $html .= "{$val}, ";
-    }
-    return substr($html, 0, strlen($html) - 2);
-  }
- 
 }
