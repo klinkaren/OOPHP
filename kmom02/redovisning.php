@@ -16,16 +16,14 @@ $zeus['main'] = <<<EOD
 <h3>Hur väl känner du till objektorienterade koncept och programmeringssätt?</h3>
 	<p>Vi berörde det väldigt snabbt när jag läste min första programmeringskurs, som för övrigt var i Ada. Har sprungit in i det lite här och där så jag förstår tänket och fördelen med att hålla isär sin kod. Däremot har jag aldrig läst en kurs i just oop har verkligen sett fram emot den här kursen som förhoppningsvis kan betyda slutet för min spagettikod.</p>
 <h3>Jobbade du igenom oophp20-guiden eller skumläste du den?</h3>
-	<p></p>
+	<p>Då det här med objektorientering är relativt nytt för mig jobbade jag mig igenom hela guiden och gjorde alla exempel. Försökte lösa uppgifterna själv men fick vanligtvis smygtitta i ”facit” innan jag fick allt att fungera. Hur som helst en väldigt bra genomgång. Har hoppat tillbaka till guiden en hel del när jag arbetade med tärningsspelet och jag är rätt säker på att jag kommer använda mig av guiden som referens även framåt när jag ska bygga egna klasser.</p>
 <h3>Berätta om hur du löste uppgiften med tärningsspelet 100</h3>
 <p class="subtitle">- Hur tänkte du och hur gjorde du, hur organiserade du din kod?</p>
-	<p></p>
-<h3>Berätta om hur du löste uppgiften med Månadens Babe</h3>
-<p class="subtitle">- Hur tänkte du och hur gjorde du, hur organiserade du din kod?</p>
-	<p></p>
-<h3>Övrigt<h3>
-	<p></p>
-
+	<p>Det blev en blandning av top-down och bottom-up. Inledningsvis försökte jag att börja med att sätta all struktur och skapa alla klasser. Ett sådant top-down-arbetssätt gillar jag då det ofta gör att man undviker onödigt arbete med att skapa funktioner som i slutändan inte implementeras. Eftersom jag är så pass ny som jag är på det objektorienterade sättet att tänka blev det dock väldigt svårt att utveckla funktionaliteten och jag fick bryta ner min struktur för att kunna testa mig fram, steg för steg. </p>
+	<p>Byggde upp mitt spel utifrån modifierade versioner av de klasser som används I oophp20. Utöver det la jag till klasserna CDicePlayer och CdiceGame. Min tanke var att försöka efterlikna verkligheten med ett objekt för själva spelet som består av ett eller flera objekt av spelare där varje spelare har ett objekt tärning.</p>
+	<p>Insåg ganska snart värdet av att anteckna den tänkta strukturen, på det sätt som gicks igenom I oophp20-guiden. Blev en hel del klotter med papper och penna. Känner att det nog skulle va bra att läsa på lite och skapa en rutin kring hur jag bäst dokumenterar mina funktioner och klasser med hjälp av flödesdiagram.</p>
+	<p>När jag väl var klar med själva tärningsspelet krånglade jag ganska länge med att få in två dropdowns för antal mänskliga spelare och antal datorspelare i Zeus (min Anax-bas). Till slut löste jag det med en funktion som returnerade alltihop som en sträng, som sedan lades till i zeus[main]. Kanske finns det bättre sätt att göra det på? Lyssnar gärna på förslag.</p>
+	<p>Sammanfattningsvis har kursmomentet varit väldigt roligt och utvecklande för mig. samtidigt som det har varit ett tungt moment med väldigt mycket nytt att ta in. </p>
 <hr>
 
 <h2>KMOM01</h2>

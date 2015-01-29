@@ -69,10 +69,10 @@ EOD;
 $zeus['navbar'] = array(
   'class' => 'nb-plain',
   'items' => array(
-    'hem'         => array('text'=>'Hem',         'url'=>'me.php',          'title' => 'Min presentation om mig själv'),
-    'redovisning' => array('text'=>'Redovisning', 'url'=>'redovisning.php', 'title' => 'Redovisningar för kursmomenten'),
-    'test'        => array('text'=>'Tester',      'url'=>'test.php',        'title' => 'Tester som utförts under kursmomentet'),
-    'kallkod'     => array('text'=>'Källkod',     'url'=>'source.php',      'title' => 'Se källkoden'),
+    'hem'         => array('text'=>'Hem',                 'url'=>'me.php',          'title' => 'Min presentation om mig själv'),
+    'redovisning' => array('text'=>'Redovisning',         'url'=>'redovisning.php', 'title' => 'Redovisningar för kursmomenten'),
+    'dice100'     => array('text'=>'Tärningsspelet',      'url'=>'dice100.php',        'title' => 'Tester som utförts under kursmomentet'),
+    'kallkod'     => array('text'=>'Källkod',             'url'=>'source.php',      'title' => 'Se källkoden'),
   ),
   'callback_selected' => function($url) {
     if(basename($_SERVER['SCRIPT_FILENAME']) == $url) {

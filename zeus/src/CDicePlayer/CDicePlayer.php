@@ -1,6 +1,7 @@
 <?php
 /**
- * A dice w/ images
+ * A player (human or computer) which has a dice and holdsname, 
+ * running score, saved score and number of rolls.
  *
  */
 class CDicePlayer  {
@@ -14,20 +15,24 @@ class CDicePlayer  {
 	private $savedScore;
 	private $numRolls;
 	private $dice;
-	// ? private $dice
+	private $computer;
 
 	/**
 	 * Constructor
 	 *
 	 */
-	public function __construct($name) {
+	public function __construct($name, $isComputer = false) {
 		$this->name=$name;
 		$this->score=0;
 		$this->savedScore=0;
 		$this->numRolls=0;
+		$this->computer=$isComputer;
 		$this->dice=new CDiceImage;
 	}
 
+	/**
+	 * Roll dice and update score and number of rolls
+	 */
 	public function rollDice() {
 		$this->dice->roll();
 		$this->numRolls++;
@@ -36,19 +41,23 @@ class CDicePlayer  {
 		} else {
 			$this->score += $this->dice->getResult();
 		}
-		
-	}
-	public function getRollAsImage() {
-		return $this->dice->getRollAsImage();
 	}
 
 	/**
-	 * Save the score of player
+	 * Save score of player to savedScore
 	 *
 	 */
 	public function saveScore() {
 		$this->savedScore=$this->score;
 		$this->numRolls++;
+	}
+
+	public function isComputer() {
+		return $this->computer;
+	}
+
+	public function getRollAsImage() {
+		return $this->dice->getRollAsImage();
 	}
 
 	public function getScore() {
@@ -66,12 +75,4 @@ class CDicePlayer  {
 	public function getNumRolls() {
 		return $this->numRolls;
 	}
-
-	/**
-	 * Roll dice
-	 *
-	 */
-	// ? public function rollDice(){}
-
-
 }
