@@ -53,7 +53,7 @@ if(isset($_SESSION['game'])) {
 }else {
 	$zeus['main'] .= <<<EOD
 	<p>Welcome to Dice 100. The goal of this game is to be the first player to reach a score of 100. <br>
-	Every turn you have two option; to roll the dice or to save your points. Saving your points will cost you the roll.</p>
+	Every turn you have two option; to roll the dice or to save your points. Saving your points will cost you the roll. If you roll a one you loose all points that is not saved, so it could be sound to save your points every now and then.</p>
 	<p>Choose how many human and computer players you want and then click the button below to start the game.</p>
 EOD;
 
