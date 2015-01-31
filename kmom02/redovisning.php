@@ -24,6 +24,13 @@ $zeus['main'] = <<<EOD
 	<p>Insåg ganska snart värdet av att anteckna den tänkta strukturen, på det sätt som gicks igenom I oophp20-guiden. Blev en hel del klotter med papper och penna. Känner att det nog skulle va bra att läsa på lite och skapa en rutin kring hur jag bäst dokumenterar mina funktioner och klasser med hjälp av flödesdiagram.</p>
 	<p>När jag väl var klar med själva tärningsspelet krånglade jag ganska länge med att få in två dropdowns för antal mänskliga spelare och antal datorspelare i Zeus (min Anax-bas). Till slut löste jag det med en funktion som returnerade alltihop som en sträng, som sedan lades till i zeus[main]. Kanske finns det bättre sätt att göra det på? Lyssnar gärna på förslag.</p>
 	<p>Sammanfattningsvis har kursmomentet varit väldigt roligt och utvecklande för mig. samtidigt som det har varit ett tungt moment med väldigt mycket nytt att ta in. </p>
+<h3>Berätta om hur du löste uppgiften med Månadens babe 100</h3>
+<p class="subtitle">- Hur tänkte du och hur gjorde du, hur organiserade du din kod?</p>
+	<p>Hade egentligen redan lämnat in och var på väg vidare till kmom03, men så kände jag att det skulle vara väldigt bra att verkligen nöta in det här med oop-tänket så jag bestämde mig för att även göra uppgiften Månadens Babe. Självfallet förstod jag direkt att det var tänkt som en hyllning till baseboll-legendaren Babe Ruth.</p>
+	<p>Följde det uppenbara spåret att ha separata klasser för dag, vecka och månad. När kalendern skapats kan användaren anropa setCal() och skicka med önskat år och månad. I mitt exempelprogram valde jag att skicka med variabler för nuvarande år och månad. När väl det är gjort anropas getCal() för att få en sträng lagrad med html som representerar den valda månaden i det valda året.</p>
+	<p>Även om jag inledningsvis använde mig av top-down för att skapa strukturen gick jag sedan över att försöka göra klart en function i taget.</p>
+	<p>Jag kan säga att det hade sparat mig mycket tid om alla månader hade haft 28 dagar och alla veckor börjat på måndagar... Nu är det ju som bekant inte så, vilket orsakade en hel del klurande för att få fram en funktion som kunde hantera alla månader, oavsett om de startade på en söndag och slutade på en måndag och därmed skulle ha en massa dagar från andra månader innan och efter sig.</p>
+	<p>Sammanfattningsvis var det hela en väldigt bra övning både i oop-tänk och för att lära sig bemästra funktioner kring tid. Trots mycket frustration var det väldigt roligt. Utmanande, men roligt.</p>
 <hr>
 
 <h2>KMOM01</h2>

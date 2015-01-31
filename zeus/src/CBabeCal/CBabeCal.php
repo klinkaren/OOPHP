@@ -1,6 +1,6 @@
 <?php
 /**
- * A game with one or more players.
+ * Class for the swedish Babe Ruth calender made by Viktor Kjellberg.
  *
  */
 class CBabeCal  {
@@ -9,14 +9,9 @@ class CBabeCal  {
 	private $curMonth;
 	private $curDay;
 	private $strMonth;
-	//private $firstWeek;
-	//private $lastWeek;
 	private $year;
 	private $month;
 	private $weeks;
-	#private $year;
-	#private $month;
-	#private $lastDay;
 
 	/**
 	 * Constructor
@@ -70,47 +65,9 @@ class CBabeCal  {
 	}
 
 	/**
-	 * Creates all weeks of month and saves em in array
+	 * Returns html version of calender
+	 *
 	 */
-	private function setWeeks() {
-
-		//local function for adding a day
-		function addDayswithdate($date, $days) {
-		    $date = strtotime("+".$days." days", strtotime($date));
-		    return date("Y-m-d", $date);
-		}
-
-		// Clear anything already set.
-		unset($this->weeks);
-
-		//Set first and last day of month.
-		$day = $this->year."-".$this->month."-01"; 
-		$lastDayOfMonth = date("Y-m-t", strtotime($this->year."-".$this->month."-01"));
-
-		// Create array for week of all days in month.
-		while ($day <= $lastDayOfMonth) {
-
-			// Get week of $day
-			$time = new DateTime($day);
-			$week = intval($time->format("W"));
-
-			// add to array
-			$allWeeks[] = $week;
-
-			// step to next day
-			$day = addDayswithdate($day, 1);
-		}
-		
-		// removing dublicates
-		$allWeeks = array_unique($allWeeks);
-
-		// creating weeks
-		foreach ($allWeeks as $week) {
-			$this->weeks[] = new CBabeWeek($this->year, $this->month, $week);
-		}
-			
-	}
-
 	public function getCal(){
 
 		function getNameOfDay($day) {
@@ -144,6 +101,14 @@ class CBabeCal  {
 		}
 
 		$html = '<div class="month">';
+		$html .= '<div class="babeNav">';
+			$html .= '<div class="babeNavLeft">';		
+				$html .= '<a href="?prev">Föregående månad</a>';
+			$html .= '</div>';
+			$html .= '<div class="babeNavRight">';
+				$html .= '<a href="?next">Nästa månad</a>';
+			$html .= '</div>';
+		$html .= '</div>';
 		$html .= '<div class="babe'.$this->month.'"></div>';
 		$html .= '<div class="monthHeading">'.$this->strMonth.", ".$this->year.'</div>';
 			
@@ -165,9 +130,56 @@ class CBabeCal  {
 		return $html;	
 	}
 
+	/**
+	 * Creates all weeks of month and saves em in array
+	 */
+	private function setWeeks() {
+
+		//local function for adding a day
+		function addDayswithdate($date, $days) {
+		    $date = strtotime("+".$days." days", strtotime($date));
+		    return date("Y-m-d", $date);
+		}
+
+		// Clear anything already set.
+		unset($this->weeks);
+
+		//Set first and last day of month.
+		$day = $this->year."-".$this->month."-01"; 
+		$lastDayOfMonth = date("Y-m-t", strtotime($this->year."-".$this->month."-01"));
+
+		// Create array for week of all days in month.
+		while ($day <= $lastDayOfMonth) {
+
+			// Get week of $day
+			$time = new DateTime($day);
+			$week = intval($time->format("W"));
+
+			// add to array
+			$allWeeks[] = $week;
+
+			// step to next day
+			$day = addDayswithdate($day, 1);
+		}
+		
+		// removing duplicates
+		$allWeeks = array_unique($allWeeks);
+
+		// creating weeks
+		foreach ($allWeeks as $week) {
+			$this->weeks[] = new CBabeWeek($this->year, $this->month, $week);
+		}
+			
+	}
+
+	/**
+	 * Sets year
+	 *
+	 */
 	private function setYear($year) {
 		$this->year = $year;
 	}
+
 	/**
 	 * Returns month as a string (swedish) from month as a number.
 	 *

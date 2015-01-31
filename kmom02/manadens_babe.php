@@ -10,9 +10,9 @@ include(__DIR__.'/config.php');
 $zeus['stylesheets'][] = 'css/calendar.css';
 $zeus['stylesheets'][] = 'css/diceGame.css';
 
-$zeus['title'] = "Månadens babe";
+$zeus['title'] = "Månadens Babe";
 $zeus['main'] = <<<EOD
-<h1>Månadens babe</h1>
+<h1>Månadens Babe</h1>
 EOD;
 
 
@@ -31,11 +31,6 @@ if(isset($_SESSION['babe'])) {
 		unset($_SESSION['babe']);
 	}
 } else {
-	createCalendar();
-}
-
-function createCalendar(){
-	// create calendar
 	$babe = new CBabeCal;
 
 	// save calendar to session
@@ -45,9 +40,7 @@ function createCalendar(){
 	$babe->setCal(date('Y'), date('n'));
 }
 
-$html = '<a href="?prev">Föregående månad</a>';
-$html .= '<a href="?next">Nästa månad</a>';
-$html .= $babe->getCal();
+$html = $babe->getCal();
 $zeus['main'] .= $html;
 
 

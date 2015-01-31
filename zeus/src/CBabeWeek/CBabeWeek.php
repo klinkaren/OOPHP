@@ -1,6 +1,6 @@
 <?php
 /**
- * A game with one or more players.
+ * Class representing a week in the swedish Babe Ruth calender made by Viktor Kjellberg.
  *
  */
 class CBabeWeek  {
@@ -9,8 +9,7 @@ class CBabeWeek  {
 	private $month;
 	private $year;
 	private $days;
-	#private $days
-
+	
 	/**
 	 * Constructor
 	 *
@@ -22,12 +21,18 @@ class CBabeWeek  {
 		$this->setDays();
 	}
 
+	/**
+	 * Set days of week.
+	 */
 	private function setDays() {
 		for ($i=0; $i <7 ; $i++) { 
 			$this->days[$i] = new CBabeDay($this->year, $this->month, $this->weekNo, $i);
 		}
 	}
 
+	/**
+	 * Returns the given week as html.
+	 */
 	public function getWeekAsHtml() {
 		$html='<div class="week">';
 		$html .= '<div class="weekNo">'.$this->weekNo.'</div>';
@@ -39,6 +44,9 @@ class CBabeWeek  {
 		return $html;
 	}
 
+	/**
+	 * Returns week number of this week.
+	 */
 	public function getWeekNo() {
 		return $this->weekNo;
 	}
