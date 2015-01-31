@@ -55,7 +55,6 @@ class CBabeDay  {
 			$class .= ' today';
 		}
 		$html = '<div class="'.$class.'">';
-		$html .= $this->nameOfDay.'<br>';
 		$html .= $this->dayInMonth.'<br>';
 		$html .= '</div>';
 		return $html;

@@ -2,22 +2,35 @@ div.month {
 	width: 880px;
 	border-top: 1px solid black;
 	border-right: 1px solid black;
+	border-left: 1px solid black;
 }
 
 div.monthHeading {
 	background-color: #2d882d;
 	border-bottom: 1px solid black;
-	border-left: 1px solid black;
 }
-div.week {
+div.week, div.infoLine {
 	border-bottom: 1px solid black;
 	overflow: auto;
 }
-div.day {
-	width: 14%;
-	height: 60px;
+div.infoLine {
+	font-size: large;
+}
+div.weekNo {
+	float: left;
+	width: 30px;
+	text-align: center;
+	font-weight: bold;
+}
+div.day, div.dayTopline {
+	width: 120px;
 	float: left;
 	border-left: 1px solid black;
+}
+div.day {
+	height: 50px;
+	text-align: right;
+	font-size: large;
 }
 div.red {
 	color: red;
@@ -28,4 +41,14 @@ div.notInMonth {
 }
 div.today {
 	background-color: #ccc;
+}
+div.babe01 {
+	background: url(../img/babe01.jpg) no-repeat center;
+	background-color: #333;
+	height: 300px;
+}
+div.babe02 {
+	background: url(../img/babe02.jpg) no-repeat center;
+	background-color: #333;
+	height: 300px;
 }

@@ -28,45 +28,20 @@ class CBabeCal  {
 		$this->curDay = date('d');
 	}
 
-	/**
-	  * Sets calendar based on supplied year and month.
-	  *
-	  */ 
 	public function setCal($year, $month) {
 		$this->setMonth(sprintf('%02d', $month));
 		$this->setYear($year);
 		$this->setWeeks();
 	}
-	
-	/**
-	 * Updates calender to previous month
-	 *
-	 */
-	public function prevMonth() {
-		if($this->month==1){
-			$month=12;
-			$year=$this->year-1;
-		} else {
-			$month = ($this->month-1);
-			$year = $this->year;
-		}
-		$this->setCal($year, $month);
-	}
-
 
 	/**
-	 * Updates calender to next month
-	 *
+	 * Support function for setWeeks
 	 */
-	public function nextMonth() {
-		if($this->month==12){
-			$month=1;
-			$year=$this->year+1;
-		} else {
-			$month = ($this->month+1);
-			$year = $this->year;
-		}
-		$this->setCal($year, $month);
+	private function addDayswithdate($date, $days) {
+
+	    $date = strtotime("+".$days." days", strtotime($date));
+	    return date("Y-m-d", $date);
+
 	}
 
 	/**
@@ -74,42 +49,50 @@ class CBabeCal  {
 	 */
 	private function setWeeks() {
 
-		//local function for adding a day
-		function addDayswithdate($date, $days) {
-		    $date = strtotime("+".$days." days", strtotime($date));
-		    return date("Y-m-d", $date);
-		}
-
 		// Clear anything already set.
 		unset($this->weeks);
 
-		//Set first and last day of month.
+		//Spara alla månadens veckor i en array (ex: 51, 52, 53, 01)
 		$day = $this->year."-".$this->month."-01"; 
 		$lastDayOfMonth = date("Y-m-t", strtotime($this->year."-".$this->month."-01"));
+		echo "Första: ".$day.'<br>';
+		echo "Sista: ".$lastDayOfMonth.'<br>';
 
-		// Create array for week of all days in month.
-		while ($day <= $lastDayOfMonth) {
-
-			// Get week of $day
+			/*Get week of $day
 			$time = new DateTime($day);
 			$week = intval($time->format("W"));
 
-			// add to array
-			$allWeeks[] = $week;
-
-			// step to next day
-			$day = addDayswithdate($day, 1);
-		}
-		
-		// removing dublicates
-		$allWeeks = array_unique($allWeeks);
-
-		// creating weeks
-		foreach ($allWeeks as $week) {
+			// add to array of weeks for month
 			$this->weeks[] = new CBabeWeek($this->year, $this->month, $week);
+			*/
+
+		// Create array for all weeks in month
+		while ($day < $lastDayOfMonth) {
+
+			//Get week of $day
+			$time = new DateTime($day);
+			$week = intval($time->format("W"));
+
+			// add to array of weeks for month
+			$this->weeks[] = new CBabeWeek($this->year, $this->month, $week);
+
+			// jump a week
+			echo "Vecka: ".$week." | Day: ".$day.' | '.$lastDayOfMonth.'<br>';
+			$day = $this->addDayswithdate($day, 7);
+			echo "Check this: ".$day."<br>";
 		}
+
+		/* Adds last week of month
+		$time = new DateTime($day);
+		$week = intval($time->format("W"));
+		$this->weeks[] = new CBabeWeek($this->year, $this->month, $week);
+		echo "Efter: ".$day.'<br>';
+		*/
 			
 	}
+		//while day < lastDayOfMonth
+		//add week number to weeks[]
+		//add 7 days to day
 
 	public function getCal(){
 
@@ -144,7 +127,6 @@ class CBabeCal  {
 		}
 
 		$html = '<div class="month">';
-		$html .= '<div class="babe'.$this->month.'"></div>';
 		$html .= '<div class="monthHeading">'.$this->strMonth.", ".$this->year.'</div>';
 			
 		// Infoline containing weekdays
@@ -155,14 +137,30 @@ class CBabeCal  {
 				$html .=getNameOfDay($i);
 				$html .='</div>';
 			}
+			$html .= '</div>';
+
+			foreach ($this->weeks as $key => $week) {
+				$html .= $week->getWeekAsHtml();
+			}
 		$html .= '</div>';
 
-		foreach ($this->weeks as $key => $week) {
-			$html .= $week->getWeekAsHtml();
-		}
-		$html .= '</div>';
 
+		#$html .="Veckor: ".$this->firstWeek."-".$this->lastWeek;
 		return $html;	
+	}
+
+
+
+	public function prevMonth() {
+	}
+
+	public function nextMonth() {
+	}
+
+	private function getIsoWeeksInYear($year) {
+		$date = new DateTime;
+		$date->setISODate($year, 53);
+		return ($date->format("W") === "53" ? 53 : 52);
 	}
 
 	private function setYear($year) {
@@ -216,4 +214,18 @@ class CBabeCal  {
 				break;
 		}
 	}
+
+	/*
+
+	private function setLastWeek($year, $month) {
+		$lastDay = new DateTime(date("Y-m-t", strtotime($year."-".$month."-01")));
+		$this->lastWeek = intval($lastDay->format("W"));
+	}
+
+	private function setFirstWeek($year, $month) {
+		$firstDay = new DateTime($year."-".$month."-1");
+		$this->firstWeek = intval($firstDay->format("W"));
+	}
+	 */
+
 }

@@ -22,27 +22,27 @@ if(isset($_SESSION['babe'])) {
 	$babe = $_SESSION['babe'];
 	if(isset($_GET['next'])){
 		$babe->nextMonth();
-		echo "next month!";
 	} elseif(isset($_GET['prev'])){
 		$babe->prevMonth();
-		echo "prev month!";
 	}
 
-	// Temporary for dev purposes.
+	// Show todays month (by unsetting session causing calender to reload).
 	if(isset($_GET['destroyCal'])) {
-		// ? $game->destroygame();
 		unset($_SESSION['babe']);
-	} else {
-		// Temporary for dev puropses.
-		$zeus['main'] .= "babe was loaded.";
-		$zeus['main'] .= '<a href="?destroyCal">Förstör sessionen</a><br>';
 	}
 } else {
-	$zeus['main'] .= "babe was set.";
-	$zeus['main'] .= '<a href="?destroyCal">Förstör sessionen</a><br>';
+	createCalendar();
+}
+
+function createCalendar(){
+	// create calendar
 	$babe = new CBabeCal;
+
+	// save calendar to session
 	$_SESSION['babe'] = $babe;
-	$babe->setCal(2014,11);
+
+	// Set calender to current year and month
+	$babe->setCal(date('Y'), date('n'));
 }
 
 $html = '<a href="?prev">Föregående månad</a>';

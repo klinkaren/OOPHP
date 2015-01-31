@@ -30,6 +30,7 @@ class CBabeWeek  {
 
 	public function getWeekAsHtml() {
 		$html='<div class="week">';
+		$html .= '<div class="weekNo">'.$this->weekNo.'</div>';
 		foreach ($this->days as $key => $day) {
 			$html .= $day->getDayAsHtml();
 		}
@@ -41,6 +42,5 @@ class CBabeWeek  {
 	public function getWeekNo() {
 		return $this->weekNo;
 	}
-
 
 }
