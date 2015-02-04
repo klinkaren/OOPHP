@@ -1,3 +1,7 @@
 # HEADLINE
 
 <h2>OOPHP project</h2>
+School projects during course about object oriented programming in PHP. 
+
+<h3>About the course</h3>
+Databases and scripting languages, such as PHP, is a basic component of web applications. A prerequisite for building database-driven web applications is to have a solid understanding of limitations and possibilities of script programming. Sometimes, it is not enough to be able to use PHP as a simpler scripting language. To develop professional web applications,it is required a better handling of the script part that is more related with traditional programming in C/C++ or Java. This course is a basic programming course, where PHP and its language constructions are reviewed from beginning. All programming takes place in a web-based environment with a web server (Apache, HTML and CSS) and a database server (SQL and MySQL). This way the student is prepared for further studies in the subject, e g for developing database-driven web applications. The main purpose of the course is to teach the bases in programming and PHP as programming language. After completion of the course, the student is expected to aquired basic knowledge in programming normally considered prerequisites for further studies in programming, databases and database-driven web applications. 
