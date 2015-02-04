@@ -1,6 +1,4 @@
-# HEADLINE
-
-<h2>OOPHP project</h2>
+# Object Oriented Programming in PHP
 School projects during course about object oriented programming in PHP. 
 
 <h3>About the course</h3>
