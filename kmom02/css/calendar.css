@@ -4,7 +4,16 @@ div.month {
 	border-right: 1px solid black;
 	border-left: 1px solid black;
 }
-
+div.babeNav{
+	border-bottom: 1px solid black;
+	overflow: auto;
+}
+div.babeNavLeft{
+	float: left;
+}
+div.babeNavRight{
+	float: right;
+}
 div.monthHeading {
 	background-color: #2d882d;
 	border-bottom: 1px solid black;
@@ -42,6 +51,7 @@ div.notInMonth {
 div.today {
 	background-color: #ccc;
 }
+
 div.babe01 {
 	background: url(../img/babe01.jpg) no-repeat center;
 	background-color: #333;
@@ -49,6 +59,38 @@ div.babe01 {
 }
 div.babe02 {
 	background: url(../img/babe02.jpg) no-repeat center;
+}
+div.babe03 {
+	background: url(../img/babe03.jpg) no-repeat center;
+}
+div.babe04 {
+	background: url(../img/babe04.jpg) no-repeat center;
+}
+div.babe05 {
+	background: url(../img/babe05.jpg) no-repeat center;
+}
+div.babe06 {
+	background: url(../img/babe06.jpg) no-repeat center;
+}
+div.babe07 {
+	background: url(../img/babe07.jpg) no-repeat center;
+}
+div.babe08 {
+	background: url(../img/babe08.jpg) no-repeat center;
+}
+div.babe09 {
+	background: url(../img/babe09.jpg) no-repeat center;
+}
+div.babe10 {
+	background: url(../img/babe10.jpg) no-repeat center;
+}
+div.babe11 {
+	background: url(../img/babe11.jpg) no-repeat center;
+}
+div.babe12 {
+	background: url(../img/babe12.jpg) no-repeat center;
+}
+div.babe01, div.babe02, div.babe03, div.babe04, div.babe05, div.babe06, div.babe07, div.babe08, div.babe09, div.babe10, div.babe11, div.babe12 {
 	background-color: #333;
 	height: 300px;
 }
