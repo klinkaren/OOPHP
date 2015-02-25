@@ -18,16 +18,53 @@ class CBabeCal  {
 	 *
 	 */
 	public function __construct() {
+
+	}
+
+	public function view(){
+		// Get calendar from the session or start new calendar.
+		if(isset($_SESSION['babe'])) {
+			$babe = $_SESSION['babe'];
+			if(isset($_GET['next'])){
+				$babe->nextMonth();
+			} elseif(isset($_GET['prev'])){
+				$babe->prevMonth();
+			}
+
+			// Show todays month (by unsetting session causing calender to reload).
+			if(isset($_GET['destroyCal'])) {
+				unset($_SESSION['babe']);
+			}
+			$html = $babe->getCal();
+		} else {
+
+			// save calendar to session
+			$this->createCalendar();
+			$_SESSION['babe'] = $this;
+			$html = $this->getCal();
+		}
+
+		
+		return $html;
+
+	}
+
+	private function createCalendar(){
 		$this->curYear = date('Y');
 		$this->curMonth = date('m');
 		$this->curDay = date('d');
+
+		// Set calender to current year and month
+		$this->setCal(date('Y'), date('n'));
 	}
+
+
 
 	/**
 	  * Sets calendar based on supplied year and month.
 	  *
 	  */ 
-	public function setCal($year, $month) {
+	private function setCal($year, $month) {
 		$this->setMonth(sprintf('%02d', $month));
 		$this->setYear($year);
 		$this->setWeeks();
@@ -37,7 +74,7 @@ class CBabeCal  {
 	 * Updates calender to previous month
 	 *
 	 */
-	public function prevMonth() {
+	private function prevMonth() {
 		if($this->month==1){
 			$month=12;
 			$year=$this->year-1;
@@ -53,7 +90,7 @@ class CBabeCal  {
 	 * Updates calender to next month
 	 *
 	 */
-	public function nextMonth() {
+	private function nextMonth() {
 		if($this->month==12){
 			$month=1;
 			$year=$this->year+1;
@@ -68,7 +105,7 @@ class CBabeCal  {
 	 * Returns html version of calender
 	 *
 	 */
-	public function getCal(){
+	private function getCal(){
 
 		function getNameOfDay($day) {
 			switch ($day) {
