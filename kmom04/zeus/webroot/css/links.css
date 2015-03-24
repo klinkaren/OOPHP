@@ -35,3 +35,8 @@ ul.nb-plain a:hover {
   border-bottom: 1px solid #999;
   text-decoration: none;
 }
+
+.orderby a {
+  text-decoration: none;
+  color: black;
+}
