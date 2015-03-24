@@ -11,6 +11,17 @@ $zeus['title'] = "Redovisning";
  
 $zeus['main'] = <<<EOD
 <h1>Redovisning</h1>
+
+<h2>KMOM04</h2>
+<h3>Hur kändes det att jobba med PHP PDO?</h3>
+	<p>bla bla bla</p>
+<h3>Gjorde du guiden med filmdatabasen, hur gick det?</h3>
+	<p>bla bla</p>
+<h3>Moduler i Anax </h3>
+<p class="subtitle">Du har nu byggt ut ditt Anax med ett par moduler i form av klasser, hur tycker du det konceptet fungerar så här långt, fördelar, nackdelar?</p>
+	<p>bla bla bla lba</p>
+<hr>
+
 <h2>KMOM03</h2>
 <h3>Är du bekant med databaser sedan tidigare? Vilka?</h3>
 	<p>Läste kursen Databaser I (7,5hp) på Luleå tekniska universitet förra terminen och läser fortsättningskursen Databaser II parallellt med den här kursen. Båda kurserna handlar egentligen om att designa relationsdatabaser och implementera dem med SQL Server. Det blev en hel del modellering, implementering och sql-querying i första kursen. Andra kursen, som jag läser nu, liknar den första men fokuserar mer på att implementera business rules innan vi framåt våren fortsätter med data mining, vilket jag verkligen ser fram emot :)</p>

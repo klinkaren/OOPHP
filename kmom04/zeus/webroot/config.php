@@ -69,14 +69,17 @@ EOD;
 $zeus['navbar'] = array(
   'class' => 'nb-plain',
   'items' => array(
-    'hem'          => array('text'=>'Hem',                 'url'=>'me.php',           'title' => 'Min presentation om mig själv'),
-    'redovisning'  => array('text'=>'Redovisning',         'url'=>'redovisning.php',  'title' => 'Redovisningar för kursmomenten'),
-    'kallkod'      => array('text'=>'Källkod',             'url'=>'source.php',       'title' => 'Se källkoden'),
-    'mdb_show_all' => array('text'=>'Visa alla',           'url'=>'mdb_show_all.php',  'title' => 'Visa alla filmer i databasen.'),
+    'hem'               => array('text'=>'Hem',            'url'=>'me.php',                'title' => 'Min presentation om mig själv'),
+    'redovisning'       => array('text'=>'Redovisning',    'url'=>'redovisning.php',       'title' => 'Redovisningar för kursmomenten'),
+    'kallkod'           => array('text'=>'Källkod',        'url'=>'source.php',            'title' => 'Se källkoden'),
+    'mdb_show_all'      => array('text'=>'Visa alla',      'url'=>'mdb_show_all.php',      'title' => 'Visa alla filmer i databasen.'),
     'mdb_search_title'  => array('text'=>'Sök på titel',   'url'=>'mdb_search_title.php',  'title' => 'Sök i databasen baserat på titel.'),
-    'mdb_search_year'   => array('text'=>'Sök på år',      'url'=>'mdb_search_year.php',  'title' => 'Sök i databasen baserat på år.'),
+    'mdb_search_year'   => array('text'=>'Sök på år',      'url'=>'mdb_search_year.php',   'title' => 'Sök i databasen baserat på år.'),
     'mdb_search_genre'  => array('text'=>'Sök på genre',   'url'=>'mdb_search_genre.php',  'title' => 'Sök i databasen baserat på genre.'),
-    'mdb_sort'          => array('text'=>'Sortera',        'url'=>'mdb_sort.php',  'title' => 'Sortera databasen på kolumn i stigande/fallande ordning.')
+    'mdb_sort'          => array('text'=>'Sortera',        'url'=>'mdb_sort.php',          'title' => 'Sortera databasen på kolumn i stigande/fallande ordning.'),
+    'mdb_paging'        => array('text'=>'Paginering',     'url'=>'mdb_paging.php',        'title' => 'Bestäm hur många filmer som ska visas per sida.')
+
+    
    ),
   'callback_selected' => function($url) {
     if(basename($_SERVER['SCRIPT_FILENAME']) == $url) {
