@@ -70,17 +70,7 @@ function getPageNavigation($hits, $page, $max, $min=1) {
 
 
 // Connect to a MySQL database using PHP PDO
-$dsn      = 'mysql:host=localhost;dbname=Movie;';
-$login    = 'root';
-$password = '';
-$options  = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'");
-try {
-	$pdo = new PDO($dsn, $login, $password, $options);
-}
-catch(Exception $e) {
-	throw new PDOException('Could not connect to database, hiding connection details.');
-}
-$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
+$db = new CDatabase($zeus['database']);
 
 
 
@@ -98,9 +88,7 @@ is_numeric($page) or die('Check: Page must be numeric.');
 
 // Get max pages from table, for navigation
 $sql = "SELECT COUNT(id) AS rows FROM VMovie";
-$sth = $pdo->prepare($sql);
-$sth->execute();
-$res = $sth->fetchAll();
+$res = $db->ExecuteSelectQueryAndFetchAll($sql);
 
 
 
@@ -111,10 +99,7 @@ $max = ceil($res[0]->rows / $hits);
 
 // Get data
 $sql = "SELECT * FROM VMovie LIMIT $hits OFFSET " . (($page - 1) * $hits);
-$sth = $pdo->prepare($sql);
-$sth->execute();
-$res = $sth->fetchAll();
-
+$res = $db->ExecuteSelectQueryAndFetchAll($sql);
 
 
 // Put results into a HTML-table

@@ -6,18 +6,10 @@
 // Include the essential config-file which also creates the $zeus variable with its defaults.
 include(__DIR__.'/config.php'); 
 
+
+
 // Connect to a MySQL database using PHP PDO
-$dsn      = 'mysql:host=localhost;dbname=Movie;';
-$login    = 'root';
-$password = '';
-$options  = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'");
-try {
-	$pdo = new PDO($dsn, $login, $password, $options);
-}
-catch(Exception $e) {
-	throw new PDOException('Could not connect to database, hiding connection details.');
-}
-$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
+$db = new CDatabase($zeus['database']);
 
 
 
@@ -35,9 +27,7 @@ in_array($order, array('asc', 'desc')) or die('Check: Not valid sort order.');
 
 // Get data
 $sql = "SELECT * FROM VMovie ORDER BY $orderby $order;";
-$sth = $pdo->prepare($sql);
-$sth->execute();
-$res = $sth->fetchAll();
+$res = $db->ExecuteSelectQueryAndFetchAll($sql);
 
 
 

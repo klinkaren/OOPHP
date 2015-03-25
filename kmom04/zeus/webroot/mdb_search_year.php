@@ -8,23 +8,8 @@ include(__DIR__.'/config.php');
 
 
 
-
-
 // Connect to a MySQL database using PHP PDO
-$dsn      = 'mysql:host=localhost;dbname=Movie;';
-$login    = 'root';
-$password = '';
-$options  = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'");
-
-try {
-	$pdo = new PDO($dsn, $login, $password, $options);
-}
-catch(Exception $e) {
-	throw new PDOException('Could not connect to database, hiding connection details.');
-}
-
-$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
-
+$db = new CDatabase($zeus['database']);
 
 
 
@@ -49,9 +34,7 @@ if($year1 && $year2) {
 	$params = null;
 }
 // Get data
-	$sth = $pdo->prepare($sql); 
-	$sth->execute($params);
-	$res = $sth->fetchAll();
+$res = $db->ExecuteSelectQueryAndFetchAll($sql, $params);
 
 
 
@@ -87,7 +70,7 @@ $paramsPrint = htmlentities(print_r($params, 1));
 
 
 // Do it and store it all in variables in the Zeus container.
-$zeus['title'] = "¨Sök år";
+$zeus['title'] = "Sök baserat på år";
 
 $zeus['main'] = <<<EOD
 <h1>{$zeus['title']}</h1>

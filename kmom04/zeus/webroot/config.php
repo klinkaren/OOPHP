@@ -77,9 +77,8 @@ $zeus['navbar'] = array(
     'mdb_search_year'   => array('text'=>'Sök på år',      'url'=>'mdb_search_year.php',   'title' => 'Sök i databasen baserat på år.'),
     'mdb_search_genre'  => array('text'=>'Sök på genre',   'url'=>'mdb_search_genre.php',  'title' => 'Sök i databasen baserat på genre.'),
     'mdb_sort'          => array('text'=>'Sortera',        'url'=>'mdb_sort.php',          'title' => 'Sortera databasen på kolumn i stigande/fallande ordning.'),
-    'mdb_paging'        => array('text'=>'Paginering',     'url'=>'mdb_paging.php',        'title' => 'Bestäm hur många filmer som ska visas per sida.')
-
-    
+    'mdb_paging'        => array('text'=>'Paginering',     'url'=>'mdb_paging.php',        'title' => 'Bestäm hur många filmer som ska visas per sida.'),
+    'mdb_loginout'      => array('text'=>CUser::logOption(),          'url'=>'mdb_loginout.php',         'title' => CUser::logOption())  
    ),
   'callback_selected' => function($url) {
     if(basename($_SERVER['SCRIPT_FILENAME']) == $url) {
@@ -87,6 +86,21 @@ $zeus['navbar'] = array(
     }
   }
 );
+
+
+
+/**
+ * Settings for the database.
+ *
+ */
+define('DB_USER', 'root'); // The database username
+define('DB_PASSWORD', ''); // The database password
+
+$zeus['database']['dsn']            = 'mysql:host=localhost;dbname=Movie;';
+$zeus['database']['username']       = DB_USER;
+$zeus['database']['password']       = DB_PASSWORD;
+$zeus['database']['driver_options'] = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'");
+
 
 
 /**
@@ -98,6 +112,7 @@ $zeus['stylesheets'] = array('css/style.css');
 $zeus['favicon']    = 'favicon_oophp.ico';
 
 
+
 /**
  * Settings for JavaScript.
  *
@@ -107,6 +122,8 @@ $zeus['jquery'] = '//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js';
 $zeus['jquery_src'] = '//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js';
 $zeus['javascript_include'] = array();
 //$zeus['javascript_include'] = array('js/main.js'); // To add extra javascript files
+
+
 
 /**
  * Google analytics.

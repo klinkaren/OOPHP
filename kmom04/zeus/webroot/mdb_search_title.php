@@ -7,24 +7,8 @@
 include(__DIR__.'/config.php'); 
 
 
-
-
-
 // Connect to a MySQL database using PHP PDO
-$dsn      = 'mysql:host=localhost;dbname=Movie;';
-$login    = 'root';
-$password = '';
-$options  = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'");
-
-try {
-	$pdo = new PDO($dsn, $login, $password, $options);
-}
-catch(Exception $e) {
-	throw new PDOException('Could not connect to database, hiding connection details.');
-}
-
-$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
-
+$db = new CDatabase($zeus['database']);
 
 
 
@@ -37,20 +21,18 @@ $title = isset($_GET['title']) ? $_GET['title'] : null;
 // Do SELECT from a table
 if($title) {
   // prepare SQL for search
-	$query = "SELECT * FROM Movie WHERE title LIKE ?;";
-	$params = array(
-		$title,
-	);  
+    $query = "SELECT * FROM Movie WHERE title LIKE ?;";
+    $params = array(
+        $title,
+    );  
 } 
 else {
   // prepare SQL to show all
-	$query = "SELECT * FROM Movie;";
-	$params = null;
+    $query = "SELECT * FROM Movie;";
+    $params = null;
 }
 // Get data
-	$sth = $pdo->prepare($query); 
-	$sth->execute($params);
-	$res = $sth->fetchAll();
+$res = $db->ExecuteSelectQueryAndFetchAll($query, $params);
 
 
 

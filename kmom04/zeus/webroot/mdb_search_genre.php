@@ -9,17 +9,7 @@ include(__DIR__.'/config.php');
 
 
 // Connect to a MySQL database using PHP PDO
-$dsn = 'mysql:host=localhost;dbname=Movie;';
-$login = 'root';
-$password = '';
-$options = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'");
-
-try {
-	$pdo = new PDO($dsn, $login, $password, $options);
-} catch(Exception $e) {
-	throw new PDOException('Could not connect to database, hiding connection details.');
-}
-$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
+$db = new CDatabase($zeus['database']);
 
 
 
@@ -31,9 +21,7 @@ $genre = isset($_GET['genre']) ? $_GET['genre'] : null;
 // Get all genres in use
 $sql = "SELECT DISTINCT G.name FROM Genre AS G INNER JOIN Movie2Genre AS M2G ON G.id = M2G.idGenre;";
 $params = null;
-$sth = $pdo->prepare($sql);
-$sth->execute($params);
-$res = $sth->fetchAll();
+$res = $db->ExecuteSelectQueryAndFetchAll($sql, $params);
 
 
 
@@ -67,9 +55,7 @@ if($genre){
 	$sql = 'SELECT * FROM VMovie;';
 	$params = null;
 }
-$sth = $pdo->prepare($sql);
-$sth->execute($params);
-$res = $sth->fetchAll();
+$res = $db->ExecuteSelectQueryAndFetchAll($sql, $params);
 
 
 
