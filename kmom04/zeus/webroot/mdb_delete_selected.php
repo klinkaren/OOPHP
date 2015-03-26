@@ -58,6 +58,8 @@ else {
 // Do it and store it all in variables in the Zeus container.
 $zeus['title'] = "Skapa film";
 
+$sqlDebug = $db->Dump();
+
 $zeus['main'] = <<<EOD
 <h1>{$zeus['title']}</h1>
 
@@ -68,6 +70,8 @@ $zeus['main'] = <<<EOD
   <p><input type='submit' name='delete' value='Radera film'/></p>
   </fieldset>
 </form>
+
+<div class=debug>{$sqlDebug}</div>
 
 EOD;
 

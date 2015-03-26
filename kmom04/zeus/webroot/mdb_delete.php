@@ -34,12 +34,16 @@ foreach($res AS $key => $val) {
 // Do it and store it all in variables in the Zeus container.
 $zeus['title'] = "Skapa film";
 
+$sqlDebug = $db->Dump();
+
 $zeus['main'] = <<<EOD
 <h1>{$zeus['title']}</h1>
 
 <table>
 {$tr}
 </table>
+
+<div class=debug>{$sqlDebug}</div>
 
 EOD;
 

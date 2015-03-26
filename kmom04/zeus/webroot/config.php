@@ -82,6 +82,7 @@ $zeus['navbar'] = array(
     'mdb_edit'          => array('text'=>'Redigera film',       'url'=>'mdb_edit.php',          'title' => 'Redigera filmer.'),
     'mdb_create'          => array('text'=>'Skapa film',       'url'=>'mdb_create.php',          'title' => 'Lägg till en ny film i databasen.'),
     'mdb_delete'          => array('text'=>'Ta bort film',       'url'=>'mdb_delete.php',          'title' => 'Ta bort film från databasen.'),
+    'mdb_search'          => array('text'=>'Sök film',       'url'=>'mdb_search.php',          'title' => 'Sök efter film.'),
    ),
   'callback_selected' => function($url) {
     if(basename($_SERVER['SCRIPT_FILENAME']) == $url) {
