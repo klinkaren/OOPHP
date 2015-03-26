@@ -30,12 +30,19 @@ class CUser {
    *  Checks if logged in.
    *
    *  @return true or false
+   *
    */
   public static function authenticated(){
         return isset($_SESSION['user']) ? true : false;
   }
 
 
+  /**
+   * If logged in gives message saying log out and vice versa.
+   *
+   * @return string saying Login or Logout
+   *
+   */
   public static function logOption(){
         if(self::authenticated()){
             $msg = "Logout";

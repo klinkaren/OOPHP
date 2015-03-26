@@ -78,7 +78,10 @@ $zeus['navbar'] = array(
     'mdb_search_genre'  => array('text'=>'Sök på genre',   'url'=>'mdb_search_genre.php',  'title' => 'Sök i databasen baserat på genre.'),
     'mdb_sort'          => array('text'=>'Sortera',        'url'=>'mdb_sort.php',          'title' => 'Sortera databasen på kolumn i stigande/fallande ordning.'),
     'mdb_paging'        => array('text'=>'Paginering',     'url'=>'mdb_paging.php',        'title' => 'Bestäm hur många filmer som ska visas per sida.'),
-    'mdb_loginout'      => array('text'=>CUser::logOption(),          'url'=>'mdb_loginout.php',         'title' => CUser::logOption())  
+    'mdb_loginout'      => array('text'=>CUser::logOption(),          'url'=>'mdb_loginout.php',         'title' => CUser::logOption()),
+    'mdb_edit'          => array('text'=>'Redigera film',       'url'=>'mdb_edit.php',          'title' => 'Redigera filmer.'),
+    'mdb_create'          => array('text'=>'Skapa film',       'url'=>'mdb_create.php',          'title' => 'Lägg till en ny film i databasen.'),
+    'mdb_delete'          => array('text'=>'Ta bort film',       'url'=>'mdb_delete.php',          'title' => 'Ta bort film från databasen.'),
    ),
   'callback_selected' => function($url) {
     if(basename($_SERVER['SCRIPT_FILENAME']) == $url) {
