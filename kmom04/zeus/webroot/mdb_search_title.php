@@ -12,7 +12,7 @@ $db = new CDatabase($zeus['database']);
 
 
 
-// Get parameters for sorting
+// Get title for search
 $title = isset($_GET['title']) ? $_GET['title'] : null;
 
 

@@ -16,7 +16,11 @@ class CHTMLTable {
 
 
 
-  public function getHTMLTable($res, $paging = 8, $sorting = array(1, 'ASC')) {
+  public function getHTMLTable($res, $paging = 8, $sortCol = 1, sortOrder = 'ASC')) {
+
+
+  	// Return HTML table.
+  	return $res; 
 
   }
 
