@@ -21,7 +21,7 @@ class CMovieSearch extends CDatabase {
   private $title;
   private $year1;
   private $year2;
-  private $genre;
+  private $genre = array();
   private $hits;
   private $page;
   private $order;
@@ -86,23 +86,32 @@ class CMovieSearch extends CDatabase {
    * @return string html for search result.
    */
   public function getData() {
+    $where = array();
+    $params = array();
 
-    // Do SELECT from a table
     if($this->title) {
 
-      // prepare SQL for search
-        $query = "SELECT * FROM Movie WHERE title LIKE ?;";
-        $params = array(
-            $this->title,
-        ); 
+      $where[] = "title LIKE ?";
+      $params[] = $this->title;
     } 
-    else {
 
-      // prepare SQL to show all
-        $query = "SELECT * FROM Movie;";
-        $params = null;
+    if($this->year1 && $this->year2) {
+      #$sql = "SELECT * FROM Movie WHERE YEAR >= ? AND YEAR <= ?;";
+      $where[] = "YEAR >= ?";
+      $where[] = "YEAR <= ?";
+      $params[] = $this->year1;
+      $params[] = $this->year2;
     }
 
+    // Create sql-query 
+    if(empty($params)) {
+      $query = "SELECT * FROM Movie;";
+      $params = null;
+    } else {
+      $query = "SELECT * FROM Movie WHERE ".join(" AND ",$where).";";
+    }
+
+    echo $query;
     // Get data
     return $this->ExecuteSelectQueryAndFetchAll($query, $params);
 
@@ -155,12 +164,14 @@ $sql = <<<EOD
     ON G.id = M2G.idGenre;
 EOD;
         $res = $this->ExecuteSelectQueryAndFetchAll($sql,null,false);
-        $genreList = "<p>Välj genre: ";
+        $genreList = "<p>Välj genre:<br/>";
         foreach($res as $key => $val) {
-            $genreList .="<a href='?genre={$val->name}'>{$val->name}</a> ";
+            //$genreList .="<a href='?genre={$val->name}'>{$val->name}</a> ";
+            $genreList .="<input type='checkbox' name='genre[]' value='{$val->name}' checked>{$val->name}<br>";
         }
         $genreList .="</p>";
         
+        print_r($this->genre);
         return $genreList;
   } 
 
@@ -171,15 +182,18 @@ EOD;
    */
   private function getParams(){
       //Get parameters 
-      $this->title    = isset($_GET['title']) ? $_GET['title'] : null;
-      $this->genre    = isset($_GET['genre']) ? $_GET['genre'] : null;
-      $this->hits     = isset($_GET['hits'])  ? $_GET['hits']  : 8;
-      $this->page     = isset($_GET['page'])  ? $_GET['page']  : 1;
+      $this->title    = isset($_GET['title'])   ? $_GET['title'] : null;
+      $this->hits     = isset($_GET['hits'])    ? $_GET['hits']  : 8;
+      $this->page     = isset($_GET['page'])    ? $_GET['page']  : 1;
       $this->year1    = isset($_GET['year1']) && !empty($_GET['year1']) ? $_GET['year1'] : null;
       $this->year2    = isset($_GET['year2']) && !empty($_GET['year2']) ? $_GET['year2'] : null;
       $this->orderby  = isset($_GET['orderby']) ? strtolower($_GET['orderby']) : 'id';
       $this->order    = isset($_GET['order'])   ? strtolower($_GET['order'])   : 'asc';
-      
+
+      # ??? Problem here ?????????????????????????????????????????????????????????????????????????
+      #$this->genre    = null !== ($_GET['genre'])   ? ($_GET['genre'])  : null;
+      $this->genre    = (isset($_GET['genre'])      ? $_GET['genre'] : null);
+
       //Check that incoming parameters are valid
       is_numeric($this->hits) or die('Check: Hits must be numeric.');
       is_numeric($this->page) or die('Check: Page must be numeric.');
