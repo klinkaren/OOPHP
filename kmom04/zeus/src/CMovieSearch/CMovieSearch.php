@@ -3,6 +3,7 @@
 /**
  * TODO:?????????????????????????????????
  *  X Lägg till så att $_GET hanteras härifrån. Kanske i construct?
+ *  - Alla genres ska vara ikryssade första gången man kommer till sidan.
  *  - Lägg till anrop till CHTMLTable från getHTML(). Skicka med om inloggad eller ej (visa edit/ta bort).
  *  - Bygg SQL-satsen del för del. Ska kunna ska både på år och kategori. Kom ihåg antal resultat per sida. 
  *  - Bygg på så att man inte kan hamna på en sida utan resultat. Ex. Ej sida 2 om paging=8 men bara 7 resultat.
@@ -39,7 +40,8 @@ class CMovieSearch extends CDatabase {
 
       parent::__construct($options); //could this work?????? try when done!!!!!!!!!!!!!!!!!
       //$this->mdb = new CDatabase($options);
-      $this->getParams();
+      //$this->getParams();
+      //$this->getAllGenres();
 
   } 
 
@@ -51,6 +53,7 @@ class CMovieSearch extends CDatabase {
    * @return string html for search form and result.
    */
   public function getHTML() {
+    $this->getParams();
     $res = $this->getForm();
     $res .= $this->getSearchResult();
     return $res;
@@ -85,7 +88,7 @@ class CMovieSearch extends CDatabase {
    *
    * @return string html for search result.
    */
-  public function getData() {
+  private function getData() {
     $where = array();
     $params = array();
 
@@ -124,7 +127,7 @@ class CMovieSearch extends CDatabase {
    *
    * @return string html for search form
    */
-  public function getForm() {
+  private function getForm() {
 
 
         $res = <<<EOD
@@ -149,14 +152,13 @@ EOD;
   } 
 
 
-
  /**
    * Bygg genreList
    *
    * @param string htmlkod
    */
-  public function getGenreList() {
-          //Bygg genre-lista
+  private function getGenreList() {
+
 $sql = <<<EOD
   SELECT DISTINCT G.name
   FROM Genre AS G
@@ -166,14 +168,27 @@ EOD;
         $res = $this->ExecuteSelectQueryAndFetchAll($sql,null,false);
         $genreList = "<p>Välj genre:<br/>";
         foreach($res as $key => $val) {
+            $status = $this->checked($val->name);
             //$genreList .="<a href='?genre={$val->name}'>{$val->name}</a> ";
-            $genreList .="<input type='checkbox' name='genre[]' value='{$val->name}' checked>{$val->name}<br>";
+            $genreList .="<input type='checkbox' name='genre[]' value='{$val->name}' $status>{$val->name}<br>";
         }
         $genreList .="</p>";
         
         print_r($this->genre);
         return $genreList;
-  } 
+  }
+
+
+
+  /**
+   * Check if genre in $genre (support function for getGenreList)
+   *
+   * @return string "checked" or "".
+   */
+  private function checked($needle){
+    $res = in_array($needle, $this->genre) ? "checked" : "";
+    return $res;
+  }
 
 
 
@@ -192,7 +207,7 @@ EOD;
 
       # ??? Problem here ?????????????????????????????????????????????????????????????????????????
       #$this->genre    = null !== ($_GET['genre'])   ? ($_GET['genre'])  : null;
-      $this->genre    = (isset($_GET['genre'])      ? $_GET['genre'] : null);
+      $this->genre    = (isset($_GET['genre'])      ? $_GET['genre'] : array());
 
       //Check that incoming parameters are valid
       is_numeric($this->hits) or die('Check: Hits must be numeric.');
