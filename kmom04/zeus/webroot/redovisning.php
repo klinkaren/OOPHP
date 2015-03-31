@@ -14,12 +14,25 @@ $zeus['main'] = <<<EOD
 
 <h2>KMOM04</h2>
 <h3>Hur kändes det att jobba med PHP PDO?</h3>
-	<p>bla bla bla</p>
+	<p>Det kändes mycket smidigt. Praktiskt att kunna använda sig av frågetecken och skicka med en lista på parametrar för frågetecknen. Samtidigt är det skönt att få gratis hjälp med att skydda sig mot SQL-injections, även om man fortfarande själv bör tvätta input innan den skickas som en query.</p>
 <h3>Gjorde du guiden med filmdatabasen, hur gick det?</h3>
-	<p>bla bla</p>
+	<p>Problem med kopplingen till databasen. Kopierade SQL-satsen för att skapa tabellen Movie. Kolumnen YEAR med stora bokstäver. Stora problem innan jag insåg att det var det som var problemet med min php-kod (year med små bokstäver).</p>
+	<p>Hade samma sedan samma problem med login/logout där det var tabellen USER som spökade med stora respektive små bokstäver. La flera timmar på koden innan jag hittade det här. I det här fallet hittade jag problemet när jag satte debug = true och såg att min sql-fråga inte returnerade någonting. En bra insikt att sådana här hjäkpfunktioner är bra att ha och fantastiska som hjälpmedel när problem uppstår. </p>
+	<p>Upptäckte ett fel, det går inte att uppdatera bilder i filmdatabasen (se <a href"http://dbwebb.se/kod-exempel/gor-din-egen-filmdatabas/movie_edit.php?id=1">länk</a>). Problemet är att &#36image aldrig skickas med vid uppdateringen. I if-satsen som börjar på <a href="http://dbwebb.se/kod-exempel/gor-din-egen-filmdatabas/source.php?path=movie_edit.php#L72">rad 72</a> behöver vi skicka med image = ? och sedan ha med &#36image i vår arrray som sparas i &#36params. Nedan är en uppdaterad version av if-satsen och &#36params, som gör att det går att uppdatera bilder i filmdatabasen:</p>
+	<p><code>if(&#36save) { 
+  &#36sql = 'UPDATE Movie SET 
+      title = ?, 
+      year = ?, 
+      image = ? 
+    WHERE 
+      id = ? 
+  '; 
+    <br>&#36params = array(&#36title, &#36year, &#36image, &#36id);</code></p>
+	<p>Ville gärna kunna söka på genre i modulen för filmdatabasen och skapade därför funktionalitet för detta. Så här i efterhand känner jag att, även om det fungerar, är sql-frågorna inte optimala med joins och användandet av en vy. Tog väldigt många timmar och känner att jag till viss del tog mig vatten över huvud här.</p>
+
 <h3>Moduler i Anax </h3>
 <p class="subtitle">Du har nu byggt ut ditt Anax med ett par moduler i form av klasser, hur tycker du det konceptet fungerar så här långt, fördelar, nackdelar?</p>
-	<p>bla bla bla lba</p>
+	<p>Kan vara rätt krånligt att hålla isär olika delar. Tyckte exempelvis att det var svårt med CHTMLTable och CmovieSearch. Till stor del beror det nog på min ringa erfaranhet helt enkelt. Framförallt krånglade det när jag ville komma åt variabler av en klass i en annan. Kände att jag inte riktigt förstår var jag ska skapa klasserna. Var det bästa att skapa CmovieSearch och låta dess constructor skapa en Cdatabase? Borde constructorn också skapa en CHTMLTable? Eller är det bäst att låta det ske när jag behöver den? Känner att jag skulle behöva lite mer träning på det här området. </p>
 <hr>
 
 <h2>KMOM03</h2>

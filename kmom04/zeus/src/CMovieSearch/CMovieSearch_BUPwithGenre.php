@@ -86,24 +86,19 @@ class CMovieSearch extends CDatabase {
 
 
 
-  private function getGenreQuery(){
-    $res = array();
-    foreach ($this->genre as $val) {
-      $res[] = 'genre LIKE "%'.$val.'%"';
-    }
-    return $res;
-  }
-
-
    /**
    * Get data from database
    *
    * @return string html for search result.
    */
-  private function getData() {
-    $limit = "";
-    $genres = $this->getGenreQuery();
 
+
+
+private function getData() {
+  $limit = "";
+
+  echo "<br>ORDERBY: ".$this->orderby;
+  echo "<br>ORDER: ".$this->order;
     $where = array();
     $params = array();
 
@@ -123,31 +118,22 @@ class CMovieSearch extends CDatabase {
       $params[] = $this->year2;
     }
 
-    /*Search genre
-    if($this->genre){
-      foreach ($this->genre as $val) {
-        $where[] = "genre LIKE ?";
-        $params[] = '"%'.$val.'%"';
-      }
-    }
-    */
-    
-
     // Pagination
     if($this->hits && $this->page) {
       $limit = " LIMIT $this->hits OFFSET " . (($this->page - 1) * $this->hits);
     }
 
     // Create sql-query 
-    $this->query = "SELECT * FROM VMovie";
+    $this->query = "SELECT * FROM Movie";
 
     if(!empty($params)) {
-      $this->query .= " WHERE ".join(" AND ",$where)." AND (".join(" OR ", $genres).")";
+      $this->query .= " WHERE ".join(" AND ",$where);
     }
 
     $this->query .= " GROUP BY $this->orderby $this->order";
     $this->query .= " $limit";
 
+    echo "<br>QUERY: ".$this->query;
     // Get data
     return $this->ExecuteSelectQueryAndFetchAll($this->query, $params);
 
@@ -174,7 +160,7 @@ class CMovieSearch extends CDatabase {
               </label>
             </p>
             <p>eller</p>
-            {$this->getGenreList()}
+            <!--{$this->getGenreList()}-->
             {$this->getSortOptions()}
             <p><button type='submit' name='submit'>Sök</button></p>
             <p><a href='?'><strong>Visa alla</strong></a></p>
@@ -231,7 +217,9 @@ EOD;
             $genreList .="<input type='checkbox' name='genre[]' value='{$val->name}' $status>{$val->name}<br>";
         }
         $genreList .="</p>";
-
+        
+        echo "<br>";
+        print_r($this->genre);
         return $genreList;
   }
 
