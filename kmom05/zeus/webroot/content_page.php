@@ -14,7 +14,7 @@ $page = new CPage($zeus['database']);
 
 
 // Put everything in Zeus container.
-$zeus['title'] = "Temporär titel";//$page->getTitle();
+$zeus['title'] = $page->getTitle();
 $zeus['main'] = $page->getPage();
 
 

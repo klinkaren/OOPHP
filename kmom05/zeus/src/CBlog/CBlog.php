@@ -22,12 +22,6 @@ class CBlog extends CContent{
 
 
 
-  public function getTitle() {
-
-  }
-
-
-
   public function getPost() {
 
   	// Create text filter

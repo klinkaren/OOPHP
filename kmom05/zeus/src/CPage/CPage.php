@@ -8,6 +8,12 @@ class CPage extends CContent{
   /**
   * Members
   */
+  private $data;
+  private $type;
+  private $id;
+  private $url;
+  private $acronym;
+
 
 
 
@@ -17,21 +23,20 @@ class CPage extends CContent{
    */
   public function __construct($options) {
   	parent::__construct($options);
+  	$this->setParameters();
+
   } 
 
 
-  public function getPage() {
-  	// Create text filter
-	$filter = new CTextFilter();
+  private function setParameters(){
 
+	// Create instance of CTextFilter
+	$textFilter = new CTextFilter();
 
-
-	// Get parameters 
-	$url     = isset($_GET['url']) ? $_GET['url'] : null;
-	$acronym = isset($_SESSION['user']) ? $_SESSION['user']->acronym : null;
-
-
-
+		// Get parameters 
+	$this->url     = isset($_GET['url']) ? $_GET['url'] : null;
+	$this->acronym = isset($_SESSION['user']) ? $_SESSION['user']->acronym : null;
+	
 	// Get content
 	$sql = "
 	SELECT *
@@ -41,7 +46,7 @@ class CPage extends CContent{
 	  url = ? AND
 	  published <= NOW();
 	";
-	$res = $this->ExecuteSelectQueryAndFetchAll($sql, array($url));
+	$res = $this->ExecuteSelectQueryAndFetchAll($sql, array($this->url));
 
 	if(isset($res[0])) {
 	  $c = $res[0];
@@ -53,19 +58,25 @@ class CPage extends CContent{
 
 
 	// Sanitize content before using it
-	$title  = htmlentities($c->title, null, 'UTF-8');
-	$data   = $filter->doFilter(htmlentities($c->DATA, null, 'UTF-8'), $c->FILTER);
+	$this->title  = htmlentities($c->title, null, 'UTF-8');
+	$this->data   = $textFilter->doFilter(htmlentities($c->DATA, null, 'UTF-8'), $c->FILTER);
+	$this->id     = $c->id;
+  	
+  }
 
+  public function gettitle() {
+  	return $this->title;
 
+  }
+
+  public function getPage() {
 
 	// Prepare editLink
-	$editLink = $acronym ? "<a href='content_edit.php?id={$c->id}'>Uppdatera sidan</a>" : null;
-
-
+	$editLink = $this->acronym ? "<a href='content_edit.php?id={$this->id}'>Uppdatera sidan</a>" : null;
 
 	$html = <<<EDO
-	<h1>{$title}</h1>
-	{$data}
+	<h1>{$this->title}</h1>
+	{$this->data}
 
 	{$editLink}
 EDO;
