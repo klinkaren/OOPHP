@@ -8,14 +8,14 @@ include(__DIR__.'/config.php');
 
 
 
-// Create instance of CPage
-$page = new CPage($zeus['database']);
+// Create instance of CBlog
+$blog = new CBlog($zeus['database']);
 
 
 
 // Put everything in Zeus container.
-$zeus['title'] = "Temporär titel";//$page->getTitle();
-$zeus['main'] = $page->getPage();
+$zeus['title'] = "Blogg";
+$zeus['main'] = $blog->getPost();
 
 
 
