@@ -100,7 +100,6 @@ $zeus['database']['driver_options'] = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET
  * Theme related settings.
  *
  */
-//$zeus['stylesheet'] = 'css/style.css';
 $zeus['stylesheets'] = array('css/style.css');
 $zeus['favicon']    = 'favicon_oophp.ico';
 

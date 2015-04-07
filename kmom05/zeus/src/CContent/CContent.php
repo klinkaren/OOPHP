@@ -151,14 +151,14 @@ EDO;
 		    WHERE 
 		      id = ?
 		  ';
-		  $url = empty($this->url) ? null : $this->url;
+		  $this->url = empty($this->url) ? null : $this->url;
 		  $params = array($this->title, $this->slug, $this->url, $this->data, $this->type, $this->filter, $this->published, $this->id);
 		  $res = $this->ExecuteQuery($sql, $params);
 		  if($res) {
 		    $output = 'Informationen sparades.';
 		  }
 		  else {
-		    $output = 'Informationen sparades EJ.<br><pre>' . print_r($db->ErrorInfo(), 1) . '</pre>';
+		    $output = 'Informationen sparades EJ.<br><pre>' . print_r($this->ErrorInfo(), 1) . '</pre>';
 		  }
 		}
 
