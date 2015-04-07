@@ -12,6 +12,20 @@ $zeus['title'] = "Redovisning";
 $zeus['main'] = <<<EOD
 <h1>Redovisning</h1>
 
+<h2>KMOM05</h2>
+<h3>Det blir en del moduler till ditt Anax nu, hur känns det?</h3>
+	<p>Jag gillar strukturen som modulerna ger. I takt med att det blir mer och mer klasser och information känns det allt bättre med ett ramverk som delar upp och ger stuktur. Med modelerna känns det också enklare att vid ett senare tillfälle kunna återanvända kod. </p>
+<h3>Berätta hur du tänkte när du löste uppgifterna, hur tänkte du när du strukturerade klasserna och sidkontrollerna? </h3>
+	<p>Ska jag vara helt ärlig så följde jag till stor del den struktur som redan var given. Byggde först en CContent som innehöll allt och bröt sedan ut det som hade med bloggen att göra till CBlog och det som rörde sidorna till CPage.</p>
+	<p>Hade lite problem att få till filterhanteringen. Slutade med att jg inte använde mig inte av en filter.php sida utan körde istället med klassen CTextFilter och skapade instanser av den där jag ville använda mig av filtren.</p>
+<h3>Börjar du få en känsla för hur du kan strukturera din kod i klasser och moduler, eller kanske inte? </h3>
+	<p>Ja det tycker jag. Kändes lite knöligt i förra kursmomentet med filmdatabasen men nu tycker jag att det flyter på ganska bra och känns hyfsat logiskt. Självfallet kommer det alltid att uppstå lägen där det inte är självklart ifall man ska bryta upp en modul i flera eller behålla allt i en, men det börjar kännas bättre att ta de besluten. </p>
+<h3>Är det något du saknar så här långt, kanske några moduler som du känner som viktiga i ditt Anax? </h3>
+	<p>Vilka moduler man behöver beror ju väldigt mycket på vad man har för syfte med webbplatsen. En modul som jag själv känner att jag kommer använda ofta är CUser. Därför skulle jag gärna se att den byggs ut till att kunna hantera skapandet av nya användare.</p>
+	<p>När det gäller just den här kursen kan jag tycka att redovisningstexterna kanske skulle förtjäna en egen modul. Låta texterna lagras i en tabell i databasen och låta modulen ta hand om logiken för att hämta datat från databasen och presentera det som information för användaren. </p>
+	<p>För övrigt kan jag ibland känna att jag skulle vilja gå ännu längre i strukturen och på något sätt dela upp logik och informationen. Inte helt säker på hur detta skulle ske eller om det ens är möjligt, bara en magkänsla som ordningsmannen i mig gärna vill grotta ner sig lite mer i.</p>
+<hr/>
+
 <h2>KMOM04</h2>
 <h3>Hur kändes det att jobba med PHP PDO?</h3>
 	<p>Det kändes mycket smidigt. Praktiskt att kunna använda sig av frågetecken och skicka med en lista på parametrar för frågetecknen. Samtidigt är det skönt att få gratis hjälp med att skydda sig mot SQL-injections, även om man fortfarande själv bör tvätta input innan den skickas som en query.</p>
