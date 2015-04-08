@@ -48,7 +48,7 @@ $zeus = array();
  *
  */
 $zeus['lang']         = 'sv';
-$zeus['title_append'] = ' | KMOM05';
+$zeus['title_append'] = ' | KMOM06s';
 
 $zeus['header'] = <<<EOD
 <img class='sitelogo' src='img/oophp.png' alt='Zeus Logo'/>
