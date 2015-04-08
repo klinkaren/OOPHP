@@ -52,3 +52,10 @@
   padding: 0.5em 0.5em 0.5em 0.5em;
   overflow: auto;
 }
+
+code {
+	font-family: monospace;
+  list-style-type: none;
+  padding: 0;
+  margin: 0 0 22px 0;
+}
