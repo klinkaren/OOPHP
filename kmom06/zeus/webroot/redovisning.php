@@ -17,13 +17,15 @@ $zeus['main'] = <<<EOD
 	<p>När det gäller bildhantering på ett generellt plan jag lekt en del med Photoshop - redigerat och “förbättrat” lite gamla bilder för fotoutskrift och så vidare. Under en kurs i Android-programmering testade jag att skapa bilder med skalbar vektorgrafik, dvs svg-filer, och tyckte det både var smart och väldigt intressant. Känns extremt praktiskt för de tillfällen då man inte vet hur stor skärm bilden kommer visas på.</p>
 	<p>När det gäller bildhantering i php har jag bara den erfarnhet som jag plockade upp under slutprojektet för kursen HTMLPHP. Där gjorde jag det möjligt för användare som var inloggade att ange namnet på en bild-fil som laddats upp på server för att det sedan med automatik skulle skapas bilder i olika storlekar och en skalad version för thumbnails.</p>
 <h3>Hur känns det att jobba i PHP GD? </h3>
-	<p>
+	<p>Tog ett tag innan jag kom in i tänket och förstod hur allt hängde samman och fungerade. Tog en hel del hjälp från guiden <a href="http://dbwebb.se/opensource/cimage">CImage and img.php for image resize...</a>.</p>
 <h3>Hur känns det att jobba med img.php, ett bra verktyg i din verktygslåda? </h3>
-	<p>
+	<p>Nu har jag ju egentligen inte använt img.php så jättemycket mer än för att sätta ihop mitt galleri. Min känsla är att img.php framöver, det vill säga i projektet som startar nu, kommer att vara till stor nytta. Känns väldigt skönt att snabbt kunna skapa thumbnails eller en centrerad croppad version av en bild för särskilda ändamål – utan att behöva öppna photoshop och utan extra handpåläggning.</p>
+	<p>Jag hade redan sedan tidigare byggt en liknande funktion i projektet för HTMLPHP. Även om img.php och CImage är kraftfullare är det inte allt för stor skillnad. Något som hade gjort en skillnad och som hade varit väldigt intressant hade varit att låta inloggade användare själva ladda upp bilder. Men kanske hade det varit lite för mycket överkurs?</p>
 <h3>Detta var sista kursmomentet innan projektet, hur ser du på ditt Anax nu, en summering så här långt? </h3>
-	<p></p>
+	<p>Gillar verkligen strukturen och hur vi har delat upp allt i moduler. Känns som ett smart sätt att arbeta – dels för att vi får struktur och lättare att hitta och dels för att det underlättar rejält att återanvända koden. Generellt sett tycker jag att det har varit väldigt lärorikt och det ska bli roligt att sätta tänderna i projektet och verkligen få grotta ner sig rejält i det här.</p>
 <h3>Finns det något du saknar så här långt, kanske några moduler som du känner som viktiga i ditt Anax? </h3>
-	<p></p>
+	<p>Här får inleda med att upprepa mig då jag fortfarande känner att det skulle vara trevligt med en utbyggd CUser som kunde hantera skapandet av nya medlemmar och låta medlemmar uppdatera sina detaljer, byta lösenord etc. </p>
+	<p>Med en sådan del på plats skulle det vara roligt med en modul för att kommentera olika sidor/poster – CComments! Något som använder sig av CUser för att låta användarna kommentera olika delar av webbplatsen. Kanske skulle man kunna återanvända delar CComment för att sedan skapa ett CForum eller någon slags community.</p>
 <hr/>
 
 <h2>KMOM05</h2>

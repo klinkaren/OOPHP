@@ -72,7 +72,6 @@ $zeus['navbar'] = array(
     'hem'               => array('text'=>'Hem',                'url'=>'me.php',                'title' => 'Min presentation om mig själv'),
     'redovisning'       => array('text'=>'Redovisning',        'url'=>'redovisning.php',       'title' => 'Redovisningar för kursmomenten'),
     'galleri'       => array('text'=>'Galleri',            'url'=>'gallery.php',           'title' => 'Galleri som visar bilder'),
-    'loginout'          => array('text'=>CUser::logOption(),   'url'=>'loginout.php',          'title' => CUser::logOption()),
     'kallkod'           => array('text'=>'Källkod',            'url'=>'source.php',            'title' => 'Se källkoden'),
    ),
   'callback_selected' => function($url) {
