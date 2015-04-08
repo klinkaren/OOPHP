@@ -7,7 +7,7 @@
 include(__DIR__.'/config.php'); 
 $zeus['stylesheets'][] = 'css/gallery.css';
 $zeus['stylesheets'][] = 'css/figure.css';
-$zeus['stylesheets'][] = 'css/breadcrumbs.css';
+$zeus['stylesheets'][] = 'css/breadcrumb.css';
 
 
  
