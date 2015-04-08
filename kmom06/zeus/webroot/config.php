@@ -69,12 +69,11 @@ EOD;
 $zeus['navbar'] = array(
   'class' => 'nb-plain',
   'items' => array(
-    'hem'               => array('text'=>'Hem',            'url'=>'me.php',                'title' => 'Min presentation om mig själv'),
-    'redovisning'       => array('text'=>'Redovisning',    'url'=>'redovisning.php',       'title' => 'Redovisningar för kursmomenten'),
-    'innehall'       => array('text'=>'Innehåll',    'url'=>'content_view.php',       'title' => 'Visa allt innehåll.'),
-    'loginout'      => array('text'=>CUser::logOption(),          'url'=>'loginout.php',         'title' => CUser::logOption()),
-    'mdb_search'          => array('text'=>'Sök film',       'url'=>'mdb_search.php',          'title' => 'Sök efter film.'),
-    'kallkod'           => array('text'=>'Källkod',        'url'=>'source.php',            'title' => 'Se källkoden'),
+    'hem'               => array('text'=>'Hem',                'url'=>'me.php',                'title' => 'Min presentation om mig själv'),
+    'redovisning'       => array('text'=>'Redovisning',        'url'=>'redovisning.php',       'title' => 'Redovisningar för kursmomenten'),
+    'galleri'       => array('text'=>'Galleri',            'url'=>'gallery.php',           'title' => 'Galleri som visar bilder'),
+    'loginout'          => array('text'=>CUser::logOption(),   'url'=>'loginout.php',          'title' => CUser::logOption()),
+    'kallkod'           => array('text'=>'Källkod',            'url'=>'source.php',            'title' => 'Se källkoden'),
    ),
   'callback_selected' => function($url) {
     if(basename($_SERVER['SCRIPT_FILENAME']) == $url) {

@@ -12,6 +12,20 @@ $zeus['title'] = "Redovisning";
 $zeus['main'] = <<<EOD
 <h1>Redovisning</h1>
 
+<h2>KMOM06</h2>
+<h3>Hade du erfarenheter av bildhantering sedan tidigare? </h3>
+	<p>När det gäller bildhantering på ett generellt plan jag lekt en del med Photoshop - redigerat och “förbättrat” lite gamla bilder för fotoutskrift och så vidare. Under en kurs i Android-programmering testade jag att skapa bilder med skalbar vektorgrafik, dvs svg-filer, och tyckte det både var smart och väldigt intressant. Känns extremt praktiskt för de tillfällen då man inte vet hur stor skärm bilden kommer visas på.</p>
+	<p>När det gäller bildhantering i php har jag bara den erfarnhet som jag plockade upp under slutprojektet för kursen HTMLPHP. Där gjorde jag det möjligt för användare som var inloggade att ange namnet på en bild-fil som laddats upp på server för att det sedan med automatik skulle skapas bilder i olika storlekar och en skalad version för thumbnails.</p>
+<h3>Hur känns det att jobba i PHP GD? </h3>
+	<p>
+<h3>Hur känns det att jobba med img.php, ett bra verktyg i din verktygslåda? </h3>
+	<p>
+<h3>Detta var sista kursmomentet innan projektet, hur ser du på ditt Anax nu, en summering så här långt? </h3>
+	<p></p>
+<h3>Finns det något du saknar så här långt, kanske några moduler som du känner som viktiga i ditt Anax? </h3>
+	<p></p>
+<hr/>
+
 <h2>KMOM05</h2>
 <h3>Det blir en del moduler till ditt Anax nu, hur känns det?</h3>
 	<p>Jag gillar strukturen som modulerna ger. I takt med att det blir mer och mer klasser och information känns det allt bättre med ett ramverk som delar upp och ger stuktur. Med modelerna känns det också enklare att vid ett senare tillfälle kunna återanvända kod. </p>
