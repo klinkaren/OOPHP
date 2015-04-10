@@ -11,13 +11,13 @@ class CContent extends CDatabase{
   private $id;
   private $title;
   private $slug;
- 	private $url;
- 	private $data;
- 	private $type;
- 	private $filter;
- 	private $published;
- 	private $save;
- 	private $acronym;
+	private $url;
+	private $data;
+	private $type;
+	private $filter;
+	private $published;
+	private $save;
+	private $acronym;
 
 
   /**
@@ -44,7 +44,7 @@ class CContent extends CDatabase{
 
   }
 
-  private function slugify($str) {
+  protected function slugify($str) {
         
 		// String to lowercase and trim whitespace
 		$str = mb_strtolower(preg_replace("/(^\s+)|(\s+$)/us", "", $str), "UTF-8");
@@ -305,7 +305,7 @@ EDO;
 	 * @param object $content to link to.
 	 * @return string with url to display content.
 	 */
-	private function getUrlToContent($content) {
+	protected function getUrlToContent($content) {
 	  switch($content->TYPE) {
 	    case 'page': 
 	    	return "content_page.php?url={$content->url}"; 

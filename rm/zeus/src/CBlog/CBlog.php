@@ -19,7 +19,6 @@ class CBlog extends CContent{
 
 
 
-
   /**
    * CONSTRUCTOR
    *
@@ -28,7 +27,50 @@ class CBlog extends CContent{
   	parent::__construct($options);
   } 
 
-  
+
+
+  public function editBlog() {
+    // Get all content
+    $sql = '
+      SELECT *, (published <= NOW()) AS available
+      FROM Content
+      WHERE TYPE = "post";
+    ';
+    $res = $this->ExecuteSelectQueryAndFetchAll($sql);
+
+    // Put results into a list
+    $items = null;
+    foreach($res AS $key => $val) {
+      $items .= "<li>{$val->TYPE} (" . (!$val->available ? 'inte ' : null) . "publicerad): " . htmlentities($val->title, null, 'UTF-8') . " (<a href='content_edit.php?id={$val->id}'>editera</a> <a href='" . parent::getUrlToContent($val) . "'>visa</a> <a href='content_delete.php?id={$val->id}'>radera</a>)</li>\n";
+    }
+    $html = "<ul>$items</ul>";
+    $html .= '<p><a href="content_blog.php?">Visa alla bloggposter</a></p>';
+    $html .= '<p><a href="content_new.php">Skapa ny sida/bloggpost</a></p>';
+    return $html;
+  }
+
+
+	public function viewBlog() {
+    // Get all content
+    $sql = '
+      SELECT *, (published <= NOW()) AS available
+      FROM Content
+      WHERE TYPE = "post";
+    ';
+    $res = $this->ExecuteSelectQueryAndFetchAll($sql);
+
+    // Put results into a list
+    $items = null;
+    foreach($res AS $key => $val) {
+      $items .= "<li>{$val->TYPE} (" . (!$val->available ? 'inte ' : null) . "publicerad): " . htmlentities($val->title, null, 'UTF-8') . " (<a href='content_edit.php?id={$val->id}'>editera</a> <a href='" . parent::getUrlToContent($val) . "'>visa</a> <a href='content_delete.php?id={$val->id}'>radera</a>)</li>\n";
+    }
+    $html = "<ul>$items</ul>";
+    $html .= '<p><a href="content_blog.php?">Visa alla bloggposter</a></p>';
+    $html .= '<p><a href="content_new.php">Skapa ny sida/bloggpost</a></p>';
+    return $html;
+  }
+
+
 
   public function getPost() {
 
