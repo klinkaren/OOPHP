@@ -110,6 +110,7 @@ class CContent extends CDatabase{
 				<select name="TYPE">
 				  <option value="page">Sida</option>
 				  <option value="post">Blogginlägg</option>
+				  <option value="part">Del</option>
 				</select> 
 			</label></p>
 		  <p><label>Filter:<br/><input type='text' name='FILTER' value=""></label></p>

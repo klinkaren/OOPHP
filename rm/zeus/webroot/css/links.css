@@ -59,3 +59,7 @@ a {
 a:hover {
     text-decoration: underline;
 }
+.editLink a {
+  font-size: 0.85em;
+  color: #666;
+}

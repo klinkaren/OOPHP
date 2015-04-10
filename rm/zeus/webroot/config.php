@@ -72,8 +72,9 @@ $zeus['navbar'] = array(
     'hem'               => array('text'=>'Hem',                'url'=>'me.php',                'title' => 'Min presentation om mig själv'),
     'filmer'       => array('text'=>'Filmer',        'url'=>'filmer.php',       'title' => 'Redovisningar för kursmomenten'),
     'nyheter'     => array('text'=>'Nyheter',         'url'=>'nyheter.php',      'title' => 'Senaste nyheterna'),
-    'om-oss'       => array('text'=>'Om oss',            'url'=>'content_page.php?url=om-oss',           'title' => 'Informationssida om företaget Rental Movies, RM.'),
+    'omoss'       => array('text'=>'Om oss',            'url'=>'omoss.php',           'title' => 'Informationssida om företaget Rental Movies, RM'),
     'loginout'      => array('text'=>CUser::logOption(),          'url'=>'loginout.php',         'title' => CUser::logOption()),
+    'content'               => array('text'=>'Admintemp',                'url'=>'admin.php',                'title' => 'Temporär adminsida'),
      ),
   'callback_selected' => function($url) {
     if(basename($_SERVER['SCRIPT_FILENAME']) == $url) {
