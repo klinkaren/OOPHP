@@ -11,12 +11,21 @@
 </head>
 <body>
   	<div id='wrapper'>
-    	<div id='header'><?=$header?></div>
-    	 <?php if(isset($navbar)): ?>
-    	 	<div id='navbar'>
-    	 		<?=get_navbar($navbar)?>
-    	 	</div>
-    	 <?php endif; ?>
+    	<div id='header'>
+        <?=$header?>
+      </div>
+      <div id='navigation'>
+    	  <?php if(isset($navbar)): ?>
+      	 	<div id='navbar'>
+      	 		<?=get_navbar($navbar)?>
+      	 	</div>
+    	  <?php endif; ?>
+        <?php if(isset($searchbox)): ?>
+          <div id='searchbox'>
+            <?=get_searchbox()?>
+          </div> 
+        <?php endif; ?>
+      </div>
     	<div id='main'><?=$main?></div>
     	<div id='footer'><?=$footer?></div>
   	</div>

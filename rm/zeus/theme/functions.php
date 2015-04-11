@@ -30,3 +30,15 @@ function get_navbar($menu) {
   $html .= "</ul>\n</nav>\n";
   return $html;
 }
+
+
+function get_searchbox() {
+
+	$html = <<<EOD
+    <form action="filmer.php" metod="GET">
+    	<input type='text' name='title' value='Sök film...' onblur="onBlur(this)" onfocus="onFocus(this)">
+    	<button type='submit'>Sök</button>
+    </form>
+EOD;
+	return $html;
+}

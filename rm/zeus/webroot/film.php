@@ -8,23 +8,20 @@ include(__DIR__.'/config.php');
 
 
 
-$zeus['stylesheets'][] = 'css/filmer.css';
+$zeus['stylesheets'][] = 'css/film.css';
 $zeus['stylesheets'][] = 'css/breadcrumb.css';
 
 
 
 // Create instance of CMovieSearch
-$movieSearch = new CMovieSearch($zeus['database']);
+$movie = new CMovie($zeus['database']);
 
 
 
 // Put everything in Zeus container.
-$zeus['title'] = "Filmer";
+$zeus['title'] = $movie->getTitle();
 
-$zeus['main'] = <<<EDO
-{$movieSearch->getOverview()}
-
-EDO;
+$zeus['main'] = $movie->getPage();
 
 
 

@@ -1,3 +1,19 @@
+#navbar {
+  float: left;
+}
+
+#searchbox {
+  float: right;
+}
+
+#navigation {
+  width: 100%;
+  overflow: auto;
+  border-bottom: solid 1px red; /* inner top border */
+  background-color: yellow;
+}
+
+
 /** --------------------------------------------------------------
  * Navbar: Plain style, nothing special
  *
@@ -6,7 +22,6 @@ ul.nb-plain {
   list-style-type: none;
   padding: 0;
   margin: 0;
-  border-bottom: 1px solid black;
 }
 
 ul.nb-plain li {
@@ -22,9 +37,7 @@ ul.nb-plain li:first-child {
 ul.nb-plain li.selected a {
   margin-right: 0px;
   margin-left: 0px;
-  border-top: 1px solid #333;
-  border: 1px solid #000;
-  border-bottom: 1px solid #fff;
+  background-color: red;
 }    
 
 ul.nb-plain a {
@@ -35,15 +48,13 @@ ul.nb-plain a {
   font-weight: bold;
   text-decoration: none;
   text-transform: uppercase;
-  border-bottom: 1px solid #333;
 }  
 
 ul.nb-plain a:hover {
-  margin-right: 0px;
-  margin-left: 0px;
-  border: 1px solid #999;
-  border-bottom: 1px solid #fff;
+  margin-right: 1px;
+  margin-left: 1px;
   text-decoration: none;
+  background-color: pink;
 }
 
 .orderby a, .menu a {

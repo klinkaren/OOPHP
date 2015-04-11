@@ -1,8 +1,7 @@
 /**
  * MAIN STYLESHEET
  */
-@import url(links.css);
-
+@import url(navigation.css);
 /**
  * General elements
  */
@@ -35,7 +34,7 @@ body {
  */
 #header {
   position: relative;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
 }
  
 .sitetitle {
@@ -73,4 +72,23 @@ body {
  
 .sitefooter {
   color: #666;
+}
+.imdb{
+  text-align: center;
+}
+.smallText{
+    color: #666;
+    font-size: 0.85em;
+    text-decoration: none;
+}
+.smallText a{
+    color: #666;
+    font-size: 0.85em;
+    text-decoration: none;
+}
+.smallText a:hover{
+    color: #333;
+}
+.center{
+  text-align: center;
 }

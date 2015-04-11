@@ -1,0 +1,210 @@
+
+/** --------------------------------------------------------------
+ * Movies: Every seperate movie
+ *
+ */
+  div.movie{
+  	width: 240px;
+  	float:left;
+  	margin: 2px;
+  	
+  }
+  div.movie img{
+  	display: block;
+      margin-left: auto;
+      margin-right: auto;
+  }
+  div.movie .aboutMovie{
+  	min-height: 6em;
+  }
+  div.movie .title{
+  	display: block;
+  	text-align: center;
+  	font-weight: bold;
+  }
+  div.movie .director {
+  	display: block;
+  	text-align: center;
+      font-style: italic;
+      font-size: 0.9em;
+  }
+  div.movie .year {
+  	display: block;
+  	text-align: center;
+  	font-size: 0.95em;
+  }
+
+
+/** -------------------------------------------------------------
+ * Shadow...
+ *
+ */
+  img.shadow{
+    opacity: 1;
+    border-radius: 4px 4px;
+  }
+  img.shadow:hover{
+    opacity: 0.6;
+    border-radius: 4px 4px;
+  }
+
+
+
+
+.totalResults{
+  margin-right: 0px;
+  margin-left: 0px;
+  text-align: center;
+  margin-top: 10px;
+}
+.overviewSearch{
+	background-color: pink;
+	margin: 0px;
+	padding: 0px;
+}
+.overviewGenre{
+	background-color: #3cc;
+	margin: 0px;
+	padding: 0px;
+}
+.overviewSort{
+	background-color: #f2c;	
+	margin: 0px;
+	padding: 0px;
+}
+
+
+nav.galleryDropDown{
+	float: right;
+  margin: 10px 0px 10px 0px;
+  color: #666;
+  font-size: 0.85em;
+  text-decoration: none;
+}
+div.overviewPageNavigation{
+	text-align: center;
+	clear: left;
+}
+
+/** --------------------------------------------------------------
+ * Navbar: Plain style, nothing special
+ *
+ */
+ul.genreList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+ul.genreList li {
+  padding: 0 0 0 2px;
+  margin: 0;
+  display: inline;
+}
+
+ul.genreList li:first-child {
+  padding-left: 0;
+}
+
+ul.genreList li.selected a {
+  margin-right: 0px;
+  margin-left: 0px;
+  background-color: red;
+}    
+
+ul.genreList a {
+  padding: 1px 1px 1px 1px;
+  color: #333;
+  margin-right: 1px;
+  margin-left: 1px;
+  text-decoration: none;
+  text-transform: lowercase;
+}  
+
+ul.genreList a:hover {
+  margin-right: 1px;
+  margin-left: 1px;
+  text-decoration: none;
+  background-color: pink;
+}
+
+.orderby a, .menu a {
+  text-decoration: none;
+  color: black;
+}
+
+a {
+    color: #333;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+.editLink a {
+  font-size: 0.85em;
+  color: #666;
+}
+
+
+
+
+/** --------------------------------------------------------------
+ * Navbar: Plain style, nothing special
+ *
+ */
+ul.sortList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+ul.sortList li {
+  padding: 0 0 0 2px;
+  margin: 0;
+  display: inline;
+}
+
+ul.sortList li:first-child {
+  padding-left: 0;
+}
+
+ul.sortList li.selected a {
+  margin-right: 0px;
+  margin-left: 0px;
+  background-color: red;
+}    
+
+ul.sortList a {
+  padding: 1px 1px 1px 1px;
+  color: #333;
+  margin-right: 1px;
+  margin-left: 1px;
+  text-decoration: none;
+  text-transform: lowercase;
+}  
+
+ul.sortList a:hover {
+  margin-right: 1px;
+  margin-left: 1px;
+  text-decoration: none;
+  background-color: pink;
+}
+
+.orderby a, .menu a {
+  text-decoration: none;
+  color: black;
+}
+
+a {
+    color: #333;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+.editLink a {
+  font-size: 0.85em;
+  color: #666;
+}

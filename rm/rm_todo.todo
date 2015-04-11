@@ -1,0 +1,33 @@
+Generellt:
+ ☐ Skriv 'Om RM' i markdown och gör möjligt att redigera.
+ ☐ När login->skicka till medlemssida (om admin->ge möjlighet att lägga till och redigera sidor och blogginlägg)
+ ☐ Bestäm hur databasen ska struktureras
+
+Krav 1:
+ ☐ 
+
+Krav 2:
+ ✔ Fixa javascript till searchbar så att texten försvinner när man klickar @done (15-04-10 16:48)
+ ✔ Gör om så man bara kan söka på en kategori i taget @done (15-04-10 20:11)
+ ✔ Man ska kunna sortera listan @done (15-04-11 12:15)
+ ☐ Tryck igen på sortering (Titel, År, Regissör) och listan sorteras bakvänt.
+ ✔ Lägg till fält i databas för synopsis, pris, länk till imdb, länk till youtube @done (15-04-10 20:22)
+ ✔ Visa miniatyrbilder istället för tabell @done (15-04-11 18:10)
+ ☐ Hoppa till rätt del av sidan vid uppdatering - inte till toppen!
+ ☐ Visa bilder med img.php (kan göras bättre | quality=100?)
+ ✔ Gå till infosida om film vid klick på film. @done (15-04-12 00:13)
+ ✔ Infosida: Visa Pris | År | Genrer | imdb-logga med länk @done (15-04-12 01:32)
+ ✔ Fixa paging   @done (15-04-11 17:17)
+ ☐ Funktion för admin att kunna redigera information om filmerna @admin
+ ☐ Varför kan jag inte sortera på director? (Tarantino visar bara en film. Nån form av unique/distinct?)
+ ☐ Krydda filmsidan med info från imdb
+
+Krav 3:
+ ☐ 
+
+Krav 4:
+ ☐ 
+
+Krav 5-6:
+ ☐ Breadcrumbs till blogg
+ ☐ ?Admin ska kunna se källkod @admin

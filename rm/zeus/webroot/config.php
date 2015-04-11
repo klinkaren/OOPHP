@@ -48,7 +48,7 @@ $zeus = array();
  *
  */
 $zeus['lang']         = 'sv';
-$zeus['title_append'] = ' | KMOM06s';
+$zeus['title_append'] = ' | RM';
 
 $zeus['header'] = <<<EOD
 <img class='sitelogo' src='img/oophp.png' alt='Zeus Logo'/>
@@ -56,8 +56,10 @@ $zeus['header'] = <<<EOD
 <span class='siteslogan'>Min Me-sida i kursen Databaser och Objektorienterad PHP-programmering</span>
 EOD;
 
+$zeus['searchbox'] = 'Sökning';
+
 $zeus['footer'] = <<<EOD
-<footer><span class='sitefooter'>Projektet på <a href='https://github.com/klinkaren/OOPHP'>Github</a> | <a href='http://validator.w3.org/unicorn/check?ucn_uri=referer&amp;ucn_task=conformance'>Unicorn</a></span></footer>
+<footer><span class='sitefooter'><div class="imdb smallText">Filmography links and data courtesy of <a href="http://www.imdb.com/">IMDb</a>.</div><div class="smallText center">Copyright &copy Rental Movies</div></span></footer>
 EOD;
 
 
@@ -113,7 +115,7 @@ $zeus['modernizr'] = 'js/modernizr.js';
 $zeus['jquery'] = '//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js';
 $zeus['jquery_src'] = '//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js';
 $zeus['javascript_include'] = array();
-//$zeus['javascript_include'] = array('js/main.js'); // To add extra javascript files
+$zeus['javascript_include'][] = 'js/inputBox.js';
 
 
 
