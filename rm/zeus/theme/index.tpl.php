@@ -11,9 +11,11 @@
 </head>
 <body>
   	<div id='wrapper'>
-    	<div id='header'>
-        <?=$header?>
-      </div>
+      <?php if(isset($header)): ?>
+      	<div id='header'>
+          <?=$header?>
+        </div>
+      <?php endif; ?>
       <div id='navigation'>
     	  <?php if(isset($navbar)): ?>
       	 	<div id='navbar'>

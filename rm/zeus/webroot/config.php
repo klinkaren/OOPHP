@@ -48,14 +48,13 @@ $zeus = array();
  *
  */
 $zeus['lang']         = 'sv';
-$zeus['title_append'] = ' | RM';
+$zeus['title_append'] = ' - RM';
 
-$zeus['header'] = <<<EOD
+/*$zeus['header'] = <<<EOD
 <img class='sitelogo' src='img/oophp.png' alt='Zeus Logo'/>
 <span class='sitetitle'>OOPHP</span>
 <span class='siteslogan'>Min Me-sida i kursen Databaser och Objektorienterad PHP-programmering</span>
-EOD;
-
+EOD;*/
 $zeus['searchbox'] = 'Sökning';
 
 $zeus['footer'] = <<<EOD
@@ -71,12 +70,12 @@ EOD;
 $zeus['navbar'] = array(
   'class' => 'nb-plain',
   'items' => array(
-    'hem'               => array('text'=>'Hem',                'url'=>'me.php',                'title' => 'Min presentation om mig själv'),
-    'filmer'       => array('text'=>'Filmer',        'url'=>'filmer.php',       'title' => 'Redovisningar för kursmomenten'),
-    'nyheter'     => array('text'=>'Nyheter',         'url'=>'nyheter.php',      'title' => 'Senaste nyheterna'),
-    'omoss'       => array('text'=>'Om oss',            'url'=>'omoss.php',           'title' => 'Informationssida om företaget Rental Movies, RM'),
-    'loginout'      => array('text'=>CUser::logOption(),          'url'=>'loginout.php',         'title' => CUser::logOption()),
-    'content'               => array('text'=>'Admintemp',                'url'=>'admin.php',                'title' => 'Temporär adminsida'),
+    'hem'         => array('text'=>'Hem',              'url'=>'hem.php',          'title' => 'Förstasidan'),
+    'filmer'      => array('text'=>'Filmer',           'url'=>'filmer.php',       'title' => 'Redovisningar för kursmomenten'),
+    'nyheter'     => array('text'=>'Nyheter',          'url'=>'nyheter.php',      'title' => 'Senaste nyheterna'),
+    'omoss'       => array('text'=>'Om oss',           'url'=>'omoss.php',        'title' => 'Informationssida om företaget Rental Movies, RM'),
+    'loginout'    => array('text'=>CUser::logOption(), 'url'=>'loginout.php',     'title' => CUser::logOption()),
+    'content'     => array('text'=>'Admintemp',        'url'=>'admin.php',        'title' => 'Temporär adminsida'),
      ),
   'callback_selected' => function($url) {
     if(basename($_SERVER['SCRIPT_FILENAME']) == $url) {

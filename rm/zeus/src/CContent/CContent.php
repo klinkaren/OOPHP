@@ -31,16 +31,19 @@ class CContent extends CDatabase{
 
   private function setParameters() {
   	// Get parameters 
-		$this->id     = isset($_POST['id'])    ? strip_tags($_POST['id']) : (isset($_GET['id']) ? strip_tags($_GET['id']) : null);
-		$this->title  = isset($_POST['title']) ? $_POST['title'] : null;
-		$this->slug   = isset($_POST['slug'])  ? $_POST['slug']  : null;
-		$this->url    = isset($_POST['url'])   ? strip_tags($_POST['url']) : null;
-		$this->data   = isset($_POST['DATA'])  ? $_POST['DATA'] : array();
-		$this->type   = isset($_POST['TYPE'])  ? strip_tags($_POST['TYPE']) : array();
-		$this->filter = isset($_POST['FILTER']) ? $_POST['FILTER'] : array();
-		$this->published = isset($_POST['published'])  ? strip_tags($_POST['published']) : array();
-		$this->save   = isset($_POST['save'])  ? true : false;
-		$this->acronym = isset($_SESSION['user']) ? $_SESSION['user']->acronym : null;
+		$this->id       = isset($_POST['id'])    ? strip_tags($_POST['id']) : (isset($_GET['id']) ? strip_tags($_GET['id']) : null);
+		$this->title    = isset($_POST['title']) ? $_POST['title'] : null;
+		$this->slug     = isset($_POST['slug'])  ? $_POST['slug']  : null;
+		$this->url      = isset($_POST['url'])   ? strip_tags($_POST['url']) : null;
+		$this->data     = isset($_POST['DATA'])  ? $_POST['DATA'] : array();
+		$this->type     = isset($_POST['TYPE'])  ? strip_tags($_POST['TYPE']) : array();
+		$this->filter   = isset($_POST['FILTER']) ? $_POST['FILTER'] : array();
+		$this->published= isset($_POST['published'])  ? strip_tags($_POST['published']) : array();
+		$this->save     = isset($_POST['save'])  ? true : false;
+		$this->acronym  = isset($_SESSION['user']) ? $_SESSION['user']->acronym : null;
+
+		// If newcategory use that, else check if old category chosen.
+		$this->category = isset($_POST['newcategory']) ? $_POST['newcategory'] : (isset($_POST['category']) ? ($_POST['category']) : null);
 
   }
 
@@ -83,14 +86,17 @@ class CContent extends CDatabase{
 			// Check if form was submitted
 		$output = null;
 		if($this->save) {
-			  $this->slug = $this->slugify(strip_tags($this->title));
-        $sql = "INSERT INTO Content(title, slug, TYPE, DATA, FILTER, published, created) VALUES(?, ?, ?, ?, ?, ?, NOW())";
-        $params = array($this->title, $this->slug, $this->type, $this->data, $this->filter, $this->published);
-        $res = $this->ExecuteQuery($sql, $params);
+			$this->slug = $this->slugify(strip_tags($this->title));
+    	$sql = "INSERT INTO Content(title, slug, TYPE, DATA, FILTER, published, created, category) VALUES(?, ?, ?, ?, ?, ?, NOW(), ?)";
+   		$params = array($this->title, $this->slug, $this->type, $this->data, $this->filter, $this->published, $this->category);
+    	$res = $this->ExecuteQuery($sql, $params);
 		  if($res) {
+
+		    // save feedback
 		    $output = 'Informationen sparades.';
 		  }
 		  else {
+		  	// save feedback
 		    $output = 'Informationen sparades EJ.<br><pre>' . print_r($this->ErrorInfo(), 1) . '</pre>';
 		  }
 		}
@@ -104,16 +110,19 @@ class CContent extends CDatabase{
 <form method=post>
   <fieldset>
 		<legend>Skapa</legend>
-	    <p><label>Titel:<br><input type="text" name="title" value=""></label></p>
-  		<p><label>Text:<br/><textarea name='DATA' rows="5" cols="80"></textarea></label></p>		
-			<p><label>Type:<br/>
+	    <p><label>Titel:<br><input type="text" name="title"></label></p>
+  		<p><label>Text:<br/><textarea name='DATA' rows="10" cols="100"></textarea></label></p>		
+			<p><label>Typ:<br/>
 				<select name="TYPE">
-				  <option value="page">Sida</option>
 				  <option value="post">Blogginlägg</option>
-				  <option value="part">Del</option>
+				  <option value="part">Del av sida</option>
 				</select> 
 			</label></p>
-		  <p><label>Filter:<br/><input type='text' name='FILTER' value=""></label></p>
+			<p>
+			{$this->getCategoryDropDown()}
+			<label>...eller skapa en ny kategori: <input type="text" name="newcategory" value=""></label></p>
+			</p>
+		  <p><label>Filter:<br/><input type='text' name='FILTER'></label></p>
 		  <p><label>Publiseringsdatum:<br/><input type='text' name='published' value="$now"></label></p>
 		  <p class=buttons><input type='submit' name='save' value='Spara'/> <input type='reset' value='Återställ'/></p>
 	    </fiedlset>
@@ -127,6 +136,33 @@ EDO;
   }
 
 
+  protected function getDistinctCategories(){
+  	// Get all distinct categories
+  	$sql = "SELECT DISTINCT category from content WHERE category IS NOT NULL ORDER BY category ASC";
+  	$res = $this->ExecuteSelectQueryAndFetchAll($sql);
+  	return $res;
+  }
+  /**
+   * Gives a dropdown with all unique categories for present content.
+   *
+   * @return string: HTML for a dropdown (select)
+   */
+  private function getCategoryDropDown(){
+  	// Get all distinct categories
+  	$res = $this->getDistinctCategories();
+  	
+  	// Create options from sql-result
+		$options = null;
+  	foreach ($res as $key => $val) {
+  		$options .= '<option value="'.$val->category.'">'.$val->category.'</option>';
+  	}
+
+  	// Create html and return
+		$html  = '<label>Kategori:<br/><select name="category">';
+		$html .= $options;
+		$html .= '</select></label>';
+  	return $html;
+  }
 
 	public function getEditForm() {
 
@@ -282,7 +318,8 @@ EDO;
     // Get all content
     $sql = '
       SELECT *, (published <= NOW()) AS available
-      FROM Content;
+      FROM Content
+      WHERE deleted is null;
     ';
     $res = $this->ExecuteSelectQueryAndFetchAll($sql);
 
@@ -292,7 +329,7 @@ EDO;
       $items .= "<li>{$val->TYPE} (" . (!$val->available ? 'inte ' : null) . "publicerad): " . htmlentities($val->title, null, 'UTF-8') . " (<a href='content_edit.php?id={$val->id}'>editera</a> <a href='" . $this->getUrlToContent($val) . "'>visa</a> <a href='content_delete.php?id={$val->id}'>radera</a>)</li>\n";
     }
     $html = "<ul>$items</ul>";
-    $html .= '<p><a href="content_blog.php?">Visa alla bloggposter</a></p>';
+    $html .= '<p><a href="nyheter.php?">Visa alla bloggposter</a></p>';
     $html .= '<p><a href="content_new.php">Skapa ny sida/bloggpost</a></p>';
     return $html;
   }
@@ -312,7 +349,7 @@ EDO;
 	    	return "content_page.php?url={$content->url}"; 
 	    	break;
 	    case 'post': 
-	    	return "content_blog.php?slug={$content->slug}"; 
+	    	return "nyheter.php?slug={$content->slug}"; 
 	    	break;
 	    default: 
 	    	return null; 

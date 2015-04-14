@@ -6,6 +6,8 @@
 // Include the essential config-file which also creates the $zeus variable with its defaults.
 include(__DIR__.'/config.php');
 $zeus['stylesheets'][] = 'css/blog.css';
+$zeus['stylesheets'][] = 'css/breadcrumb.css';
+$zeus['stylesheets'][] = 'css/nyheter.css';
 
 
 
@@ -15,7 +17,7 @@ $blog = new CBlog($zeus['database']);
 
 
 // Put everything in Zeus container.
-$zeus['title'] = "Blogg";
+$zeus['title'] = "Nyheter";
 $zeus['main'] = $blog->getPost();
 
 

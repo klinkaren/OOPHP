@@ -2,6 +2,11 @@
  * MAIN STYLESHEET
  */
 @import url(navigation.css);
+
+
+/* HTML5 ELEMENTS */
+  header,footer,nav,article,section,aside,figure,figcaption,output{display:block;}
+
 /**
  * General elements
  */
@@ -58,6 +63,7 @@ body {
  */
 #main {
   min-height: 20em;
+  overflow: auto;
 }
  
  
@@ -91,4 +97,25 @@ body {
 }
 .center{
   text-align: center;
+}
+
+/**------------------------------------------------------- 
+ * Layout
+ *
+ */
+aside{
+  overflow: auto;
+  width: 200px;
+}
+.hasSide{
+  width : 760px;
+}
+.main{
+  overflow: auto;
+}
+.right{ 
+  float: right;
+}
+.left{
+  float: left;
 }

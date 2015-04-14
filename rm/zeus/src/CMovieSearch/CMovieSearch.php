@@ -26,6 +26,8 @@ class CMovieSearch extends CDatabase {
                           12 => "12",
                           16 => "16",
                           24 => "24");
+             // Create an html table, send the search query and get the result back as html.
+  private $htmlTable;
   
 
 
@@ -36,6 +38,7 @@ class CMovieSearch extends CDatabase {
    */
   public function __construct($options) {
       parent::__construct($options);
+      $this->htmlTable = new CHTMLTable();
   } 
 
 
@@ -78,9 +81,8 @@ class CMovieSearch extends CDatabase {
       $res .= $this->getHits();
       $res .= $this->getBreadcrumbs();
 
-      // Create an html table, send the search query and get the result back as html.
-      $htmlTable = new CHTMLTable();
-      $res .= $htmlTable->overview($this->sql);
+      // Send the search query and get the result back as html.
+      $res .= $this->htmlTable->overview($this->sql);
 
       // Create navigation for pages
       $res .= $this->getPageNavigation(); 
@@ -88,6 +90,33 @@ class CMovieSearch extends CDatabase {
 
     return $res;
   }
+
+
+  public function getLatestTitles($numMovies){
+    is_numeric($numMovies) or die('Check: Number of movies (numMovies) in function getLatestTitles() must be numeric.');
+    $sql = "SELECT * FROM vmovie ORDER BY id DESC LIMIT ".$numMovies.";";
+    $res = $this->ExecuteSelectQueryAndFetchAll($sql);
+    $html  = '<div class="latestTitles"><h1>Nyinkomna titlar</h1>';
+    $html .= $this->htmlTable->overview($res);
+    $html .= '</div>';
+
+    return $html;
+  }
+
+    public function getRandom($numMovies, $heading, $class){
+    is_numeric($numMovies) or die('Check: Number of posts in function getRandom() must be numeric.');
+    $sql = "SELECT * FROM vmovie ORDER BY RAND() DESC LIMIT ".$numMovies.";";
+    $res = $this->ExecuteSelectQueryAndFetchAll($sql);
+    $html  = '<div class="'.$class.'"><h1>'.$heading.'</h1>';
+
+
+      $html .= $this->htmlTable->overview($res);
+
+    $html .= '</div>';
+
+    return $html;
+  }
+
 
 
   private function totalHits(){
@@ -154,7 +183,7 @@ EOD;
    *
    * @param string htmlkod
    */
-  private function getOverviewGenre() {
+  public function getOverviewGenre() {
 
   $sql = <<<EOD
     SELECT DISTINCT G.name
@@ -168,7 +197,7 @@ EOD;
   $html = "<nav>\n<ul class='genreList'>\n";
   foreach($res as $item) {
     $selected = $item->name==$this->genre ? " class='selected' " : null;
-    $html .= "<li{$selected}><a href='?genre={$item->name}";
+    $html .= "<li{$selected}><a href='filmer.php?genre={$item->name}";
     $html .= isset($this->orderby)?'&orderby='.$this->orderby:null;
     $html .= isset($this->title)?'&title='.$this->title:null;
     $html .= isset($this->hits)?'&hits='.$this->hits:null;
@@ -358,7 +387,7 @@ EOD;
    *
    * @param string htmlkod
    */
-  private function getGenreList() {
+  public function getGenreList() {
 
 $sql = <<<EOD
   SELECT DISTINCT G.name
@@ -487,7 +516,7 @@ EOD;
    *
    * @return array() of all genres 
    */
-  private function getAllCategories() {
+  public function getAllCategories() {
     $cats = array();
     $sql = <<<EOD
       SELECT DISTINCT G.name

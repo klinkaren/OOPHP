@@ -1,0 +1,59 @@
+div.homePoster{
+	width: 980px;
+	height: 350px;
+	position: relative;
+}
+.homeOpac,
+.homeBgImage{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.homeOpac{
+	margin-left: auto;
+    margin-right: auto;
+    height: 250px;
+    width: 880px;
+    margin: 50px;
+    background-color: red;
+
+}
+.homeBgImage{
+	z-index: 10;
+}
+div.homeInfo{
+	position: absolute;
+}
+
+ul.genreList li{
+	text-align: center;
+}
+ul.genreList li a{
+	background-color: red;
+	display: inline-block;
+	width: 71px;
+}
+.blogWidget{
+	overflow: auto;
+}
+.widgetPost{
+	float: left;
+}
+.widgetPost h1{
+	font-size: 100%;
+	margin-bottom: 0px;
+}
+.subHeader{
+	font-style: italic;
+	font-size: 80%;
+	color: #666;
+}
+.widgetPost p strong{
+	font-weight: normal;
+}
+.threeParted{
+	width: 30%;
+	margin: 10px;
+}

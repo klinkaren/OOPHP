@@ -23,11 +23,21 @@ Krav 2:
  ☐ Krydda filmsidan med info från imdb
 
 Krav 3:
- ☐ 
+  Börja med att få nyheterna att fungera med kategorier på sidan och paginering.
+  När allt det är klart kan jag ta itu med admin-delen.
+ ✔ Möjligt att lägga till kategori för blogginlägg @done (15-04-13 00:04)
+ ✔ Visa kategorilista till höger (möjligt att klicka på kategori och visa kategorin (breadcrumbs uppdateras enling Nyheter >> Kategori)) @done (15-04-13 18:52)
+ ✔ Visa bara första raderna av inläggen när alla visas. @done (15-04-13 18:52)
+ ✔ Paginering @done (15-04-13 18:52)
+ ✔ Varför flyter resultat över vid float left!!!??? @done (15-04-14 01:28)
+
+ Admin
+ ☐ Möjligt att ändra kategori @admin
+ ☐ Type ska va dropdown i Uppdatera-sektionen @admin
 
 Krav 4:
  ☐ 
 
 Krav 5-6:
- ☐ Breadcrumbs till blogg
+ ✔ Breadcrumbs till blogg @done (15-04-14 01:28)
  ☐ ?Admin ska kunna se källkod @admin
