@@ -106,7 +106,7 @@ class CBlog extends CContent{
     // Store latest posts in string
     $posts = "";
     foreach ($res as $val) {
-      $data = $this->filter->doFilter(htmlentities($val->DATA, null, 'UTF-8'), $val->FILTER);
+      $data = isset($val->FILTER) ? $this->filter->doFilter(htmlentities($val->DATA, null, 'UTF-8'), $val->FILTER) : htmlentities($val->DATA, null, 'UTF-8');
       $published = new DateTime(htmlentities($val->published, null, 'UTF-8'));
       $posts .= '<div class="widgetPost threeParted"><header><h1>'.$val->title.'</h1><span class="subHeader">Publicerat: '.$published->format('Y-m-d').'</span></header>'.$this->getIntro($data, $val->slug, 300).'</div>';
     } 
@@ -216,7 +216,7 @@ class CBlog extends CContent{
 	if(isset($this->res[0])) {
 	  foreach($this->res as $val) {
 	    $this->title    = htmlentities($val->title, null, 'UTF-8');
-	    $this->data     = $this->filter->doFilter(htmlentities($val->DATA, null, 'UTF-8'), $val->FILTER);
+	    $this->data     = isset($val->FILTER) ? $this->filter->doFilter(htmlentities($val->DATA, null, 'UTF-8'), $val->FILTER) : htmlentities($val->DATA, null, 'UTF-8');
       $published 		  = new DateTime(htmlentities($val->published, null, 'UTF-8'));
 
 

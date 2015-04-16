@@ -27,7 +27,7 @@ $password = isset($_POST['password']) ? strip_tags($_POST['password']) : null;
 // Log in
 if($acronym && $password && !CUser::authenticated()) {
   $user->login($acronym, $password);
-  CUser::authenticatedAsAdmin() ? header("Location:admin.php") : header("Location:index.php");
+  header("Location:user.php");
 }
 
 
@@ -35,7 +35,7 @@ if($acronym && $password && !CUser::authenticated()) {
 // Log out
 if(isset($_POST['logout'])) {
     $user->logout();
-    header("Location:index.php");
+    header("Location:hem.php");
 } 
 
 

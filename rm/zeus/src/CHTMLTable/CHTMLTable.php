@@ -40,6 +40,37 @@ class CHTMLTable extends CMovieSearch{
 
   }
 
+  protected function getEditTable($sql) {
+
+    // Put results into a HTML-table
+    $tr = "<table><tr>
+    <th>ID<a href=?orderby=id&order=asc>&darr;</a><a href=?orderby=id&order=desc>&uarr;</a></th>
+    <th>Titel<a href=?orderby=title&order=asc>&darr;</a><a href=?orderby=title&order=desc>&uarr;</a></th>
+    <th>År<a href=?orderby=YEAR&order=asc>&darr;</a><a href=?orderby=YEAR&order=desc>&uarr;</a></th>
+    <th>Kategorier</th>
+    <th>Publisering<a href=?orderby=published&order=asc>&darr;</a><a href=?orderby=published&order=desc>&uarr;</a></th>
+    <th></th><th></th></tr>";
+    foreach($sql AS $key => $val) {
+    // set values for delete/undelete
+    if(isset($val->deleted)){
+      $un = "un";
+      $do = "Återskapa";
+      $class = " class=deleted";
+    }else{
+      $un = "";
+      $do = "Ta bort";
+      $class = "";
+    }
+      $tr .= "<tr{$class}><td>{$val->id}</td><td>{$val->title}</td><td>{$val->YEAR}</td><td>{$val->genre}</td><td>{$val->published}</td><td><a href=?editMovie={$val->id}><img title='Redigera {$val->title}' src=img.php?src=edit.png&width=20&height=20&crop-to-fit alt='Redigera'/><a/></td>";
+      $tr .= "<td><a href=?{$un}deleteMovie={$val->id}><img title='{$do} {$val->title}' src=img.php?src={$un}delete.png&width=20&height=20&crop-to-fit alt='{$do}'/><a/></td>";   
+      $tr .= "</tr>";
+    }
+    $tr .= "</table>";
+
+    return $tr;
+
+  }
+
   private function getNav() {
 
     $html = <<<EOD

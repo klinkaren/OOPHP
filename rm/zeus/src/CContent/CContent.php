@@ -18,6 +18,7 @@ class CContent extends CDatabase{
 	private $published;
 	private $save;
 	private $acronym;
+	private $category;
 
 
   /**
@@ -29,6 +30,66 @@ class CContent extends CDatabase{
   } 
 
 
+  /**
+   * Gives all posts or parts from database.  
+   *
+   * @param  string: "post" or "part"
+   * @return string: html with results from db-query
+   */
+  public function admin($type = "post") {
+
+  	// Checks if user is logged in and of type admin.
+	CUser::authenticatedAsAdmin() or die('Check: You must be logged in as admin to gain access to this page.');
+  	
+  	// Unset variables
+  	$html  = null;
+    $parts = null;
+    $publisedPost = null;
+    $unpublisedPost = null;
+
+    // Get all content
+    $sql = '
+      SELECT *, (published <= NOW()) AS available
+      FROM Content
+      WHERE deleted is null AND
+      TYPE = ?
+      ORDER BY published DESC;
+    ';
+    $params = array($type);
+    $res = $this->ExecuteSelectQueryAndFetchAll($sql, $params);
+
+    // Put results into strings
+    foreach($res AS $key => $val) {
+    	if ($val->TYPE=="part") {
+      	$parts .= "<li><a href='content_edit.php?id={$val->id}'>". htmlentities($val->title, null, 'UTF-8') ."</a></li>\n";
+     	}elseif($val->TYPE=="post" && !$val->available){
+			$unpublisedPost .= "<li>Publiceras " . date($val->published) . ": " . htmlentities($val->title, null, 'UTF-8') . " (<a href='content_edit.php?id={$val->id}'>editera</a> <a href='content_delete.php?id={$val->id}'>radera</a>)</li>\n";
+    	}elseif($val->TYPE=="post"){
+    		$publisedPost .= "<li>" . (!$val->available ? 'Inte publicerad' : "Publicerad " . date($val->published)) . ": " . htmlentities($val->title, null, 'UTF-8') . " (<a href='content_edit.php?id={$val->id}'>editera</a> <a href='" . $this->getUrlToContent($val) . "'>visa</a> <a href='content_delete.php?id={$val->id}'>radera</a>)</li>\n";
+    	}
+    }
+
+    // Create html and return
+    if ($type == "part"){
+    	$html .= "<div class=adminParts>";
+    	$html .= "<h1>Administrera sidans delar</h1>";
+    	$html .= "<ul>$parts</ul></div>";
+    } elseif($type =="post"){
+    	$html .= "<div class=adminNews>";
+    	$html .= "<h1>Administera nyheter</h1>";
+	    if(isset($unpublisedPost)){
+		  $html .= 	"<h2>Ej publiserat</h2>";
+		  $html .= 		"<ul>$unpublisedPost</ul>";
+	    }
+		$html .= 	"<h2>Publicerat</h2>";
+		$html .= 		"<ul>$publisedPost</ul>";
+	    $html .= "</div>";
+    	$html .= '<p><a href="content_new.php">Skapa nyhet</a></p>';
+    }
+    return $html;
+  }
+
+  
   private function setParameters() {
   	// Get parameters 
 		$this->id       = isset($_POST['id'])    ? strip_tags($_POST['id']) : (isset($_GET['id']) ? strip_tags($_GET['id']) : null);
@@ -86,6 +147,8 @@ class CContent extends CDatabase{
 			// Check if form was submitted
 		$output = null;
 		if($this->save) {
+			$this->filter = empty($this->filter) ? null : $this->filter;
+			$this->category = empty($this->category) ? null : $this->category;
 			$this->slug = $this->slugify(strip_tags($this->title));
     	$sql = "INSERT INTO Content(title, slug, TYPE, DATA, FILTER, published, created, category) VALUES(?, ?, ?, ?, ?, ?, NOW(), ?)";
    		$params = array($this->title, $this->slug, $this->type, $this->data, $this->filter, $this->published, $this->category);
@@ -112,18 +175,13 @@ class CContent extends CDatabase{
 		<legend>Skapa</legend>
 	    <p><label>Titel:<br><input type="text" name="title"></label></p>
   		<p><label>Text:<br/><textarea name='DATA' rows="10" cols="100"></textarea></label></p>		
-			<p><label>Typ:<br/>
-				<select name="TYPE">
-				  <option value="post">Blogginlägg</option>
-				  <option value="part">Del av sida</option>
-				</select> 
-			</label></p>
 			<p>
 			{$this->getCategoryDropDown()}
 			<label>...eller skapa en ny kategori: <input type="text" name="newcategory" value=""></label></p>
 			</p>
 		  <p><label>Filter:<br/><input type='text' name='FILTER'></label></p>
 		  <p><label>Publiseringsdatum:<br/><input type='text' name='published' value="$now"></label></p>
+			<input type='hidden' name='TYPE' value='post'/>
 		  <p class=buttons><input type='submit' name='save' value='Spara'/> <input type='reset' value='Återställ'/></p>
 	    </fiedlset>
 	    <p><strong>$output</strong></p> 
@@ -135,10 +193,13 @@ EDO;
 
   }
 
-
+  /**
+   * Gives array of all categories with published posts 
+   *
+   */
   protected function getDistinctCategories(){
   	// Get all distinct categories
-  	$sql = "SELECT DISTINCT category from content WHERE category IS NOT NULL ORDER BY category ASC";
+  	$sql = "SELECT DISTINCT category from content WHERE category IS NOT NULL AND published < NOW()ORDER BY category ASC";
   	$res = $this->ExecuteSelectQueryAndFetchAll($sql);
   	return $res;
   }
@@ -154,7 +215,8 @@ EDO;
   	// Create options from sql-result
 		$options = null;
   	foreach ($res as $key => $val) {
-  		$options .= '<option value="'.$val->category.'">'.$val->category.'</option>';
+  		$selected = $val->category == $this->category ? "selected" : "hjejsan";
+  		$options .= '<option '.$selected.' value="'.$val->category.'">'.$val->category.'</option>';
   	}
 
   	// Create html and return
@@ -181,16 +243,24 @@ EDO;
 		      slug    = ?,
 		      url     = ?,
 		      DATA    = ?,
-		      TYPE    = ?,
 		      FILTER  = ?,
 		      published = ?,
+		      category = ?,
 		      updated = NOW()
 		    WHERE 
 		      id = ?
 		  ';
+
+		  // Set to null if empty
 		  $this->url = empty($this->url) ? null : $this->url;
-		  $params = array($this->title, $this->slug, $this->url, $this->data, $this->type, $this->filter, $this->published, $this->id);
+		  $this->filter = empty($this->filter) ? null : $this->filter;
+			$this->category = empty($this->category) ? null : $this->category;
+			$this->slug = $this->slugify(strip_tags($this->title));
+
+			// Query db
+		  $params = array($this->title, $this->slug, $this->url, $this->data, $this->filter, $this->published, $this->category, $this->id);
 		  $res = $this->ExecuteQuery($sql, $params);
+
 		  if($res) {
 		    $output = 'Informationen sparades.';
 		  }
@@ -211,6 +281,7 @@ EDO;
 		}
 
 		// Sanitize content before using it.
+		# borde inte det här vara $this->title etc?
 		$title  = htmlentities($c->title, null, 'UTF-8');
 		$slug   = htmlentities($c->slug, null, 'UTF-8');
 		$url    = htmlentities($c->url, null, 'UTF-8');
@@ -218,6 +289,8 @@ EDO;
 		$type   = htmlentities($c->TYPE, null, 'UTF-8');
 		$filter = htmlentities($c->FILTER, null, 'UTF-8');
 		$published = htmlentities($c->published, null, 'UTF-8');
+		$this->category  = htmlentities($c->category, null, 'UTF-8');
+
 
 		$html = "";
 		$html = <<<EDO
@@ -228,13 +301,14 @@ EDO;
   <input type='hidden' name='id' value='{$this->id}'/>
   <p><label>Titel:<br/><input type='text' name='title' value='{$title}'/></label></p>
   <p><label>Slug:<br/><input type='text' name='slug' value='{$slug}'/></label></p>
-  <p><label>Url:<br/><input type='text' name='url' value='{$url}'/></label></p>
   <p><label>Text:<br/><textarea name='DATA' rows="5" cols="80">{$data}</textarea></label></p>
-  <p><label>Type:<br/><input type='text' name='TYPE' value='{$type}'/></label></p>
+	<p>
+		{$this->getCategoryDropDown()}
+		<label>...eller skapa en ny kategori: <input type="text" name="newcategory" value=""></label></p>
+	</p>
   <p><label>Filter:<br/><input type='text' name='FILTER' value='{$filter}'/></label></p>
   <p><label>Publiseringsdatum:<br/><input type='text' name='published' value='{$published}'/></label></p>
   <p class=buttons><input type='submit' name='save' value='Spara'/> <input type='reset' value='Återställ'/></p>
-  <p><a href='content_view.php'>Visa alla</a></p>
   <output>{$output}</output>
   </fieldset>
 </form>
@@ -303,7 +377,6 @@ public function getDeleteForm() {
   <p><label>Titel:<br/><input type='text' name='title' value='{$title}'/></label></p>
   <p><label>Text:<br/><textarea name='DATA' rows="5" cols="80">{$data}</textarea></label></p>
   <p class=buttons><input type='submit' name='save' value='Ta bort'/></p>
-  <p><a href='content_delete.php'>Visa alla</a></p>
   <output>{$output}</output>
   </fieldset>
 </form>

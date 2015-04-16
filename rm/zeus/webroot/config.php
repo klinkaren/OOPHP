@@ -62,28 +62,69 @@ $zeus['footer'] = <<<EOD
 EOD;
 
 
+
 /**
- * The navbar
- *
+ * Define the menu as an array
  */
-//$zeus['navbar'] = null; // To skip the navbar
 $zeus['navbar'] = array(
-  'class' => 'nb-plain',
+  // Use for styling the menu
+  'class' => 'navbar',
+ 
+  // Here comes the menu strcture
   'items' => array(
-    'hem'         => array('text'=>'Hem',              'url'=>'hem.php',          'title' => 'Förstasidan'),
+    'hem'         => array('text'=>'Hem',              'url'=>'index.php',        'title' => 'Förstasidan'),
     'filmer'      => array('text'=>'Filmer',           'url'=>'filmer.php',       'title' => 'Redovisningar för kursmomenten'),
     'nyheter'     => array('text'=>'Nyheter',          'url'=>'nyheter.php',      'title' => 'Senaste nyheterna'),
     'omoss'       => array('text'=>'Om oss',           'url'=>'omoss.php',        'title' => 'Informationssida om företaget Rental Movies, RM'),
     'loginout'    => array('text'=>CUser::logOption(), 'url'=>'loginout.php',     'title' => CUser::logOption()),
-    'content'     => array('text'=>'Admintemp',        'url'=>'admin.php',        'title' => 'Temporär adminsida'),
-     ),
-  'callback_selected' => function($url) {
+  ),
+ 
+  // This is the callback tracing the current selected menu item base on scriptname
+  'callback' => function($url) {
     if(basename($_SERVER['SCRIPT_FILENAME']) == $url) {
       return true;
     }
   }
 );
 
+if(CUser::authenticatedAsAdmin()){
+  $zeus['navbar']['items']['admin'] = array('text'=>'Admin',  'url'=>'admin.php', 'title' => 'Lägg till, redigera och ta bort filmer, nyheter och delar av sidan',
+          'submenu' => array(
+ 
+        'items' => array(
+          // This is a menu item of the submenu
+          'admin_movies'  => array(
+            'text'  => 'Filmer',   
+            'url'   => 'admin_movies.php',  
+            'title' => 'Lägg till, redigera och ta bort filmer.',
+            'class' => 'submenu'
+          ),
+
+          // This is a menu item of the submenu
+          'admin_news'  => array(
+            'text'  => 'Nyheter',   
+            'url'   => 'admin_news.php',  
+            'title' => 'Lägg till, redigera och ta bort nyheter.',
+            'class' => 'submenu'
+          ),
+
+          // This is a menu item of the submenu
+          'admin_parts'  => array(
+            'text'  => 'Siddelar',   
+            'url'   => 'admin_parts.php',  
+            'title' => 'Redigera sidans delar.',
+            'class' => 'submenu'
+          ),
+        ),
+      ),);
+
+}else{
+  if(CUser::authenticated()){
+    $zeus['navbar']['items']['member'] = array('text'=>'Medlem', 'url'=>'user.php',  'title' => 'Medlemssida där du kan redigera dina inställningar');
+  } else {
+    $zeus['navbar']['items']['becomeMember'] = array('text'=>'Bli medlem', 'url'=>'new_user.php',  'title' => 'Bli medlem och börja kolla på film nu!');
+  }
+}
 
 
 // LOCALHOST

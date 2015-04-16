@@ -6,7 +6,7 @@
 // Include the essential config-file which also creates the $zeus variable with its defaults.
 include(__DIR__.'/config.php');
 
-
+$zeus['stylesheets'][] = 'css/admin.css';
 
 // Create instance of CContent
 $content = new CContent($zeus['database']);
@@ -22,13 +22,7 @@ CUser::authenticatedAsAdmin() or die('Check: You must be logged in as admin to g
 // Put everything in Zeus container.
 $zeus['title'] = "Administrering";
 $zeus['main'] = <<<EDO
-<h1>{$zeus['title']}</h1>
-<p>Lägg till, redigera och ta bort filmer, nyheter eller siddelar.</p>
-<ul>
-	<li><a href="admin_movies.php">Administrera filmer</a></li>
-	<li><a href="admin_news.php">Administrera nyheter</a></li>
-	<li><a href="admin_parts.php">Administrera sidans delar</a></li>
-<ul>
+{$movie->admin()}
 
 EDO;
 

@@ -10,23 +10,24 @@
 <script src='<?=$modernizr?>'></script>
 </head>
 <body>
+    <div id='headerBg'></div>
   	<div id='wrapper'>
       <?php if(isset($header)): ?>
       	<div id='header'>
           <?=$header?>
         </div>
       <?php endif; ?>
+      <div id="navContainer">
       <div id='navigation'>
     	  <?php if(isset($navbar)): ?>
-      	 	<div id='navbar'>
       	 		<?=get_navbar($navbar)?>
-      	 	</div>
     	  <?php endif; ?>
         <?php if(isset($searchbox)): ?>
           <div id='searchbox'>
             <?=get_searchbox()?>
           </div> 
         <?php endif; ?>
+      </div>
       </div>
     	<div id='main'><?=$main?></div>
     	<div id='footer'><?=$footer?></div>

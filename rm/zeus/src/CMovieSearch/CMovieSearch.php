@@ -28,7 +28,15 @@ class CMovieSearch extends CDatabase {
                           24 => "24");
              // Create an html table, send the search query and get the result back as html.
   private $htmlTable;
-  
+  private $image;
+  private $YEAR;
+  private $plot;
+  private $price;
+  private $imdb;
+  private $youtube;
+  private $published;
+  private $created;
+  private $save;
 
 
   /**
@@ -41,6 +49,169 @@ class CMovieSearch extends CDatabase {
       $this->htmlTable = new CHTMLTable();
   } 
 
+
+  public function admin(){
+
+    // Checks if user is logged in and of type admin.
+    CUser::authenticatedAsAdmin() or die('Check: You must be logged in as admin to gain access to this page.');
+
+    $this->getParams();
+    $html = null;
+    if(isset($_GET['editMovie'])){
+
+      # skicka med id också...
+      $html .= $this->editMovie($_GET['editMovie']);
+
+    }elseif(isset($_GET['newMovie'])){
+      $html .= $this->newMovie($_GET['newMovie']);
+
+    }elseif(isset($_GET['deleteMovie'])){
+      $this->deleteMovie($_GET['deleteMovie']);
+      $html .= $this->editOverview();
+    }elseif(isset($_GET['undeleteMovie'])){
+      $this->undeleteMovie($_GET['undeleteMovie']);
+      $html .= $this->editOverview();
+    }else{
+      $html .= $this->editOverview();
+    }
+
+    return $html;
+  }
+
+  private function editOverview(){
+    $orderby = isset($this->orderby) ? $this->orderby : "id";
+    $order = isset($this->order) ? $this->order : "desc";
+    $sql = "SELECT * from vmovie ORDER BY $orderby $order";
+    $res = $this->ExecuteSelectQueryAndFetchAll($sql);
+    $html  = '<div class="editTitles"><h1>Redigera titlar</h1>';
+    $html .= $this->htmlTable->getEditTable($res);
+    $html .= '</div>';
+    $html .= '<p><a href="?newMovie">Skapa ny film</a></p>';
+    return $html;
+  }
+
+  private function deleteMovie($id){
+    $sql = 'UPDATE Movie SET deleted = NOW() WHERE id = ?';
+    $params = array($id);
+    $res = $this->ExecuteQuery($sql, $params);
+  }
+
+  private function undeleteMovie($id){
+    $sql = 'UPDATE Movie SET deleted = NULL WHERE id = ?';
+    $params = array($id);
+    $res = $this->ExecuteQuery($sql, $params);
+  }
+
+
+
+  private function editMovie($id){
+    $html = null;
+    if(isset($this->save)){
+      // sql for update
+      $sql = 'UPDATE movie SET title=?, director=?, YEAR=?, plot=?, image=?, price=?, imdb=?, youtube=?, published=?, updated=NOW() WHERE ID = ?;';
+      $params = array($this->title, $this->director, $this->YEAR, $this->plot, $this->image, $this->price, $this->imdb, $this->youtube, $this->published, $id);
+      $res = $this->ExecuteQuery($sql, $params);
+      $output = "Redigerade filmen ".$this->title." med id ".$id;
+      $html .= $this->getMovieForm("edit", $output);
+      return $html;
+    }else{
+      $sql = "SELECT * from movie WHERE id = $id;";
+      $res = $this->ExecuteSelectQueryAndFetchAll($sql, null, true);
+      foreach($res as $key => $val) {
+        $this->title=$val->title;
+        $this->director=$val->director;
+        $this->YEAR=$val->YEAR;
+        $this->plot=$val->plot;
+        $this->image=$val->image;
+        $this->price=$val->price;
+        $this->imdb=$val->imdb;
+        $this->youtube=$val->youtube;
+        $this->published=$val->published;
+      }
+      $html = $this->getMovieForm("edit");
+    }
+      return $html;
+  }
+
+
+
+  private function newMovieCheck(){
+    if( isset($this->title) && isset($this->director) && isset($this->YEAR) && isset($this->plot) && isset($this->image) && isset($this->price) && isset($this->published) ){
+      return true;
+    } else {
+      return false;
+    }
+  }
+  private function newMovie(){
+
+    $output = "";
+    $html = "";
+    if(isset($this->save)){
+      if($this->newMovieCheck()){
+        $image = "movie/".$this->image;
+
+      $sql = "INSERT INTO movie(title, director, YEAR, plot, image, price, imdb, youtube, published, created) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, NOW());";
+      $params = array($this->title, $this->director, $this->YEAR, $this->plot, $image, $this->price, $this->imdb, $this->youtube, $this->published);
+      $res = $this->ExecuteQuery($sql, $params);
+      if($res) {
+
+        // save feedback
+        $html .= 'Informationen sparades.';
+      }else {
+        // save feedback
+        $output .= 'Informationen sparades EJ.<br><pre>' . print_r($this->ErrorInfo(), 1) . '</pre>';
+        $html = $this->getMovieForm("new", $output);
+      }
+      } else {
+        $output .= "Data sparades ej då nödvändig information saknas.";
+        $html = $this->getMovieForm("new", $output);
+      }
+    } else {
+      $html = $this->getMovieForm("new");
+    }
+
+    return $html;
+  }
+
+  private function getMovieForm($type = "new", $output = null){
+
+    if($type == "new"){
+      $heading = "Skapa ny film";
+      $published =date('Y-m-d H:i:s');
+
+    }elseif($type = "edit"){
+      $heading = "Redigera film";
+      $published = $this->published;
+
+    }else{
+      echo "Errormsg: Error in getMovieForm";
+
+    }
+
+
+    $html = "
+    <h1>{$heading}</h1>
+    <p><i>Fält märkta med * måste fyllas i.</i></p>
+    <form method=post>
+      <fieldset>
+        <legend>Film</legend>
+        <p><label>*Titel:<br><input type='text' name='title' value='$this->title'></label></p>
+        <p><label>*Regissör:<br><input type='text' name='director' value='$this->director'></label></p>
+        <p><label>*År:<br/><input type='text' name='YEAR' value='$this->YEAR'></label></p>
+        <p><label>*Plot:<br/><textarea name='plot' rows=10 cols=100>$this->plot</textarea></label></p>    
+        <p><label>*Bild:<br/><input type='text' name='image' value='$this->image'></label></p>
+        <p><label>*Pris:<br/><input type='number' name='price' value='$this->price'></label></p>
+        <p><label>IMDb:<br/><input type='text' name='imdb' value='$this->imdb'></label></p>
+        <p><label>Youtube:<br/><input type='text' name='youtube' value='$this->youtube'></label></p>
+        <p><label>*Publiseringsdatum:<br/><input type='datetime' name='published' value='$published'></label></p>
+        <input type='hidden' name='save' value='save'/>
+        <p class=buttons><input type='submit' name='newMovie' value='spara'/> <input type='reset' value='Återställ'/></p>
+      <p><strong>$output</strong></p> 
+      </fieldset>
+    </form>";
+    return $html;
+
+  }
 
   /** 
    * Get HTML
@@ -289,11 +460,11 @@ EOD;
       $limit = " LIMIT $this->hits OFFSET " . (($this->page - 1) * $this->hits);
     }
 
-    // Create sql-query 
-    $this->query = "SELECT * FROM VMovie";
+    // Create sql-query (only show movies that are published and not deleted)
+    $this->query = "SELECT * FROM VMovie WHERE published < NOW() AND deleted IS NULL";
 
     if(!empty($params)) {
-      $this->query .= " WHERE ".join(" AND ",$where);
+      $this->query .= " AND ".join(" AND ",$where);
     }
 
     // Set how many rows
@@ -412,22 +583,47 @@ EOD;
    */
   private function getParams(){
 
-      //Get parameters 
-      $this->title    = isset($_GET['title'])   ? $_GET['title'] : null;
-      $this->director = isset($_GET['director'])   ? $_GET['director'] : null;
-      $this->hits     = isset($_GET['hits'])    ? $_GET['hits']  : 8;
-      $this->page     = isset($_GET['page'])    ? $_GET['page']  : 1;
-      $this->year1    = isset($_GET['year1']) && !empty($_GET['year1']) ? $_GET['year1'] : null;
-      $this->year2    = isset($_GET['year2']) && !empty($_GET['year2']) ? $_GET['year2'] : null;
-      $this->orderby  = isset($_GET['orderby']) ? $_GET['orderby'] : 'id';
-      $this->order    = isset($_GET['order'])   ? strtolower($_GET['order'])   : 'asc';
-      $this->genre    = isset($_GET['genre'])  ? $_GET['genre'] : null;
+      // Get parameters 
+      $this->title   = isset($_GET['title'])   ? $_GET['title'] : null;
+      $this->title   = isset($_POST['title'])   ? $_POST['title'] : null;
+      $this->director= isset($_GET['director'])   ? $_GET['director'] : null;
+      $this->director= isset($_POST['director'])   ? $_POST['director'] : null;
+      $this->hits    = isset($_GET['hits'])    ? $_GET['hits']  : 8;
+      $this->page    = isset($_GET['page'])    ? $_GET['page']  : 1;
+      $this->year1   = isset($_GET['year1']) && !empty($_GET['year1']) ? $_GET['year1'] : null;
+      $this->year2   = isset($_GET['year2']) && !empty($_GET['year2']) ? $_GET['year2'] : null;
+      $this->orderby = isset($_GET['orderby']) ? $_GET['orderby'] : 'id';
+      $this->order   = isset($_GET['order'])   ? strtolower($_GET['order'])   : 'asc';
+      $this->genre   = isset($_GET['genre'])  ? $_GET['genre'] : null;
+      $this->YEAR    = isset($_POST['YEAR'])   ? $_POST['YEAR'] : null;
+      $this->plot    = isset($_POST['plot'])   ? $_POST['plot'] : null;
+      $this->image   = isset($_POST['image'])   ? $_POST['image'] : null;
+      $this->price   = isset($_POST['price'])   ? $_POST['price'] : null;
+      $this->imdb    = isset($_POST['imdb'])   ? $_POST['imdb'] : null;
+      $this->youtube = isset($_POST['youtube'])   ? $_POST['youtube'] : null;
+      $this->published = isset($_POST['published'])   ? $_POST['published'] : null;
+      $this->save    = isset($_POST['save'])? $_POST['save']: null;
 
-      //Check that incoming parameters are valid
+
+      // Remove empty values
+      $this->title   = empty($this->title)   ? null : $this->title;
+      $this->director   = empty($this->director)   ? null : $this->director;
+      $this->YEAR   = empty($this->YEAR)   ? null : $this->YEAR;
+      $this->plot   = empty($this->plot)   ? null : $this->plot;
+      $this->image   = empty($this->image)   ? null : $this->image;
+
+
+
+      // Check that incoming parameters are valid
       is_numeric($this->hits) or die('Check: Hits must be numeric.');
       is_numeric($this->page) or die('Check: Page must be numeric.');
+      //is_numeric($this->YEAR) or die('Check: YEAR must be numeric.');
       is_numeric($this->year1) || !isset($this->year1)  or die('Check: Year must be numeric or not set.');
       is_numeric($this->year2) || !isset($this->year2)  or die('Check: Year must be numeric or not set.');
+      //is_numeric($this->YEAR)  || !isset($this->YEAR)   or die('Check: YEAR must be numeric or not set.');
+      //is_numeric($this->price) || !isset($this->price)  or die('Check: Price must be numeric or not set.');
+
+
   } 
 
   
