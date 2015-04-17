@@ -8,19 +8,19 @@ include(__DIR__.'/config.php');
 
 
 
-// Create instance of CContent
-$user = new CUser($zeus['database']);
+// Connect to a MySQL database using PHP PDO
+$db = new CDatabase($zeus['database']);
+
+
+
+// Create a user
+$user = new CUser($db);
 
 
 
 // Put everything in Zeus container.
-$zeus['title'] = "Allt innehåll";
-
-$zeus['main'] = <<<EDO
-<h1>{$zeus['title']}</h1>
-{$user->getUserAsHtml()}
-
-EDO;
+$zeus['title'] = "Medlem";
+$zeus['main'] = $user->getUserAsHtml();
 
 
 

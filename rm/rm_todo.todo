@@ -42,10 +42,13 @@ Admin:
  ✔ Lägga till kategorier till filmer @done (15-04-17 14:06)
  ✘ Type ska va dropdown i Uppdatera-sektionen @admin @cancelled (15-04-15 17:17)
  ✔ Visa bara filmer som är published och ej deleted på förstasidan @done (15-04-17 15:55)
- ☐ Filmkalender
- ☐ Bli medlem
+ ✔ Filmkalender @done (15-04-17 19:02)
+ ✔ Visa medlemsinfo @done (15-04-17 20:44)
  ☐ Redigera medlemsinfo om inloggad
+ ☐ Redigera lösenord
+ ☐ Bli medlem
  ☐ Tärningsspel
+ ☐ extra: Lägg till kommande filmer i kalendern
 
 Krav 5-6:
  ✔ Breadcrumbs till blogg @done (15-04-14 01:28)
