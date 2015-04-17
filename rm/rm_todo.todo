@@ -39,8 +39,9 @@ Admin:
  ✔ Visa inte borttagna filmer. @done (15-04-16 16:30)
  ✔ Skapa filmer @done (15-04-16 16:30)
  ✔ Redigera filmer @done (15-04-16 17:58)
- ☐ Lägga till kategorier till filmer
+ ✔ Lägga till kategorier till filmer @done (15-04-17 14:06)
  ✘ Type ska va dropdown i Uppdatera-sektionen @admin @cancelled (15-04-15 17:17)
+ ☐ Visa bara filmer som är published och ej deleted på förstasidan
  ☐ Bli medlem
  ☐ Redigera medlemsinfo om inloggad
 

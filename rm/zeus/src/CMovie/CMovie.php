@@ -1,5 +1,5 @@
 <?php
-class CMovie extends CDatabase {
+class CMovie extends CMovieSearch {
 
   /**
   * Members

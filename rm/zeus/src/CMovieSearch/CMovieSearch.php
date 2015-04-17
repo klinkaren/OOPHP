@@ -37,6 +37,7 @@ class CMovieSearch extends CDatabase {
   private $published;
   private $created;
   private $save;
+  private $currentCategories = array();
 
 
   /**
@@ -102,21 +103,80 @@ class CMovieSearch extends CDatabase {
     $res = $this->ExecuteQuery($sql, $params);
   }
 
+  private function deleteCategory($movieId, $genreId){
+    $sql= "DELETE FROM movie2genre WHERE idMovie = ? AND idGenre = ?;";
+    $params = array($movieId, $genreId);
+    $this->ExecuteQuery($sql, $params);
+  }
+
+  private function addCategory($movieId, $genreId){
+    $sql= "INSERT INTO movie2genre(idGenre, idMovie) VALUES(?, ?);";
+    $params = array($genreId, $movieId);
+    $this->ExecuteQuery($sql, $params);
+  }
+
+  private function getGenreIdFromName($cat){
+    $sql = "SELECT id from genre where name = ?;";
+    $params = array($cat);
+    $res = $this->ExecuteSelectQueryAndFetchAll($sql, $params);
+    isset($res[0]) or die ('error in function getGenreIdFromName');
+    $genreId = $res[0]->id;
+    return $genreId;
+  }
+
+  /**
+   * Updates categories of movies in DB. 
+   *
+   * @param $id = ID of movie, @param @updated = array of updated categories 
+   *
+   */
+  private function updateCategories($id, $updated){
+    $this->setCurrentCategories();
+    $current = $this->currentCategories;
+    $add = array();
+    $delete = array();
+
+    foreach ($current as $c) {
+      if (!in_array($c, $updated)) {
+          $delete[] = $c;
+          $this->deleteCategory($id, $this->getGenreIdFromName($c));
+      }
+    }
+    foreach ($updated as $u) {
+      if (!in_array($u, $current)) {
+        $add[] = $u;
+        $this->addCategory($id, $this->getGenreIdFromName($u));
+      }
+    }
+    echo "curC: ";
+    print_r($current);
+    echo "<br>Post: ";
+    print_r($updated);
+    echo "<br>Add:  ";
+    print_r($add);
+    echo "<br>Del:  ";
+    print_r($delete);
+
+    $this->setCurrentCategories();
+  }
 
 
   private function editMovie($id){
     $html = null;
     if(isset($this->save)){
+      $this->updateCategories($id, $_POST['selectedGenre']);
       // sql for update
       $sql = 'UPDATE movie SET title=?, director=?, YEAR=?, plot=?, image=?, price=?, imdb=?, youtube=?, published=?, updated=NOW() WHERE ID = ?;';
       $params = array($this->title, $this->director, $this->YEAR, $this->plot, $this->image, $this->price, $this->imdb, $this->youtube, $this->published, $id);
       $res = $this->ExecuteQuery($sql, $params);
-      $output = "Redigerade filmen ".$this->title." med id ".$id;
+      $output = "Redigerade filmen '".$this->title."' med id ".$id;
       $html .= $this->getMovieForm("edit", $output);
       return $html;
     }else{
+
+      // Set movie parameters from id
       $sql = "SELECT * from movie WHERE id = $id;";
-      $res = $this->ExecuteSelectQueryAndFetchAll($sql, null, true);
+      $res = $this->ExecuteSelectQueryAndFetchAll($sql);
       foreach($res as $key => $val) {
         $this->title=$val->title;
         $this->director=$val->director;
@@ -128,6 +188,7 @@ class CMovieSearch extends CDatabase {
         $this->youtube=$val->youtube;
         $this->published=$val->published;
       }
+
       $html = $this->getMovieForm("edit");
     }
       return $html;
@@ -155,8 +216,15 @@ class CMovieSearch extends CDatabase {
       $res = $this->ExecuteQuery($sql, $params);
       if($res) {
 
+        // set id of new movie
+        $this->id = $this->LastInsertId();
+
+        // save genres
+        $this->updateCategories($this->id, $_POST['selectedGenre']);
+
         // save feedback
-        $html .= 'Informationen sparades.';
+        $output .= 'Informationen sparades. Du kan nu redigera informationen om du vill.';
+        $html = $this->getMovieForm("edit", $output);
       }else {
         // save feedback
         $output .= 'Informationen sparades EJ.<br><pre>' . print_r($this->ErrorInfo(), 1) . '</pre>';
@@ -173,6 +241,46 @@ class CMovieSearch extends CDatabase {
     return $html;
   }
 
+
+  private function setCurrentCategories(){
+    $this->currentCategories = array();
+    // Set currentCategories parameter from id
+    $sql = "SELECT G.name from genre as G
+              LEFT OUTER JOIN movie2genre AS M2G 
+                ON G.id = M2G.idGenre
+            WHERE M2G.idMovie = ?";
+    $params=array($this->id);
+    $res = $this->ExecuteSelectQueryAndFetchAll($sql, $params);
+    foreach ($res as $key => $val) {
+      $this->currentCategories[] = $val->name;
+    }
+  }
+
+  private function getCategories(){
+    $html = null;
+    $selected = null;
+    $this->setCurrentCategories();
+    
+    $allCategories = $this->getAllCategories();
+    foreach ($allCategories as $key => $val) {
+
+      //Set checked if category selected
+      if (in_array($val, $this->currentCategories)) {
+          $selected = "checked";
+      }
+
+      $html .= '<input type="checkbox" name="selectedGenre[]" value="'.$val.'"'.$selected.'>'.$val." | ";
+      $selected = null;
+    }
+
+    return $html;
+
+  }
+
+
+
+
+
   private function getMovieForm($type = "new", $output = null){
 
     if($type == "new"){
@@ -188,7 +296,6 @@ class CMovieSearch extends CDatabase {
 
     }
 
-
     $html = "
     <h1>{$heading}</h1>
     <p><i>Fält märkta med * måste fyllas i.</i></p>
@@ -198,7 +305,8 @@ class CMovieSearch extends CDatabase {
         <p><label>*Titel:<br><input type='text' name='title' value='$this->title'></label></p>
         <p><label>*Regissör:<br><input type='text' name='director' value='$this->director'></label></p>
         <p><label>*År:<br/><input type='text' name='YEAR' value='$this->YEAR'></label></p>
-        <p><label>*Plot:<br/><textarea name='plot' rows=10 cols=100>$this->plot</textarea></label></p>    
+        <p><label>*Plot:<br/><textarea name='plot' rows=10 cols=100>$this->plot</textarea></label></p>   
+        <p>{$this->getCategories()}</p> 
         <p><label>*Bild:<br/><input type='text' name='image' value='$this->image'></label></p>
         <p><label>*Pris:<br/><input type='number' name='price' value='$this->price'></label></p>
         <p><label>IMDb:<br/><input type='text' name='imdb' value='$this->imdb'></label></p>
@@ -265,7 +373,7 @@ class CMovieSearch extends CDatabase {
 
   public function getLatestTitles($numMovies){
     is_numeric($numMovies) or die('Check: Number of movies (numMovies) in function getLatestTitles() must be numeric.');
-    $sql = "SELECT * FROM vmovie ORDER BY id DESC LIMIT ".$numMovies.";";
+    $sql = "SELECT * FROM vmovie WHERE published < NOW() AND deleted IS NULL ORDER BY id DESC LIMIT ".$numMovies.";";
     $res = $this->ExecuteSelectQueryAndFetchAll($sql);
     $html  = '<div class="latestTitles"><h1>Nyinkomna titlar</h1>';
     $html .= $this->htmlTable->overview($res);
@@ -276,7 +384,8 @@ class CMovieSearch extends CDatabase {
 
     public function getRandom($numMovies, $heading, $class){
     is_numeric($numMovies) or die('Check: Number of posts in function getRandom() must be numeric.');
-    $sql = "SELECT * FROM vmovie ORDER BY RAND() DESC LIMIT ".$numMovies.";";
+    $sql = "SELECT * FROM vmovie WHERE published < NOW() AND deleted IS NULL ORDER BY RAND() DESC LIMIT ".$numMovies.";";
+
     $res = $this->ExecuteSelectQueryAndFetchAll($sql);
     $html  = '<div class="'.$class.'"><h1>'.$heading.'</h1>';
 
@@ -603,7 +712,8 @@ EOD;
       $this->youtube = isset($_POST['youtube'])   ? $_POST['youtube'] : null;
       $this->published = isset($_POST['published'])   ? $_POST['published'] : null;
       $this->save    = isset($_POST['save'])? $_POST['save']: null;
-
+      $this->id      = isset($_GET['editMovie']) ? $_GET['editMovie'] : null;
+      //$this->currentCategories = isset($_POST['selectedGenre']) ? $_POST['selectedGenre'] : $this->currentCategories;
 
       // Remove empty values
       $this->title   = empty($this->title)   ? null : $this->title;

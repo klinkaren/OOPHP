@@ -100,7 +100,7 @@ class CBlog extends CContent{
   public function getWidget($numPosts){
     is_numeric($numPosts) or die('Check: Number of posts in function getWidget() must be numeric.');
     $this->filter = new CTextFilter();
-    $sql ="SELECT * FROM content WHERE TYPE='post' AND published < NOW() ORDER BY published DESC LIMIT ".$numPosts.";";
+    $sql ="SELECT * FROM content WHERE TYPE='post' AND published < NOW() AND DELETED IS NULL ORDER BY published DESC LIMIT ".$numPosts.";";
     $res = $this->ExecuteSelectQueryAndFetchAll($sql);
 
     // Store latest posts in string
