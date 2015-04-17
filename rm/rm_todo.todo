@@ -41,9 +41,11 @@ Admin:
  ✔ Redigera filmer @done (15-04-16 17:58)
  ✔ Lägga till kategorier till filmer @done (15-04-17 14:06)
  ✘ Type ska va dropdown i Uppdatera-sektionen @admin @cancelled (15-04-15 17:17)
- ☐ Visa bara filmer som är published och ej deleted på förstasidan
+ ✔ Visa bara filmer som är published och ej deleted på förstasidan @done (15-04-17 15:55)
+ ☐ Filmkalender
  ☐ Bli medlem
  ☐ Redigera medlemsinfo om inloggad
+ ☐ Tärningsspel
 
 Krav 5-6:
  ✔ Breadcrumbs till blogg @done (15-04-14 01:28)

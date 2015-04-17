@@ -17,16 +17,8 @@ class CMovieSearch extends CDatabase {
   private $query;
   private $sql;
   private $rows;
-  
-  // Hits per page alternatives
   private $hits;
-  private $hitsOptions = array(
-                          4 => "4",
-                          8 => "8",
-                          12 => "12",
-                          16 => "16",
-                          24 => "24");
-             // Create an html table, send the search query and get the result back as html.
+  private $hitsOptions = array(4 => "4", 8 => "8", 12 => "12", 16 => "16", 24 => "24");
   private $htmlTable;
   private $image;
   private $YEAR;
@@ -51,6 +43,11 @@ class CMovieSearch extends CDatabase {
   } 
 
 
+  /**
+   * Gives admin page
+   *
+   * @return @string with html-code
+   */
   public function admin(){
 
     // Checks if user is logged in and of type admin.
@@ -79,6 +76,84 @@ class CMovieSearch extends CDatabase {
     return $html;
   }
 
+  /** 
+   * Get HTML
+   *
+   * @return string html for search form and result.
+   */
+  public function getHTML() {
+
+    $this->getParams();
+    $this->sql = $this->getData();
+    $res = $this->getForm();
+
+    // Create navigation options for hits per page
+    $res .= $this->getHits();
+
+    // Create an html table, send the search query and get the result back as html.
+    $htmlTable = new CHTMLTable();
+    $res .= $htmlTable->getTable($this->sql);
+
+    // Create navigation for pages
+    $res .= $this->getPageNavigation();
+
+    return $res;
+  }
+
+
+
+  /** 
+   * Gives an overview of all movies with short introductions and links to every seperate movie
+   *
+   * @return string html for search form and result.
+   */
+  public function getOverview() {
+    $this->getParams();
+    $this->sql = $this->getData();
+    $res = $this->overviewForm();
+
+    // Create navigation options for hits per page
+    $res .= $this->getHits();
+    $res .= $this->getBreadcrumbs();
+
+    // Send the search query and get the result back as html.
+    $res .= $this->htmlTable->overview($this->sql);
+
+    // Create navigation for pages
+    $res .= $this->getPageNavigation(); 
+    $res .= $this->totalHits();
+    return $res;
+  }
+
+
+  public function getLatestTitles($numMovies){
+    is_numeric($numMovies) or die('Check: Number of movies (numMovies) in function getLatestTitles() must be numeric.');
+    $sql = "SELECT * FROM vmovie WHERE published < NOW() AND deleted IS NULL ORDER BY id DESC LIMIT ".$numMovies.";";
+    $res = $this->ExecuteSelectQueryAndFetchAll($sql);
+    $html  = '<div class="latestTitles"><h1>Nyinkomna titlar</h1>';
+    $html .= $this->htmlTable->overview($res);
+    $html .= '</div>';
+
+    return $html;
+  }
+
+
+  public function getRandom($numMovies, $heading, $class){
+    is_numeric($numMovies) or die('Check: Number of posts in function getRandom() must be numeric.');
+    $sql = "SELECT * FROM vmovie WHERE published < NOW() AND deleted IS NULL ORDER BY RAND() DESC LIMIT ".$numMovies.";";
+
+    $res = $this->ExecuteSelectQueryAndFetchAll($sql);
+    $html  = '<div class="'.$class.'"><h1>'.$heading.'</h1>';
+
+
+      $html .= $this->htmlTable->overview($res);
+
+    $html .= '</div>';
+
+    return $html;
+  }
+
+
   private function editOverview(){
     $orderby = isset($this->orderby) ? $this->orderby : "id";
     $order = isset($this->order) ? $this->order : "desc";
@@ -91,11 +166,13 @@ class CMovieSearch extends CDatabase {
     return $html;
   }
 
+
   private function deleteMovie($id){
     $sql = 'UPDATE Movie SET deleted = NOW() WHERE id = ?';
     $params = array($id);
     $res = $this->ExecuteQuery($sql, $params);
   }
+
 
   private function undeleteMovie($id){
     $sql = 'UPDATE Movie SET deleted = NULL WHERE id = ?';
@@ -103,17 +180,20 @@ class CMovieSearch extends CDatabase {
     $res = $this->ExecuteQuery($sql, $params);
   }
 
+
   private function deleteCategory($movieId, $genreId){
     $sql= "DELETE FROM movie2genre WHERE idMovie = ? AND idGenre = ?;";
     $params = array($movieId, $genreId);
     $this->ExecuteQuery($sql, $params);
   }
 
+
   private function addCategory($movieId, $genreId){
     $sql= "INSERT INTO movie2genre(idGenre, idMovie) VALUES(?, ?);";
     $params = array($genreId, $movieId);
     $this->ExecuteQuery($sql, $params);
   }
+
 
   private function getGenreIdFromName($cat){
     $sql = "SELECT id from genre where name = ?;";
@@ -123,6 +203,7 @@ class CMovieSearch extends CDatabase {
     $genreId = $res[0]->id;
     return $genreId;
   }
+
 
   /**
    * Updates categories of movies in DB. 
@@ -136,27 +217,21 @@ class CMovieSearch extends CDatabase {
     $add = array();
     $delete = array();
 
+    // Delete movies (the current ones we wont find in the updated ones)
     foreach ($current as $c) {
       if (!in_array($c, $updated)) {
-          $delete[] = $c;
           $this->deleteCategory($id, $this->getGenreIdFromName($c));
       }
     }
+
+    // Add movies (the updated ones we wont find in the current ones)
     foreach ($updated as $u) {
       if (!in_array($u, $current)) {
-        $add[] = $u;
         $this->addCategory($id, $this->getGenreIdFromName($u));
       }
     }
-    echo "curC: ";
-    print_r($current);
-    echo "<br>Post: ";
-    print_r($updated);
-    echo "<br>Add:  ";
-    print_r($add);
-    echo "<br>Del:  ";
-    print_r($delete);
 
+    // Update current categories before rendering page (to get correct values in checkboxes)
     $this->setCurrentCategories();
   }
 
@@ -195,7 +270,6 @@ class CMovieSearch extends CDatabase {
   }
 
 
-
   private function newMovieCheck(){
     if( isset($this->title) && isset($this->director) && isset($this->YEAR) && isset($this->plot) && isset($this->image) && isset($this->price) && isset($this->published) ){
       return true;
@@ -203,6 +277,8 @@ class CMovieSearch extends CDatabase {
       return false;
     }
   }
+
+
   private function newMovie(){
 
     $output = "";
@@ -256,6 +332,7 @@ class CMovieSearch extends CDatabase {
     }
   }
 
+
   private function getCategories(){
     $html = null;
     $selected = null;
@@ -274,11 +351,7 @@ class CMovieSearch extends CDatabase {
     }
 
     return $html;
-
   }
-
-
-
 
 
   private function getMovieForm($type = "new", $output = null){
@@ -318,90 +391,12 @@ class CMovieSearch extends CDatabase {
       </fieldset>
     </form>";
     return $html;
-
   }
-
-  /** 
-   * Get HTML
-   *
-   * @return string html for search form and result.
-   */
-  public function getHTML() {
-
-    $this->getParams();
-    $this->sql = $this->getData();
-    $res = $this->getForm();
-
-    // Create navigation options for hits per page
-    $res .= $this->getHits();
-
-    // Create an html table, send the search query and get the result back as html.
-    $htmlTable = new CHTMLTable();
-    $res .= $htmlTable->getTable($this->sql);
-
-    // Create navigation for pages
-    $res .= $this->getPageNavigation();
-
-    return $res;
-  }
-
-
-
-  /** 
-   * Gives an overview of all movies with short introductions and links to every seperate movie
-   *
-   * @return string html for search form and result.
-   */
-  public function getOverview() {
-      $this->getParams();
-      $this->sql = $this->getData();
-      $res = $this->overviewForm();
-      // Create navigation options for hits per page
-      $res .= $this->getHits();
-      $res .= $this->getBreadcrumbs();
-
-      // Send the search query and get the result back as html.
-      $res .= $this->htmlTable->overview($this->sql);
-
-      // Create navigation for pages
-      $res .= $this->getPageNavigation(); 
-      $res .= $this->totalHits();
-
-    return $res;
-  }
-
-
-  public function getLatestTitles($numMovies){
-    is_numeric($numMovies) or die('Check: Number of movies (numMovies) in function getLatestTitles() must be numeric.');
-    $sql = "SELECT * FROM vmovie WHERE published < NOW() AND deleted IS NULL ORDER BY id DESC LIMIT ".$numMovies.";";
-    $res = $this->ExecuteSelectQueryAndFetchAll($sql);
-    $html  = '<div class="latestTitles"><h1>Nyinkomna titlar</h1>';
-    $html .= $this->htmlTable->overview($res);
-    $html .= '</div>';
-
-    return $html;
-  }
-
-    public function getRandom($numMovies, $heading, $class){
-    is_numeric($numMovies) or die('Check: Number of posts in function getRandom() must be numeric.');
-    $sql = "SELECT * FROM vmovie WHERE published < NOW() AND deleted IS NULL ORDER BY RAND() DESC LIMIT ".$numMovies.";";
-
-    $res = $this->ExecuteSelectQueryAndFetchAll($sql);
-    $html  = '<div class="'.$class.'"><h1>'.$heading.'</h1>';
-
-
-      $html .= $this->htmlTable->overview($res);
-
-    $html .= '</div>';
-
-    return $html;
-  }
-
-
 
   private function totalHits(){
     return "<div class='totalResults smallText'> Totalt antal träffar: ".$this->rows."</div>";
   }
+
 
   /**
    * Get html for search form
@@ -409,28 +404,25 @@ class CMovieSearch extends CDatabase {
    * @return string html for search form
    */
   private function overviewForm() {
-
-        $res = <<<EOD
-        <form>
-          <div class="overviewSearch">
-            <label>Titel: </label>
-            <input type='text' name='title' value='{$this->title}' size="40">
-            <label>Regissör: </label>
-            <input type='search' name='director' value='{$this->director}' size="40">
-            <button type='submit' name='submit'>Sök</button>
-            <a href='?'><strong>Visa alla</strong></a>
-          </div>
-          <div class="overviewFilter">
-            <div class="overviewGenre">
-              {$this->getOverviewGenre()}
-            </div>
-            <div class="overviewSort">
-              {$this->getOverviewSort()}
-            </div>
-          </div>
-        </form>
-EOD;
-        return $res;
+    $res = "<form>
+      <div class='overviewSearch'>
+        <label>Titel: </label>
+        <input type='text' name='title' value='{$this->title}' size='40'>
+        <label>Regissör: </label>
+        <input type='search' name='director' value='{$this->director}' size='40'>
+        <button type='submit' name='submit'>Sök</button>
+        <a href='?'><strong>Visa alla</strong></a>
+      </div>
+      <div class='overviewFilter'>
+        <div class='overviewGenre'>
+          {$this->getOverviewGenre()}
+        </div>
+        <div class='overviewSort'>
+          {$this->getOverviewSort()}
+        </div>
+      </div>
+    </form>";
+    return $res;
   } 
 
 
@@ -457,62 +449,33 @@ EOD;
   }
 
 
-
-/**
+  /**
    * Bygg genreList
    *
    * @param string htmlkod
    */
   public function getOverviewGenre() {
+    $sql = "SELECT DISTINCT G.name
+      FROM Genre AS G
+        INNER JOIN Movie2Genre AS M2G
+        ON G.id = M2G.idGenre
+        GROUP BY G.name ASC";
 
-  $sql = <<<EOD
-    SELECT DISTINCT G.name
-    FROM Genre AS G
-      INNER JOIN Movie2Genre AS M2G
-      ON G.id = M2G.idGenre
-      GROUP BY G.name ASC;
-EOD;
-  $res = $this->ExecuteSelectQueryAndFetchAll($sql,null,false);
+    $res = $this->ExecuteSelectQueryAndFetchAll($sql,null,false);
 
-  $html = "<nav>\n<ul class='genreList'>\n";
-  foreach($res as $item) {
-    $selected = $item->name==$this->genre ? " class='selected' " : null;
-    $html .= "<li{$selected}><a href='filmer.php?genre={$item->name}";
-    $html .= isset($this->orderby)?'&orderby='.$this->orderby:null;
-    $html .= isset($this->title)?'&title='.$this->title:null;
-    $html .= isset($this->hits)?'&hits='.$this->hits:null;
-    $html .= isset($this->director)?'&director='.$this->director:null;
-    $html .= "'>{$item->name}</a></li>\n";
-  }
-  $html .= "</ul>\n</nav>\n";
-  return $html;
-
-
-
-
-
-        return $html;
-  }
-
-    /* 
-   * Gives search result from sql-query
-   *
-   * @return string html for search form and result.
-  private function getSearchResult() {
-
-    // Put results into a HTML-table
-    //$tr = "<table><tr><th>Rad</th><th>Id</th><th>Bild</th><th>Titel</th><th>År</th></tr>";
-    $tr = "<table><tr><th>Rad</th><th>Id " . $this->orderby('id') . "</th><th>Bild</th><th>Titel " . $this->orderby('title') . "</th><th>År " . $this->orderby('year') . "</th><th>Genre</th></tr>";
-    foreach($this->sql AS $key => $val) {
-      $tr .= "<tr><td>{$key}</td><td>{$val->id}</td><td><img width='80' height='40' src='{$val->image}' alt='{$val->title}' /></td><td>{$val->title}</td><td>{$val->YEAR}</td></tr>";
+    $html = "<nav>\n<ul class='genreList'>\n";
+    foreach($res as $item) {
+      $selected = $item->name==$this->genre ? " class='selected' " : null;
+      $html .= "<li{$selected}><a href='filmer.php?genre={$item->name}";
+      $html .= isset($this->orderby)?'&orderby='.$this->orderby:null;
+      $html .= isset($this->title)?'&title='.$this->title:null;
+      $html .= isset($this->hits)?'&hits='.$this->hits:null;
+      $html .= isset($this->director)?'&director='.$this->director:null;
+      $html .= "'>{$item->name}</a></li>\n";
     }
-    $tr .= "</table>";
-
-    return $tr;
+    $html .= "</ul>\n</nav>\n";
+    return $html;
   }
-   */
-
-
 
 
   private function getGenreQuery(){
@@ -597,69 +560,53 @@ EOD;
   }
 
 
-
-
-
-
-
-
-
   /**
    * Get html for search form
    *
    * @return string html for search form
    */
   private function getForm() {
-
-        $res = <<<EOD
-        <form>
-          <fieldset>
-            <legend>Sök</legend>
-            <p><label>Titel: </label><input type='search' name='title' value='{$this->title}'></p>
-            <p>eller</p>
-            <p>
-              <label>Skapad mellan åren: 
-                <input type='text' name='year1' value='{$this->year1}'/> - <input type='text' name='year2' value='{$this->year2}'/>
-              </label>
-            </p>
-            <p>eller</p>
-            {$this->getGenreList()}
-            {$this->getSortOptions()}
-            <input type="hidden" name="genre" value='{$this->genre}'/> 
-            <p><button type='submit' name='submit'>Sök</button></p>
-            <p><a href='?'><strong>Visa alla</strong></a></p>
-          </fieldset>
-         
-        </form>
-EOD;
-        return $res;
+    $res = "<form>
+      <fieldset>
+        <legend>Sök</legend>
+        <p><label>Titel: </label><input type='search' name='title' value='{$this->title}'></p>
+        <p>eller</p>
+        <p>
+          <label>Skapad mellan åren: 
+            <input type='text' name='year1' value='{$this->year1}'/> - <input type='text' name='year2' value='{$this->year2}'/>
+          </label>
+        </p>
+        <p>eller</p>
+        {$this->getGenreList()}
+        {$this->getSortOptions()}
+        <input type='hidden' name='genre' value='{$this->genre}'/> 
+        <p><button type='submit' name='submit'>Sök</button></p>
+        <p><a href='?'><strong>Visa alla</strong></a></p>
+      </fieldset>
+     
+    </form>";
+    return $res;
   } 
-  
-
-
 
   private function getSortOptions(){
-  $sortOptions = <<<EOD
-    <p>
-      <label>Sortera efter:
-        <select name="orderby">
-          <option value="id">Id</option>
-          <option value="title">Titel</option>
-          <option value="YEAR">År</option>
-        </select>
-      </label>
-      <label>Ordning:
-        <select name="order">
-            <option value="asc">Stigande</option>
-            <option value="desc">Fallande</option>
-        </select>
-      </label>
-    </p>
-EOD;
+    $sortOptions = '<p>
+        <label>Sortera efter:
+          <select name="orderby">
+            <option value="id">Id</option>
+            <option value="title">Titel</option>
+            <option value="YEAR">År</option>
+          </select>
+        </label>
+        <label>Ordning:
+          <select name="order">
+              <option value="asc">Stigande</option>
+              <option value="desc">Fallande</option>
+          </select>
+        </label>
+      </p>';
 
-  return $sortOptions;
+    return $sortOptions;
   }
-
 
 
  /**
@@ -669,22 +616,20 @@ EOD;
    */
   public function getGenreList() {
 
-$sql = <<<EOD
-  SELECT DISTINCT G.name
-  FROM Genre AS G
-    INNER JOIN Movie2Genre AS M2G
-    ON G.id = M2G.idGenre;
-EOD;
-        $res = $this->ExecuteSelectQueryAndFetchAll($sql,null,false);
-        $genreList = "<p>Välj genre:<br/>";
-        foreach($res as $key => $val) {
-            $genreList .="<a href='?genre={$val->name}'>{$val->name}</a> ";
-        }
-        $genreList .="</p>";
+    $sql = "SELECT DISTINCT G.name
+            FROM Genre AS G
+              INNER JOIN Movie2Genre AS M2G
+              ON G.id = M2G.idGenre";
 
-        return $genreList;
+    $res = $this->ExecuteSelectQueryAndFetchAll($sql,null,false);
+    $genreList = "<p>Välj genre:<br/>";
+    foreach($res as $key => $val) {
+        $genreList .="<a href='?genre={$val->name}'>{$val->name}</a> ";
+    }
+    $genreList .="</p>";
+
+    return $genreList;
   }
-
 
 
   /**
@@ -692,48 +637,45 @@ EOD;
    */
   private function getParams(){
 
-      // Get parameters 
-      $this->title   = isset($_GET['title'])   ? $_GET['title'] : null;
-      $this->title   = isset($_POST['title'])   ? $_POST['title'] : null;
-      $this->director= isset($_GET['director'])   ? $_GET['director'] : null;
-      $this->director= isset($_POST['director'])   ? $_POST['director'] : null;
-      $this->hits    = isset($_GET['hits'])    ? $_GET['hits']  : 8;
-      $this->page    = isset($_GET['page'])    ? $_GET['page']  : 1;
-      $this->year1   = isset($_GET['year1']) && !empty($_GET['year1']) ? $_GET['year1'] : null;
-      $this->year2   = isset($_GET['year2']) && !empty($_GET['year2']) ? $_GET['year2'] : null;
-      $this->orderby = isset($_GET['orderby']) ? $_GET['orderby'] : 'id';
-      $this->order   = isset($_GET['order'])   ? strtolower($_GET['order'])   : 'asc';
-      $this->genre   = isset($_GET['genre'])  ? $_GET['genre'] : null;
-      $this->YEAR    = isset($_POST['YEAR'])   ? $_POST['YEAR'] : null;
-      $this->plot    = isset($_POST['plot'])   ? $_POST['plot'] : null;
-      $this->image   = isset($_POST['image'])   ? $_POST['image'] : null;
-      $this->price   = isset($_POST['price'])   ? $_POST['price'] : null;
-      $this->imdb    = isset($_POST['imdb'])   ? $_POST['imdb'] : null;
-      $this->youtube = isset($_POST['youtube'])   ? $_POST['youtube'] : null;
-      $this->published = isset($_POST['published'])   ? $_POST['published'] : null;
-      $this->save    = isset($_POST['save'])? $_POST['save']: null;
-      $this->id      = isset($_GET['editMovie']) ? $_GET['editMovie'] : null;
-      //$this->currentCategories = isset($_POST['selectedGenre']) ? $_POST['selectedGenre'] : $this->currentCategories;
+    // Get parameters 
+    $this->title   = isset($_GET['title'])   ? $_GET['title'] : null;
+    $this->title   = isset($_POST['title'])   ? $_POST['title'] : $this->title;
+    $this->director= isset($_GET['director'])   ? $_GET['director'] : null;
+    $this->director= isset($_POST['director'])   ? $_POST['director'] : $this->director;
+    $this->hits    = isset($_GET['hits'])    ? $_GET['hits']  : 8;
+    $this->page    = isset($_GET['page'])    ? $_GET['page']  : 1;
+    $this->year1   = isset($_GET['year1']) && !empty($_GET['year1']) ? $_GET['year1'] : null;
+    $this->year2   = isset($_GET['year2']) && !empty($_GET['year2']) ? $_GET['year2'] : null;
+    $this->orderby = isset($_GET['orderby']) ? $_GET['orderby'] : 'id';
+    $this->order   = isset($_GET['order'])   ? strtolower($_GET['order'])   : 'asc';
+    $this->genre   = isset($_GET['genre'])  ? $_GET['genre'] : null;
+    $this->YEAR    = isset($_POST['YEAR'])   ? $_POST['YEAR'] : null;
+    $this->plot    = isset($_POST['plot'])   ? $_POST['plot'] : null;
+    $this->image   = isset($_POST['image'])   ? $_POST['image'] : null;
+    $this->price   = isset($_POST['price'])   ? $_POST['price'] : null;
+    $this->imdb    = isset($_POST['imdb'])   ? $_POST['imdb'] : null;
+    $this->youtube = isset($_POST['youtube'])   ? $_POST['youtube'] : null;
+    $this->published = isset($_POST['published'])   ? $_POST['published'] : null;
+    $this->save    = isset($_POST['save'])? $_POST['save']: null;
+    $this->id      = isset($_GET['editMovie']) ? $_GET['editMovie'] : null;
+    //$this->currentCategories = isset($_POST['selectedGenre']) ? $_POST['selectedGenre'] : $this->currentCategories;
 
-      // Remove empty values
-      $this->title   = empty($this->title)   ? null : $this->title;
-      $this->director   = empty($this->director)   ? null : $this->director;
-      $this->YEAR   = empty($this->YEAR)   ? null : $this->YEAR;
-      $this->plot   = empty($this->plot)   ? null : $this->plot;
-      $this->image   = empty($this->image)   ? null : $this->image;
-
-
-
-      // Check that incoming parameters are valid
-      is_numeric($this->hits) or die('Check: Hits must be numeric.');
-      is_numeric($this->page) or die('Check: Page must be numeric.');
-      //is_numeric($this->YEAR) or die('Check: YEAR must be numeric.');
-      is_numeric($this->year1) || !isset($this->year1)  or die('Check: Year must be numeric or not set.');
-      is_numeric($this->year2) || !isset($this->year2)  or die('Check: Year must be numeric or not set.');
-      //is_numeric($this->YEAR)  || !isset($this->YEAR)   or die('Check: YEAR must be numeric or not set.');
-      //is_numeric($this->price) || !isset($this->price)  or die('Check: Price must be numeric or not set.');
+    // Remove empty values
+    $this->title   = empty($this->title)   ? null : $this->title;
+    $this->director   = empty($this->director)   ? null : $this->director;
+    $this->YEAR   = empty($this->YEAR)   ? null : $this->YEAR;
+    $this->plot   = empty($this->plot)   ? null : $this->plot;
+    $this->image   = empty($this->image)   ? null : $this->image;
 
 
+    // Check that incoming parameters are valid
+    is_numeric($this->hits) or die('Check: Hits must be numeric.');
+    is_numeric($this->page) or die('Check: Page must be numeric.');
+    //is_numeric($this->YEAR) or die('Check: YEAR must be numeric.');
+    is_numeric($this->year1) || !isset($this->year1)  or die('Check: Year must be numeric or not set.');
+    is_numeric($this->year2) || !isset($this->year2)  or die('Check: Year must be numeric or not set.');
+    //is_numeric($this->YEAR)  || !isset($this->YEAR)   or die('Check: YEAR must be numeric or not set.');
+    //is_numeric($this->price) || !isset($this->price)  or die('Check: Price must be numeric or not set.');
   } 
 
   
@@ -749,7 +691,6 @@ EOD;
     // Return the modified querystring
     return $prepend . htmlentities(http_build_query($query));
   }
-
 
 
   private function getPageNavigation() {
@@ -778,11 +719,13 @@ EOD;
     return $html;
   }
 
+
   private function getBreadcrumbs() {
     $breadcrumb = "<ul class='breadcrumb'>\n<li><a href='filmer.php'>Alla filmer</a> »</li>\n";
     $breadcrumb .= "</ul>\n";
     return $breadcrumb;
   }
+
 
   /**
    * Create links for hits per page.
@@ -791,17 +734,15 @@ EOD;
    * @return string as a link to this page.
    */
   private function getHits() {
+    $html = "<nav class='galleryDropDown'>
+          <form method='get'>
+            <label for='input1'>Visa:</label>
+            <input type='hidden' name='genre' value='{$this->genre}'>
+            <input type='hidden' name='title' value='{$this->title}'>
+            <input type='hidden' name='director' value='{$this->director}'>
+            <input type='hidden' name='orderby' value='{$this->orderby}'>
+            <select id='input1' name='hits' onchange='form.submit();'>";
 
-    $html = <<<EOD
-          <nav class="galleryDropDown">
-          <form method="get">
-            <label for="input1">Visa:</label>
-            <input type="hidden" name="genre" value='{$this->genre}'>
-            <input type="hidden" name="title" value='{$this->title}'>
-            <input type="hidden" name="director" value='{$this->director}'>
-            <input type="hidden" name="orderby" value='{$this->orderby}'>
-            <select id='input1' name='hits' onchange='form.submit();'>
-EOD;
     foreach($this->hitsOptions as $value=>$name){
         if($value == $this->hits) {
           $html .= "<option selected='selected' value='".$value."'>".$name."</option>";
@@ -812,9 +753,7 @@ EOD;
     }
     $html .="</select></form></nav>";
     return $html;
-
   }
-
 
 
   /**
@@ -824,12 +763,10 @@ EOD;
    */
   public function getAllCategories() {
     $cats = array();
-    $sql = <<<EOD
-      SELECT DISTINCT G.name
+    $sql = "SELECT DISTINCT G.name
       FROM Genre AS G
         INNER JOIN Movie2Genre AS M2G
-        ON G.id = M2G.idGenre;
-EOD;
+        ON G.id = M2G.idGenre";
 
     $res = $this->ExecuteSelectQueryAndFetchAll($sql,null,false);
   

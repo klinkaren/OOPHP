@@ -3,7 +3,7 @@
  * Class for the swedish Babe Ruth calender made by Viktor Kjellberg.
  *
  */
-class CBabeCal  {
+class CCal {
 
 	private $curYear;
 	private $curMonth;
@@ -12,35 +12,50 @@ class CBabeCal  {
 	private $year;
 	private $month;
 	private $weeks;
+	private $movieTitle;
+	private $movieId;
+	private $movies = array(
+		array(5, "From Dusk till Dawn"),
+		array(1, "Pulp fiction"),
+		array(11, "Vicky Cristina Barcelona"),
+		array(25, "The Great Gatsby"),
+		array(24, "Kingdom of heaven"),
+		array(7, "Kingsman"),
+		array(22, "The Last Samurai"),
+		array(10, "Django unchained"),
+		array(9, "Inglourious Basterds"), 
+		array(8, "Full Metal Jacket"),
+		array(21, "Enemy at the gates"),
+		array(14, "In Time")
+		);
 
 	/**
 	 * Constructor
 	 *
 	 */
 	public function __construct() {
-
 	}
 
 	public function view(){
 		// Get calendar from the session or start new calendar.
-		if(isset($_SESSION['babe'])) {
-			$babe = $_SESSION['babe'];
+		if(isset($_SESSION['cal'])) {
+			$cal = $_SESSION['cal'];
 			if(isset($_GET['next'])){
-				$babe->nextMonth();
+				$cal->nextMonth();
 			} elseif(isset($_GET['prev'])){
-				$babe->prevMonth();
+				$cal->prevMonth();
 			}
 
 			// Show todays month (by unsetting session causing calender to reload).
 			if(isset($_GET['destroyCal'])) {
-				unset($_SESSION['babe']);
+				unset($_SESSION['cal']);
 			}
-			$html = $babe->getCal();
+			$html = $cal->getCal();
 		} else {
 
 			// save calendar to session
 			$this->createCalendar();
-			$_SESSION['babe'] = $this;
+			$_SESSION['cal'] = $this;
 			$html = $this->getCal();
 		}
 
@@ -137,17 +152,20 @@ class CBabeCal  {
 			return $returnMe;
 		}
 
+		$this->setMovieParams($this->month);
+
 		$html = '<div class="month">';
-		$html .= '<div class="babeNav">';
-			$html .= '<div class="babeNavLeft">';		
+		$html .= '<div class="cal'.$this->month.'"><img src="img.php?src=cal/'.$this->month.'.jpg&width=978&height=450&crop-to-fit"/><div class="textOver">Månadens film:<br>
+		<span class="monthMovieTitle">'.$this->movieTitle.'</span><br/><a href="film.php?id='.$this->movieId.'">Hyr filmen</a></div><div class="textOverBg">.</div></div>';
+		$html .= '<div class="monthHeading">'.$this->strMonth.", ".$this->year.'</div>';
+		$html .= '<div class="calNav">';
+			$html .= '<div class="calNavLeft">';		
 				$html .= '<a href="?prev">Föregående månad</a>';
 			$html .= '</div>';
-			$html .= '<div class="babeNavRight">';
+			$html .= '<div class="calNavRight">';
 				$html .= '<a href="?next">Nästa månad</a>';
 			$html .= '</div>';
 		$html .= '</div>';
-		$html .= '<div class="babe'.$this->month.'"></div>';
-		$html .= '<div class="monthHeading">'.$this->strMonth.", ".$this->year.'</div>';
 			
 		// Infoline containing weekdays
 		$html .= '<div class="infoLine">';
@@ -166,6 +184,12 @@ class CBabeCal  {
 
 		return $html;	
 	}
+
+	private function setMovieParams($month){
+		$this->movieId = $this->movies[$month-1][0];
+		$this->movieTitle = $this->movies[$month-1][1];
+	}
+
 
 	/**
 	 * Creates all weeks of month and saves em in array
@@ -204,9 +228,8 @@ class CBabeCal  {
 
 		// creating weeks
 		foreach ($allWeeks as $week) {
-			$this->weeks[] = new CBabeWeek($this->year, $this->month, $week);
-		}
-			
+			$this->weeks[] = new CWeek($this->year, $this->month, $week);
+		}		
 	}
 
 	/**

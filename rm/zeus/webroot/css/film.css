@@ -18,3 +18,7 @@
 	display: block;
 	color: red;
 }
+.monthHeading {
+	background-color: #2d882d;
+	border-bottom: 1px solid black;
+}

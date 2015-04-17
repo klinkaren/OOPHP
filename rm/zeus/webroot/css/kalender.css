@@ -1,0 +1,109 @@
+.textOver{
+	position: relative;
+	top: -150px;
+	text-align: center;
+	width: 100%;
+   	color: white;
+	font-size: 150%;
+	background-color: grey;
+	opacity: 0.9;
+}
+.monthMovieTitle{
+   font-size: 250%;
+}
+div.month {
+	width: 978px;
+	border-right: 1px solid black;
+	border-left: 1px solid black;
+}
+div.calNav{
+	border-bottom: 1px solid black;
+	overflow: auto;
+}
+div.calNavLeft{
+	float: left;
+}
+
+div.calNavRight{
+	float: right;
+}
+div.monthHeading {
+	background-color: #2d882d;
+	border-bottom: 1px solid black;
+}
+div.week, div.infoLine {
+	border-bottom: 1px solid black;
+	overflow: auto;
+}
+div.infoLine {
+	font-size: large;
+}
+div.weekNo {
+	float: left;
+	width: 30px;
+	text-align: center;
+	font-weight: bold;
+}
+div.day, div.dayTopline {
+	width: 134px;
+	float: left;
+	border-left: 1px solid black;
+}
+div.day {
+	height: 60px;
+	text-align: right;
+	font-size: large;
+}
+div.red {
+	color: red;
+}
+div.notInMonth {
+	color: #ccc;
+	font-size: small;
+}
+div.today {
+	background-color: #ccc;
+}
+
+div.cal01 {
+	background: url(../img/cal01.jpg) no-repeat center;
+	background-color: #333;
+	height: 300px;
+}
+div.cal02 {
+	background: url(../img/cal02.jpg) no-repeat center;
+}
+div.cal03 {
+	background: url(../img/cal03.jpg) no-repeat center;
+}
+div.cal04 {
+	background: url(../img/cal04.jpg) no-repeat center;
+}
+div.cal05 {
+	background: url(../img/cal05.jpg) no-repeat center;
+}
+div.cal06 {
+	background: url(../img/cal06.jpg) no-repeat center;
+}
+div.cal07 {
+	background: url(../img/cal07.jpg) no-repeat center;
+}
+div.cal08 {
+	background: url(../img/cal08.jpg) no-repeat center;
+}
+div.cal09 {
+	background: url(../img/cal09.jpg) no-repeat center;
+}
+div.cal10 {
+	background: url(../img/cal10.jpg) no-repeat center;
+}
+div.cal11 {
+	background: url(../img/cal11.jpg) no-repeat center;
+}
+div.cal12 {
+	background: url(../img/cal12.jpg) no-repeat center;
+}
+div.cal01, div.cal02, div.cal03, div.cal04, div.cal05, div.cal06, div.cal07, div.cal08, div.cal09, div.cal10, div.cal11, div.cal12 {
+	background-color: #333;
+	height: 450px;
+}

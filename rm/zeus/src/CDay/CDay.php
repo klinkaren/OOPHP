@@ -3,7 +3,7 @@
  * Class representing a day in the swedish Babe Ruth calender made by Viktor Kjellberg.
  *
  */
-class CBabeDay  {
+class CDay extends CWeek {
 
 	private $nameOfDay;
 	private $red = false; 		// boolean

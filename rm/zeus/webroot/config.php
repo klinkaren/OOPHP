@@ -75,6 +75,7 @@ $zeus['navbar'] = array(
     'hem'         => array('text'=>'Hem',              'url'=>'index.php',        'title' => 'Förstasidan'),
     'filmer'      => array('text'=>'Filmer',           'url'=>'filmer.php',       'title' => 'Redovisningar för kursmomenten'),
     'nyheter'     => array('text'=>'Nyheter',          'url'=>'nyheter.php',      'title' => 'Senaste nyheterna'),
+    'kalender'    => array('text'=>'Kalender',         'url'=>'kalender.php',     'title' => 'Kalender som visar månadens film'),
     'omoss'       => array('text'=>'Om oss',           'url'=>'omoss.php',        'title' => 'Informationssida om företaget Rental Movies, RM'),
     'loginout'    => array('text'=>CUser::logOption(), 'url'=>'loginout.php',     'title' => CUser::logOption()),
   ),
