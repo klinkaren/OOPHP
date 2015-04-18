@@ -6,16 +6,13 @@
 // Include the essential config-file which also creates the $zeus variable with its defaults.
 include(__DIR__.'/config.php');
 
+// Connect to a MySQL database using PHP PDO
+$db = new CDatabase($zeus['database']);
+// Create a user
+$user = new CUser($db);
 
 
-// Create instance of CContent
-$user = new CUser($zeus['database']);
 
-// Log out
-if(isset($_POST['logout'])) {
-    $user->logout();
-    header("Location:new_user.php");
-} 
 
 // Put everything in Zeus container.
 $zeus['title'] = "Skapa medlem";

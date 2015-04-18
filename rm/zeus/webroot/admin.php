@@ -28,6 +28,7 @@ $zeus['main'] = <<<EDO
 	<li><a href="admin_movies.php">Administrera filmer</a></li>
 	<li><a href="admin_news.php">Administrera nyheter</a></li>
 	<li><a href="admin_parts.php">Administrera sidans delar</a></li>
+	<li><a href="admin_users.php">Administrera sidans medlemmar</a></li>
 <ul>
 
 EDO;

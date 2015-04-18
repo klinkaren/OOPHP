@@ -88,6 +88,43 @@ $zeus['navbar'] = array(
   }
 );
 
+// Member menu
+if(CUser::authenticated()){
+  $zeus['navbar']['items']['user'] = array('text'=>'Medlem', 'url'=>'user.php',  'title' => 'Medlemssida där du kan redigera dina inställningar',
+          'submenu' => array(
+ 
+        'items' => array(
+          // This is a menu item of the submenu
+          'user_page'  => array(
+            'text'  => 'Min sida',   
+            'url'   => 'user.php?acronym='.$_SESSION['user']->acronym,  
+            'title' => 'Din sida på webbplatsen.',
+            'class' => 'submenu'
+          ),
+
+          // This is a menu item of the submenu
+          'edit_user'  => array(
+            'text'  => 'Redigera info',   
+            'url'   => 'user.php?editUser',  
+            'title' => 'Redigera din medlemsinformation.',
+            'class' => 'submenu'
+          ),
+
+          // This is a menu item of the submenu
+          'edit_password'  => array(
+            'text'  => 'Byt lösen',   
+            'url'   => 'user.php?editPassword',  
+            'title' => 'Byt ut ditt lösenord.',
+            'class' => 'submenu'
+          ),
+
+        ),
+      ),);
+} else {
+  $zeus['navbar']['items']['becomeMember'] = array('text'=>'Bli medlem', 'url'=>'new_user.php',  'title' => 'Bli medlem och börja kolla på film nu!');
+}
+
+// Admin menu
 if(CUser::authenticatedAsAdmin()){
   $zeus['navbar']['items']['admin'] = array('text'=>'Admin',  'url'=>'admin.php', 'title' => 'Lägg till, redigera och ta bort filmer, nyheter och delar av sidan',
           'submenu' => array(
@@ -116,16 +153,19 @@ if(CUser::authenticatedAsAdmin()){
             'title' => 'Redigera sidans delar.',
             'class' => 'submenu'
           ),
+
+          // This is a menu item of the submenu
+          'admin_users'  => array(
+            'text'  => 'Medlemmar',   
+            'url'   => 'admin_users.php',  
+            'title' => 'Redigera webbplatsens medlemmar.',
+            'class' => 'submenu'
+          ),
         ),
       ),);
-
-}else{
-  if(CUser::authenticated()){
-    $zeus['navbar']['items']['member'] = array('text'=>'Medlem', 'url'=>'user.php',  'title' => 'Medlemssida där du kan redigera dina inställningar');
-  } else {
-    $zeus['navbar']['items']['becomeMember'] = array('text'=>'Bli medlem', 'url'=>'new_user.php',  'title' => 'Bli medlem och börja kolla på film nu!');
-  }
 }
+
+
 
 
 // LOCALHOST

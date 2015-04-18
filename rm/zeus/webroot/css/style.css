@@ -126,3 +126,9 @@ aside{
 .left{
   float: left;
 }
+.failure{
+  color: red;
+}
+.success{
+  color: green;
+}

@@ -107,4 +107,79 @@ EOD;
 
   }
 
+
+
+
+
+  /**
+   * Creates an html table from db-query result.
+   *
+   * @param $sql object created from sql-query asked through CDatabase::ExecuteSelectQueryAndFetchAll()
+   * @param $values associative array with sql column name and the name to show as header
+   * @param $edit boolean: if edit options should be shown
+   * @return string with html for table based on given values.
+   */
+  public function getTableAsHtml($sql, $values = array('id' =>'Id'), $edit = false) {
+
+    $table = '<table class="sqlTable">';
+
+    // Get heading
+    $table .= "<tr>";
+    foreach ($values as $key => $val) {
+      $table .= '<th>'.$val.'<a href='.$this->getQueryString(array('orderby' => $key, 'order' => 'asc')).'>&darr;</a><a href='.$this->getQueryString(array('orderby' => $key, 'order' => 'desc')).'>&uarr;</a></th>';
+    }
+    if($edit){
+      $table .= '<th></th><th></th>';
+    }
+    $table .= "</tr>";
+
+    // Get rows
+    foreach ($sql as $sqlVal) {
+      $deleted = !empty($sqlVal->deleted) ? " class=deleted" : "";
+      $table .= '<tr'.$deleted.'>';
+
+      // Set values for delete/undelete
+      if(isset($sqlVal->deleted)){
+        $un = "un";
+        $do = "Återskapa";
+        $class = " class=deleted";
+      }else{
+        $un = "";
+        $do = "Ta bort";
+        $class = "";
+      }
+
+      // Get data for row
+      foreach ($values as $key => $val) {
+        $table .= '<td>'.$sqlVal->$key.'</td>';
+      }
+      if($edit){
+        // Get edit links
+        $table .= "<td><a href=?edit={$sqlVal->id}><img title='Redigera' src=img.php?src=edit.png&width=20&height=20&crop-to-fit alt='Redigera'/><a/></td>";
+        $table .= "<td><a href=?{$un}delete={$sqlVal->id}><img title='{$do}' src=img.php?src={$un}delete.png&width=20&height=20&crop-to-fit alt='{$do}'/><a/></td>";
+      }
+
+      $table .= '</tr>';
+    }
+
+    $table .= "</table>";
+
+
+    return $table;
+
+  }
+
+
+  private function getQueryString($options, $prepend='?') {
+    // parse query string into array
+    $query = array();
+    parse_str($_SERVER['QUERY_STRING'], $query);
+
+    // Modify the existing query string with new options
+    $query = array_merge($query, $options);
+
+    // Return the modified querystring
+    return $prepend . htmlentities(http_build_query($query));
+  }
+
 }

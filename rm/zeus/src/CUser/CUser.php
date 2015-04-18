@@ -30,44 +30,184 @@ class CUser {
     $this->db = $db;
   }
 
-  public function signUp(){
-    if(isset($_POST['user']->Logout)){
-      $this->Logout;
+
+
+
+
+
+
+
+
+  private function saveUserToDb($password){
+    // Prepare salt and password
+    $salt = md5($password);
+    $password = md5($password.$salt);
+    $sql = "INSERT INTO user(acronym, name, password, salt, type, email, website, created) VALUES(?, ?, ?, ?, ?, ?, ?, NOW())";
+    $params = array($this->acronym, $this->name, $password, $salt, "user", $this->email, $this->website);
+    $res = $this->db->ExecuteQuery($sql, $params);
+    if($this->db->RowCount() == 1){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+
+  private function createPassword(){
+    $html = null;
+    $output = null;
+    $saved = false;
+
+    if(isset($_POST['savePassword'])){
+      // If form was submittet
+
+      if( !empty($_POST['newPassword']) && !empty($_POST['newPasswordAgain']) ){
+        // If all passwords are set
+
+        if($_POST['newPassword'] == $_POST['newPasswordAgain']){
+          // If new password has been entered the same way twice.
+
+          // Save user
+          ### fortsätt här
+          $this->name = $_POST['name'];
+          $this->acronym = $_POST['acronym'];
+          $this->email = !empty($_POST['email']) ? $_POST['email'] : null;
+          $this->website = !empty($_POST['website']) ? $_POST['website'] : null;
+          if($this->saveUserToDb($_POST['newPassword'])){
+            $saved = true;
+          }
+
+
+        } else {
+          $output = "<span class=failure>Det nya lösenordet har inte fyllts i likadant i båda fälten. Vänligen fyll i ditt nya lösenord likadant.</span>";
+        }
+
+      } else {
+        $output = "<span class=failure>Vänligen fyll i all nödvändig information.</span>";
+      }
     }
 
-    if($this->authenticated()){
-      $res  = "<p>You are already logged in. You need to log out to be able to create a new user.</p>";
-      $res .= $this->getLogoutForm();
+    if($saved){
+      $html  = "Medlemmen skapades";
+      $html .= "<p><a href=loginout.php>Logga in</a></p>";
     }else{
-      $res  = '<p>Redan medlem? <a href="loginout.php">Logga in</a></p>';
-      $res .= $this->createUserForm();
+      // Show form
+      $html =  "<h1>Byt lösenord</h1>
+                <form method=post>
+                  <fieldset>
+                    <legend>Lösenordsinformation</legend>
+                    <p><i>Fält märkta med * måste fyllas i.</i></p>
+                    <p><label>*Nytt lösenord:<br/><input type='password' name='newPassword' value=''/></label></p>
+                    <p><label>*Nytt lösenord igen:<br/><input type='password' name='newPasswordAgain' value=''/></label></p>
+                    <input type='hidden' name='name' value='$this->name'/>
+                    <input type='hidden' name='acronym' value='$this->acronym'/>
+                    <input type='hidden' name='email' value='$this->email'/>
+                    <input type='hidden' name='website' value='$this->website'/>
+
+                    <p class=buttons><input type='submit' name='savePassword' value='Spara'/> <input type='reset' value='Återställ'/></p>
+                    <output>{$output}</output>
+                  </fieldset>
+                </form>";
+      }
+    return $html;
+  }
+
+  public function signUp(){
+    $output = null;
+    $html = null;
+
+    // Log out
+    if(isset($_POST['logout'])) {
+      $this->logout();
+      header("Location:new_user.php");
+
+    }elseif($this->authenticated()){
+      $html .= "<p>You are already logged in. You need to log out to be able to create a new user.</p>";
+      $html .= $this->getLogoutForm();
+
+    }elseif(isset($_POST['createMember'])){
+
+      // Check that all required fields are filled.
+      if( !empty($_POST['name']) && !empty($_POST['acronym'])  ){
+
+          // Update variabels of module
+          $this->name = $_POST['name'];
+          $this->acronym = $_POST['acronym'];
+          $this->email = !empty($_POST['email']) ? $_POST['email'] : null;
+          $this->website = !empty($_POST['website']) ? $_POST['website'] : null;
+
+        if($this->acronymExists($_POST['acronym']) ){
+          $output .= "<span class=failure>Aliaset '<i>".$_POST['acronym']."</i>' används redan. Vänligen välj ett annat alias.</span>";
+          $html .= $this->createUserForm($output);
+        }else{
+
+          // Go to password creation
+          $html .= $this->createPassword();
+        }
+      }else{
+        $output .= "<span class=failure>Nödvändig information saknas. Vänligen fyll i alla fält!<span>";  
+      }
+    }elseif(isset($_POST['savePassword'])){
+      $html .= $this->createPassword();
+    }else{
+      $html .= '<p>Redan medlem? <a href="loginout.php">Logga in</a></p>';
+      $html .= $this->createUserForm($output);
     }
-    return $res;
+    return $html;
   }
 
   ### Needs work
-  private function createUserForm(){
-    $html = "";
-    $html .= <<<EDO
-    <form method=post>
-  <fieldset>
-  <legend>Skapa medlem</legend>
-  <p><label>Titel:<br/><input type='text' name='title' value='{$title}'/></label></p>
-  <p><label>Slug:<br/><input type='text' name='slug' value='{$slug}'/></label></p>
-  <p><label>Url:<br/><input type='text' name='url' value='{$url}'/></label></p>
-  <p><label>Text:<br/><textarea name='DATA' rows="5" cols="80">{$data}</textarea></label></p>
-  <p><label>Type:<br/><input type='text' name='TYPE' value='{$type}'/></label></p>
-  <p><label>Filter:<br/><input type='text' name='FILTER' value='{$filter}'/></label></p>
-  <p><label>Publiseringsdatum:<br/><input type='text' name='published' value='{$published}'/></label></p>
-  <p class=buttons><input type='submit' name='save' value='Spara'/> <input type='reset' value='Återställ'/></p>
-  <p><a href='content_view.php'>Visa alla</a></p>
-  <output>{$output}</output>
-  </fieldset>
-</form>
-EDO;
+  private function createUserForm($output){
+
+    $html =  "<p><i>Fält märkta med * måste fyllas i.</i></p>
+              <form method=post>
+                <fieldset>
+                  <legend>Skapa medlem</legend>
+                  <p><label>*Namn:<br/><input type='text' name='name' value='{$this->name}'required/></label></p>
+                  <p><label>*Alias:<br/><input type='text' name='acronym' value='{$this->acronym}' required/></label></p>
+                  <p><label>E-post:<br/><input type='text' name='email' value='{$this->email}'/></label></p>
+                  <p><label>Webb:<br/><input type='text' name='website' value='{$this->website}'/></label></p>
+
+                  <p class=buttons><input type='submit' name='createMember' value='Skapa medlem'/> <input type='reset' value='Återställ'/></p>
+                  <output>{$output}</output>
+                </fieldset>
+              </form>";
 
     return $html;
   }
+
+
+  ### FORTSÄTT HÄR. Checka om acronymen finns eller ej.
+  private function acronymExists($acronym){
+    $sql = "SELECT count(id) as count FROM user where acronym = ? ";
+    $params = array($acronym);
+    $res = $this->db->ExecuteSelectQueryAndFetchAll($sql, $params);
+    if($res[0]->count == 1){
+      return true;
+    }else{
+      return false;
+    }
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   private function setParameters(){
@@ -77,6 +217,7 @@ EDO;
     $this->email   = isset($_SESSION['user']->email)    ? $_SESSION['user']->email   : null;
     $this->website = isset($_SESSION['user']->website)  ? $_SESSION['user']->website : null;
     $this->created = isset($_SESSION['user']->created)  ? $_SESSION['user']->created : null;
+    $this->type    = isset($_SESSION['user']->type)     ? $_SESSION['user']->type    : null;
     $this->save    = isset($_POST['save'])              ? true                       : false;
 
     $this->removeEmptyValues();
@@ -94,41 +235,181 @@ EDO;
 
 
 
+  /**
+   * Takes in user id and returns array of values for specified user
+   *
+   * @param int $id representing user.
+   * @return array $user with user values.
+   */
+  private function getUser($acronym){
+    $user = array();
+    $sql = "SELECT acronym, name, type, created, email, website FROM user WHERE acronym = ?";
+    $params = array($acronym);
+    $res = $this->db->ExecuteSelectQueryAndFetchAll($sql, $params);
+    if(isset($res[0])) {
+      $user = $res[0];
+    }
+    else {
+      die('Misslyckades: det finns inget innehåll med sådant id.');
+    }
+
+    // Sanitize content before using it.
+    # borde inte det här vara $this->title etc?
+    $user->acronym = htmlentities($user->acronym, null, 'UTF-8');
+    $user->name    = htmlentities($user->name, null, 'UTF-8');
+    $user->type    = htmlentities($user->type, null, 'UTF-8');
+    $user->created = htmlentities($user->created, null, 'UTF-8');
+    $user->email   = htmlentities($user->email, null, 'UTF-8');
+    $user->website = htmlentities($user->website, null, 'UTF-8');
+
+    return $user;
+  }
 
 
 
 
+  public function newUser(){
+    $html = null;
+    $html .= "create new user";
+    !$this->authenticated() or die('Check: You must logout to create a new user.');
+    return $html;
+  }
 
 
-  ### Needs work
+
+  /**
+   * 
+   *
+   * @return string: HTML-code with userform
+   */
   public function getUserAsHtml() {
 
-    // Check if user is logged in
-    $this->authenticated() or die('Check: You must login to view your profile.');
 
     // Set parameters from $_POST
     $this->setParameters();
 
     if(isset($_GET['editUser'])){
+      // Check if user is logged in
+      $this->authenticated() or die('Check: You must login to edit your profile.');
+
       $html = $this->editUser();
+
     }elseif(isset($_GET['editPassword'])){
-      $html = "Byt PW!!!";
+
+      // Check if user is logged in
+      $this->authenticated() or die('Check: You must login to edit your password.');
+
+      $html = $this->editPassword();
+    
     }else { 
-      $created = new DateTime(htmlentities($this->created, null, 'UTF-8'));
-      $created = $created->format('Y-m-d');
-      $html = "<h1>{$this->name}</h1>
-               <p>Medlem sedan: {$created}</p>
-               <p>E-post: {$this->email}</p>
-               <p>Webbsida: {$this->website}</p>
-               <br/>
-               <p><a href=?editUser>Redigera informationen</a></p>
-               <p><a href=?editPassword>Byt lösenord</a></p>
-              ";
+
+      if(isset($_GET['acronym'])){
+
+        // Get user details
+        $user = $this->getUser($_GET['acronym']);
+
+        // Convert $user->created to correct format
+        $created = new DateTime(htmlentities($user->created, null, 'UTF-8'));
+        $created = $created->format('Y-m-d');
+
+        // Return member page
+        $html = "<h1>{$user->name}</h1>
+                 <p>Alias: {$user->acronym}</p>
+                 <p>Medlem sedan: {$created}</p>
+                 <p>E-post: {$user->email}</p>
+                 <p>Webbsida: <a href={$user->website} target=_bland>{$user->website}</a></p>
+                 <p>Medlemstyp: {$user->type}</p>
+                ";
+
+      } else {
+        $this->authenticated() or die('Check: You must login to edit your profile.');
+        $created = new DateTime(htmlentities($this->created, null, 'UTF-8'));
+        $created = $created->format('Y-m-d');
+        $html = "<h1>{$this->name}</h1>
+                 <p>Alias: {$this->acronym}</p>
+                 <p>Medlem sedan: {$created}</p>
+                 <p>E-post: {$this->email}</p>
+                 <p>Webbsida: {$this->website}</p>
+                 <p>Medlemstyp: {$this->type}</p>
+                 <br/>
+                 <p><a href=?editUser>Redigera informationen</a></p>
+                 <p><a href=?editPassword>Byt lösenord</a></p>
+                 <p><a href=?acronym={$this->acronym}>Min sida</a></p>
+                ";
+      }
     }
 
     return $html;
   }
 
+  private function editPassword(){
+    $html = null;
+    $output = null;
+
+    if(isset($_POST['savePassword'])){
+      // If form was submittet
+
+      if( !empty($_POST['newPassword']) && !empty($_POST['newPasswordAgain']) && !empty($_POST['oldPassword'])){
+        // If all passwords are set
+
+        if($_POST['newPassword'] == $_POST['newPasswordAgain']){
+          // If new password has been entered the same way twice.
+
+          // Save the new password (if oldPassword is correct)
+          $output = $this->verifyAndSaveNewPassword($this->id, $_POST['oldPassword'], $_POST['newPassword']);
+
+        } else {
+          $output = "<span class=failure>Det nya lösenordet har inte fyllts i likadant i båda fälten. Vänligen fyll i ditt nya lösenord likadant.</span>";
+        }
+
+      } else {
+        $output = "<span class=failure>Vänligen fyll i all nödvändig information.</span>";
+      }
+    }
+
+    // Show form
+    $html =  "<h1>Byt lösenord</h1>
+              <form method=post>
+                <fieldset>
+                  <legend>Lösenordsinformation</legend>
+                  <p><i>Fält märkta med * måste fyllas i.</i></p>
+                  <p><label>*Nuvarande lösenord:<br/><input type='password' name='oldPassword' value=''/></label></p>
+                  <p><label>*Nytt lösenord:<br/><input type='password' name='newPassword' value=''/></label></p>
+                  <p><label>*Nytt lösenord igen:<br/><input type='password' name='newPasswordAgain' value=''/></label></p>
+
+                  <p class=buttons><input type='submit' name='savePassword' value='Spara'/> <input type='reset' value='Återställ'/></p>
+                  <output>{$output}</output>
+                </fieldset>
+              </form>";
+    return $html;
+  }
+
+  private function verifyAndSaveNewPassword($id, $oldPassword, $newPassword){
+
+    $sql = "SELECT id, acronym, name, type, created, website, email FROM user WHERE id = ? AND password = md5(concat(?, salt))";
+    $params = array($id, $oldPassword);
+    $res = $this->db->ExecuteSelectQueryAndFetchAll($sql,$params);
+    
+    // Save new password if user found
+    if (isset($res[0])){
+
+      // Prepare salt and password
+      $salt = md5($newPassword);
+      $password = md5($newPassword.$salt);
+
+      // Update password
+      $sql = "UPDATE user SET password = ?, salt = ? WHERE id = $id";
+      $params = array($password, $salt);
+      $res = $this->db->ExecuteQuery($sql,$params);
+      $output = "<span class=success>Lösenordet uppdaterades<span>";
+
+    }else{
+      $output ="<span class=failure>Angivet lösenord stämmer ej. Vänligen försök igen.</span>";
+    }
+    //$this->setSessionParams($res);
+    return $output;
+
+  }
 
   private function setPostInfo(){
     $this->name = isset($_POST['name']) ? $_POST['name'] : null;
@@ -323,7 +604,7 @@ EDO;
         <p><label>Användare :</label><br>
         <input type='text' name='acronym' value=''></p>
         <p><label>Lösenord:</label><br>
-            <input type='text' name='password' value=''></p>
+            <input type='password' name='password' value=''></p>
         <p><button type='submit' name='login'>Logga in</button></p>
         </fieldset></form>
 EOD;
