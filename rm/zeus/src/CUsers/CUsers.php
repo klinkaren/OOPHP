@@ -12,11 +12,15 @@ class CUsers extends CUser{
   private $edit    = false;
   private $orderby;
   private $order;
-  private $hits    = 4; 
-  private $page;
+  private $hits    = 8; 
+  private $page    = 1;
   private $rows;
   private $query;
   private $htmlTable;
+  private $name;
+  private $acronym;
+  private $email;
+  private $website;
 
 
 
@@ -32,27 +36,28 @@ class CUsers extends CUser{
     $this->edit = CUser::authenticatedAsAdmin();
   }
 
-  private function setParams(){
-    $this->orderby = !empty($_GET['orderby']) ? $_GET['orderby'] : 'id';
-    $this->order   = !empty($_GET['order'])   ? $_GET['order']   : 'asc';
-    $this->hits    = !empty($_GET['hits'])    ? $_GET['hits']    : $this->hits;
-  }
 
   /**
-   *
+   * The main function of this class
    *
    * @return string htmlcode
    */
-  public function getHtml(){
+  public function __toString(){
     $html = null;
     $this->setParams();
 
-    if(!empty($_GET['editUserId'])){
+    if(!empty($_GET['edit'])){
+      $html = $this->editUser($_GET['edit']);
       // Get edit form for the specified user
-      $html .= "<h1>Redigera medlem</h1>";
-    }elseif(!empty($_POST['saveUser'])){
-      $html .= "<h1>Spara medlemm</h1>";
     }else{
+
+      // delete or undelete users
+      if(!empty($_GET['delete'])){
+        $html .= $this->deleteUser($_GET['delete']);
+      }elseif(!empty($_GET['undelete'])){
+        $html .= $this->undeleteUser($_GET['undelete']);
+      }
+
       // Show all users
 
       // Variables
@@ -71,7 +76,7 @@ class CUsers extends CUser{
       $pageNav     .= $this->getPageNavigation();
 
       // Declare array of pageHitsOptions and get dropdown
-      $dropOptions =array(1 => 1,2 => 2,4 =>4);
+      $dropOptions =array(4 => 4,8 => 8,16 =>16, 32 =>32);
       $hitsOptions .= $this->getDropdown($dropOptions, $this->hits);
       
       // Save to string
@@ -79,14 +84,96 @@ class CUsers extends CUser{
       $html .= $hitsOptions;
       $html .= $table;
       $html .= $pageNav;
+      $html .= '<p><a href="new_user.php">Skapa ny medlem</a></p>';
       //$html .= $this->getAllUsersAsHtml(true);;
     }
-
-
-
     return $html;
-
   }
+
+  private function deleteUser($id){
+    $sql = 'UPDATE user SET deleted = NOW() WHERE id = ?';
+    $params = array($id);
+    $res = $this->db->ExecuteQuery($sql, $params);
+  }
+
+
+  private function undeleteUser($id){
+    $sql = 'UPDATE user SET deleted = NULL WHERE id = ?';
+    $params = array($id);
+    $res = $this->db->ExecuteQuery($sql, $params);
+  }
+
+
+  private function setPostInfo(){
+    $this->name = !empty($_POST['name']) ? $_POST['name'] : null;
+    $this->acronym = !empty($_POST['acronym']) ? $_POST['acronym'] : null;
+    $this->email = !empty($_POST['email']) ? $_POST['email'] : null;
+    $this->website = !empty($_POST['website']) ? $_POST['website'] : null;
+  }
+
+
+
+  private function setDbInfo($id){
+    $sql = "SELECT name, acronym, website, email FROM user WHERE id = ?;";
+    $params = array($id);
+    $res = $this->db->ExecuteSelectQueryAndFetchAll($sql,$params);
+    foreach ($res as $val) {
+      $this->name = $val->name;
+      $this->acronym = $val->acronym;
+      $this->email = $val->email;
+      $this->website = $val->website;
+    }
+  }
+
+  private function editUser($id){
+    $html = null;
+    $output = null;
+
+    if(isset($_POST['saveUserInformation'])){
+
+      // Get info from $_POST
+      $this->setPostInfo();
+
+      // Save info to db if name and acronym are set.
+      if(isset($this->name) && isset($this->acronym)){
+
+        // Save to db
+        $sql = "UPDATE user SET name=?, acronym = ?, website = ?, email = ?, updated = NOW() WHERE id = ?;";
+        $params = array($this->name, $this->acronym, $this->website, $this->email, $id);
+        $res = $this->db->ExecuteQuery($sql,$params);
+
+        $output = "<i><span class=success>Informationen uppdaterades</span></i>";
+      } else {
+        $output = "<i><span class=failure>Nödvändig information saknas. Informationen sparades EJ!</span></i>";
+      }
+
+    }else{
+      $this->setDbInfo($id);
+    }
+
+    $html =  "<h1>Redigera medlem</h1>
+              <form method=post>
+                <fieldset>
+                <legend>Redigera</legend>
+                <p><i>Fält märkta med * måste fyllas i.</i></p>
+                <p><label>*Namn:<br/><input type='text' name='name' value='{$this->name}'/></label></p>
+                <p><label>*Alias:<br/><input type='text' name='acronym' value='{$this->acronym}'/></label></p>
+                <p><label>E-post:<br/><input type='email' name='email' value='{$this->email}'/></label></p>
+                <p><label>Webbplats:<br/><input type='url' name='website' value='{$this->website}'/></label></p>
+                <p class=buttons><input type='submit' name='saveUserInformation' value='Spara'/> <input type='reset' value='Återställ'/></p>
+                <output>{$output}</output>
+                </fieldset>
+              </form>";
+    return $html;
+  }
+
+  private function setParams(){
+    $this->orderby = !empty($_GET['orderby']) ? $_GET['orderby'] : 'id';
+    $this->order   = !empty($_GET['order'])   ? $_GET['order']   : 'asc';
+    $this->hits    = !empty($_GET['hits'])    ? $_GET['hits']    : $this->hits;
+    $this->page    = !empty($_GET['page'])    ? $_GET['page']    : $this->page;
+  }
+
 
   /**
    * Hits per page dropdown 
@@ -221,4 +308,9 @@ class CUsers extends CUser{
     }
     return $i;
   }
+
+
+
+
+
 }

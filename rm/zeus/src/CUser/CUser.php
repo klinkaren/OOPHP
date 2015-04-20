@@ -89,7 +89,8 @@ class CUser {
 
     if($saved){
       $html  = "Medlemmen skapades";
-      $html .= "<p><a href=loginout.php>Logga in</a></p>";
+      $html .= $this->authenticatedAsAdmin() ? "<p><a href=new_user.php>Skapa en till medlem</a></p>" : "<p><a href=loginout.php>Logga in</a></p>";
+      $html .= $this->authenticatedAsAdmin() ? "<p><a href=admin_users.php>Administrera medlemmar</a></p>" : "";
     }else{
       // Show form
       $html =  "<h1>Byt lösenord</h1>
@@ -121,7 +122,7 @@ class CUser {
       $this->logout();
       header("Location:new_user.php");
 
-    }elseif($this->authenticated()){
+    }elseif($this->authenticated() && !$this->authenticatedAsAdmin()){
       $html .= "<p>You are already logged in. You need to log out to be able to create a new user.</p>";
       $html .= $this->getLogoutForm();
 
@@ -150,7 +151,7 @@ class CUser {
     }elseif(isset($_POST['savePassword'])){
       $html .= $this->createPassword();
     }else{
-      $html .= '<p>Redan medlem? <a href="loginout.php">Logga in</a></p>';
+      $html .= $this->authenticatedAsAdmin() ? "" : '<p>Redan medlem? <a href="loginout.php">Logga in</a></p>';
       $html .= $this->createUserForm($output);
     }
     return $html;
@@ -243,7 +244,7 @@ class CUser {
    */
   private function getUser($acronym){
     $user = array();
-    $sql = "SELECT acronym, name, type, created, email, website FROM user WHERE acronym = ?";
+    $sql = "SELECT acronym, name, type, created, email, website FROM user WHERE deleted IS NULL AND acronym = ?";
     $params = array($acronym);
     $res = $this->db->ExecuteSelectQueryAndFetchAll($sql, $params);
     if(isset($res[0])) {
@@ -521,7 +522,7 @@ class CUser {
   public function Login($user, $password){
     if (!self::authenticated()){
         $debug = false;
-        $sql = "SELECT id, acronym, name, type, created, website, email FROM USER WHERE acronym = ? AND password = md5(concat(?, salt))";
+        $sql = "SELECT id, acronym, name, type, created, website, email FROM USER WHERE acronym = ? AND password = md5(concat(?, salt)) AND deleted IS NULL";
         $params = array($user, $password);
         $res = $this->db->ExecuteSelectQueryAndFetchAll($sql,$params,$debug);
         $this->setSessionParams($res);

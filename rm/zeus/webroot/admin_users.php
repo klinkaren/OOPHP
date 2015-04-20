@@ -26,7 +26,7 @@ $users = new CUsers($db);
 
 // Put everything in Zeus container.
 $zeus['title'] = "Administrering";
-$zeus['main'] = $users->getHtml(true);
+$zeus['main'] = $users;
 
 
 
