@@ -43,7 +43,7 @@ class CHTMLTable extends CMovieSearch{
   protected function getEditTable($sql) {
 
     // Put results into a HTML-table
-    $tr = "<table><tr>
+    $tr = "<table class=sqlTable><tr>
     <th>ID<a href=?orderby=id&order=asc>&darr;</a><a href=?orderby=id&order=desc>&uarr;</a></th>
     <th>Titel<a href=?orderby=title&order=asc>&darr;</a><a href=?orderby=title&order=desc>&uarr;</a></th>
     <th>År<a href=?orderby=YEAR&order=asc>&darr;</a><a href=?orderby=YEAR&order=desc>&uarr;</a></th>

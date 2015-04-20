@@ -10,14 +10,14 @@ right: 15px;
 
 #navigation {
   width: 100%;
-  border-bottom: solid 1px red; /* inner top border */
-  background-color: yellow;
+  background-color: #222;
+  color: #fff;
   position: absolute;
 }
 
 #navContainer{
   position: relative;
-  height: 58px;
+  height: 52px;
 }
 
 /** --------------------------------------------------------------
@@ -33,29 +33,32 @@ right: 15px;
  
 .navbar li {
   display: inline-block;
-  border-top: 4px solid transparent; 
-  color: #333; 
+  color: #fff; 
   position: relative; 
 }
  
 .navbar a {
   display: block;
-  width: 100%;
   padding: 1em;
   text-decoration: none;
   color: inherit;
   white-space: nowrap; 
 }
+.navbar a:hover {
+  text-decoration: none;
+  color: inherit;
+  background-color: #ccc;
+  white-space: nowrap; 
+}
 
 .navbar li:hover {
-  color: #666; 
   border-color: #666;
+  text-decoration: none;
 } 
  
 .navbar li.selected-parent, 
 .navbar li.selected {
-  color: #22f; 
-  border-color: #22f;
+  
 }
 
 .navbar ul ul {
@@ -81,8 +84,8 @@ right: 15px;
 }
 
 .navbar li li.selected {
-  color: #22f; 
-  border-color: #22f;
+  color: red; 
+  background-color: green;
 }
 
 .italic {
@@ -100,7 +103,7 @@ a {
 }
 
 a:hover {
-    text-decoration: underline;
+    text-decoration: none;
 }
 .editLink a {
   font-size: 0.85em;
