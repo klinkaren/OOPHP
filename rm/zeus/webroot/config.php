@@ -56,9 +56,10 @@ $zeus['title_append'] = ' - RM';
 <span class='siteslogan'>Min Me-sida i kursen Databaser och Objektorienterad PHP-programmering</span>
 EOD;*/
 $zeus['searchbox'] = 'Sökning';
+$zeus['navlogo'] = 'Logo';
 
 $zeus['footer'] = <<<EOD
-<footer><span class='sitefooter'><div class="imdb smallText">Filmography links and data courtesy of <a href="http://www.imdb.com/">IMDb</a>.</div><div class="smallText center">Copyright &copy Rental Movies</div></span></footer>
+<footer><span class='sitefooter'><div class="imdb">Filmography links and data courtesy of <a href="http://www.imdb.com/">IMDb</a>.</div><div class="center">Copyright &copy viktorplay - A <a href="http://www.viktorkjellberg.com">Kjellberg</a> company</div></span></footer>
 EOD;
 
 
@@ -72,9 +73,9 @@ $zeus['navbar'] = array(
  
   // Here comes the menu strcture
   'items' => array(
-    'hem'         => array('text'=>'Hem',              'url'=>'index.php',        'title' => 'Förstasidan'),
     'filmer'      => array('text'=>'Filmer',           'url'=>'filmer.php',       'title' => 'Redovisningar för kursmomenten'),
     'nyheter'     => array('text'=>'Nyheter',          'url'=>'nyheter.php',      'title' => 'Senaste nyheterna'),
+    'tavling'    => array('text'=>'Tävling',         'url'=>'tavling.php',     'title' => 'Tävla om gratis filmvisning!'),
     'kalender'    => array('text'=>'Kalender',         'url'=>'kalender.php',     'title' => 'Kalender som visar månadens film'),
     'omoss'       => array('text'=>'Om oss',           'url'=>'omoss.php',        'title' => 'Informationssida om företaget Rental Movies, RM'),
     'loginout'    => array('text'=>CUser::logOption(), 'url'=>'loginout.php',     'title' => CUser::logOption()),

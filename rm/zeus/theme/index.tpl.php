@@ -19,6 +19,11 @@
       <?php endif; ?>
       <div id="navContainer">
       <div id='navigation'>
+        <?php if(isset($navlogo)): ?>
+          <div id='navlogo'>
+            <?=get_navlogo()?>
+          </div> 
+        <?php endif; ?>
     	  <?php if(isset($navbar)): ?>
       	 		<?=get_navbar($navbar)?>
     	  <?php endif; ?>

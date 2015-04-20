@@ -63,3 +63,7 @@ Stil:
  ☐ Header samma gråa nyans
  ☐ Header ljusare grå vid hover
  ☐ film/medlemstabeller - hover i annan färg för enklare se
+ ☐ 
+
+ Övrigt:
+  ☐ Testa att sortera på director AND THEN (SELECT * from movie WHERE director LiKE '%taran%' ORDER BY director)

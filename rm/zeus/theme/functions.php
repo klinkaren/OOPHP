@@ -102,9 +102,12 @@ function get_searchbox() {
 
 	$html = <<<EOD
     <form action="filmer.php" metod="GET">
-    	<input type='text' name='title' value='Sök film...' onblur="onBlur(this)" onfocus="onFocus(this)">
-    	<button type='submit'>Sök</button>
+    	<input class="searchbox" type='text' name='title' value='Sök film...' onblur="onBlur(this)" onfocus="onFocus(this)">
     </form>
 EOD;
 	return $html;
+}
+function get_navlogo() {
+    $html = "<a href=index.php><img title='ViktorPlay' src=img.php?src=header.png&height=35 alt=''/></a>";
+    return $html;
 }

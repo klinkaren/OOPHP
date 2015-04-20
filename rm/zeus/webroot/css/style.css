@@ -61,10 +61,11 @@ body {
   top: 65px;
   left: 130px;
   font-style: italic;
-  color: #666;
+  color: #666;color: #666;
+  font-size: 0.85em;
+  text-decoration: none;
 }
 
- 
  
 /**
  * Layout for main
@@ -85,6 +86,8 @@ body {
  
 .sitefooter {
   color: #666;
+  font-size: 0.85em;
+  text-decoration: none;
 }
 .imdb{
   text-align: center;

@@ -1,11 +1,23 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:300,500,100,400,400italic,700);
+
 .navbar {
-float: left;
+  
 }
 
 #searchbox {
-position: absolute;
-bottom: 15px;
-right: 15px;
+  position: absolute;
+  bottom: 12px;
+  right: 15px;
+}
+.searchbox{
+  border: 2px solid #222;
+  border-radius: 15px;
+  padding: 5px;
+  font-style: italic;
+  color: #666;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: small;
 }
 
 #navigation {
@@ -13,11 +25,21 @@ right: 15px;
   background-color: #222;
   color: #fff;
   position: absolute;
+  height: 52px;
 }
 
 #navContainer{
   position: relative;
   height: 52px;
+  text-transform: uppercase;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: small;
+
+
+}
+#navlogo {
+  float: left;
 }
 
 /** --------------------------------------------------------------
@@ -39,10 +61,13 @@ right: 15px;
  
 .navbar a {
   display: block;
-  padding: 1em;
+  padding-right: 1em;
+  padding-left: 1em;
   text-decoration: none;
   color: inherit;
   white-space: nowrap; 
+  height: 52px;
+  line-height: 52px;
 }
 .navbar a:hover {
   text-decoration: none;
@@ -52,26 +77,38 @@ right: 15px;
 }
 
 .navbar li:hover {
-  border-color: #666;
   text-decoration: none;
 } 
+
+
+li.submenu{
+  width: 100%;
+}
+.submenu a{
+  border: none;
+  color: inherit;
+}
+.submenu{
+  padding: 0px;
+  margin: 0px;
+}
  
 .navbar li.selected-parent, 
 .navbar li.selected {
-  
+
 }
 
 .navbar ul ul {
-  background-color: #fff; 
-  padding: 8px; 
+  background-color: #888; 
+  padding: 0px; 
   position: absolute; 
   left: -9999px; 
   z-index: 2;
+  opacity: 0.95;
 }
  
 .navbar li li {
-  border-top: none;  
-  border-left: 4px solid transparent;  
+
 }
 
 .navbar li:hover ul {
@@ -79,13 +116,12 @@ right: 15px;
 }
  
 .navbar li li:hover {
-  color: #666; 
+  color: inherit; 
   border-color: #666;
 }
 
 .navbar li li.selected {
   color: red; 
-  background-color: green;
 }
 
 .italic {
