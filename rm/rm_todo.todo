@@ -67,10 +67,10 @@ Stil:
  ✔ Favicon @done (15-04-21 12:50)
  ✔ Filmsidan (specifika filmer) @done (15-04-21 17:26)
  ✔ Kalender (byt färg på från grön till röd) @done (15-04-21 17:55)
- ☐ Om: Styla, lägg till text och kanske nån bild?
- ☐ Nyheter: Fixa kategorilistan
- ☐ Nyheter: Publiceringsdatum liten italic text, direkt under rubrik
- ☐ Nyheter: Läs mer italic? Måste synas bättre
+ ✔ Om: Styla, lägg till text och kanske nån bild? @done (15-04-21 22:17)
+ ✔ Nyheter: Fixa kategorilistan @done (15-04-21 22:52)
+ ✔ Nyheter: Publiceringsdatum liten italic text, direkt under rubrik @done (15-04-21 22:52)
+ ✘ Nyheter: Läs mer italic? Måste synas bättre @cancelled (15-04-21 22:52)
 
  Övrigt:
   ✘ Testa att sortera på director AND THEN (SELECT * from movie WHERE director LiKE '%taran%' ORDER BY director) @cancelled (15-04-21 11:00)
