@@ -64,7 +64,13 @@ Stil:
  ✔ Header ljusare grå vid hover @done (15-04-21 11:00)
  ✔ film/medlemstabeller - hover i annan färg för enklare se @done (15-04-21 11:00)
  ☐ Hem: Banner om ej inloggad
- ☐ 
+ ☐ Favicon
+ ☐ Filmsidan (specifika filmer)
+ ☐ Kalender (byt färg på från grön till röd)
+ ☐ Om: Styla, lägg till text och kanske nån bild?
+ ☐ Nyheter: Fixa kategorilistan
+ ☐ Nyheter: Publiceringsdatum liten italic text, direkt under rubrik
+ ☐ Nyheter: Läs mer italic? Måste synas bättre
 
  Övrigt:
   ✘ Testa att sortera på director AND THEN (SELECT * from movie WHERE director LiKE '%taran%' ORDER BY director) @cancelled (15-04-21 11:00)

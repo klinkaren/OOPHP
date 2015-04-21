@@ -1,24 +1,75 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:700);
+.movieInfo{}
+
 .movieAbout{
 	overflow: auto;
 }
+
 .moviePoster{
 	float: left;
-	margin: 0px 10px 0px 0px;
+	width: 200px;
+	margin: 0px;
 }
-.moviePlot{
-	width: 60%;
+
+
+/**
+ * movieHeader
+ *
+ */
+.movieHeader{
+	width: 500px;
 	float: left;
+	padding:10px;
+	padding-top: 0px;
+}
+.movieTitle{
+	font-family: 'Roboto', sans-serif;
+	font-weight: 700;
+	font-style: bold;
+	font-size: 200%;
+	text-transform: uppercase;
+}
+.movieDirector{
+	font-style: italic;
+	margin-bottom: 10px;
+	color: #888;
+}
+
+
+/**
+ * moviePlot
+ *
+ */
+.moviePlot{
+	width: 500px;
+	float: left;
+	padding: 10px;
+}
+
+
+/**
+ * movieDetails
+ *
+ */
+.movieDetails{
+	border-left: 1px solid #222;
+	width: 240px;
+	float: right;
+	padding-left: 10px;
+}
+.movieDetails span{
+
 }
 .movieYoutube{
 	margin-left: auto;
     margin-right: auto;
     text-align: center;
 }
-.movieDetails span{
-	display: block;
-	color: red;
-}
-.monthHeading {
-	background-color: #2d882d;
-	border-bottom: 1px solid black;
+
+
+
+
+
+.movieDirector a{
+	color: inherit;
 }

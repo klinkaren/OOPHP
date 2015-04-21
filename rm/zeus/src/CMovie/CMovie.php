@@ -26,11 +26,18 @@ class CMovie extends CMovieSearch {
   public function getPage(){
     $html  = $this->getBreadcrumbs();
     $html .= "<div class='movieInfo'>";
-    $html .= $this->getHeader();
     $html .= $this->getArticle();
     $html .= $this->getYoutube();
     $html .= "</div>";
     return $html;
+  }
+
+    private function getHeader(){
+    $header  = '<div class="movieHeader">';
+    $header .= '<div class="movieTitle">'.$this->sql[0]->title.'</div>';
+    $header .= '<div class="movieDirector">- <a title="Visa alla filmer av '.$this->sql[0]->director.'" href="filmer.php?director='.$this->sql[0]->director.'">'.$this->sql[0]->director.'</a></div>';
+    $header .= '</div>';
+    return $header;
   }
 
   public function getTitle(){
@@ -49,7 +56,8 @@ class CMovie extends CMovieSearch {
 
     // Get poster
     $article  = '<article class="movieAbout">';
-    $article .= '<figure class="moviePoster"><img title="'.$this->getTitle().'" src=img.php?src='.$this->sql[0]->image.'&width=200&quality=80 alt='.$this->getTitle().'/></figure>';    
+    $article .= '<figure class="moviePoster"><img title="'.$this->getTitle().'" src=img.php?src='.$this->sql[0]->image.'&width=200&quality=80 alt='.$this->getTitle().'/></figure>';
+    $article .= $this->getHeader();    
     $article .= '<div class="moviePlot">'.$this->sql[0]->plot.'</div>';
     $article .= '<div class="movieDetails">';
 
@@ -80,13 +88,7 @@ class CMovie extends CMovieSearch {
     $this->genres = explode(',',$this->sql[0]->genre);
   }
 
-  private function getHeader(){
-    $header  = '<header id="movieHeader">';
-    $header .= '<div class="movieTitle">'.$this->sql[0]->title.'</div>';
-    $header .= '<div class="movieDirector">av <a title="Visa alla filmer av '.$this->sql[0]->director.'" href="filmer.php?director='.$this->sql[0]->director.'">'.$this->sql[0]->director.'</a></div>';
-    $header .= '</header>';
-    return $header;
-  }
+
 
   private function getYoutube(){
     $youtube = isset($this->sql[0]->youtube)?'<figure class="movieYoutube"><iframe width="560" height="315" src="https://www.youtube.com/embed/'.$this->sql[0]->youtube.'" frameborder="0" allowfullscreen></iframe></figure>':"";
