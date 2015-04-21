@@ -58,27 +58,35 @@ class CMovie extends CMovieSearch {
     $article  = '<article class="movieAbout">';
     $article .= '<figure class="moviePoster"><img title="'.$this->getTitle().'" src=img.php?src='.$this->sql[0]->image.'&width=200&quality=80 alt='.$this->getTitle().'/></figure>';
     $article .= $this->getHeader();    
-    $article .= '<div class="moviePlot">'.$this->sql[0]->plot.'</div>';
-    $article .= '<div class="movieDetails">';
 
-    // IMBb-logo with link
-    $article .= '<span class="movieImdb"><a target="_blank" href="http://www.imdb.com/title/'.$this->sql[0]->imdb.'/"><img title="Läs mer om '.$this->getTitle().' på IMDb." src=img.php?src=imdb.png&width=55&quality=80 alt=IMDB/></a></span>';
+    // Plot and genres 
+    $article .= '<div class="moviePlot">'.$this->sql[0]->plot;
+    $article .= '<br><br><span class="movieGenres">Kategorier: ';
 
-    // Pris
-    $article .= '<span class="moviePrice">Pris: '.$this->sql[0]->price.'</span> | ';
-
-    // Ås
-    $article .= '<span class="movieYear">År: '.$this->sql[0]->YEAR.'</span> | ';
-
-    // Skådespelare
-    $article .= '<span class="movieActors">Skådespelare: '.$this->imdbInfo->Actors.'</span> | ';
-
-    // Genres
-    $article .= ' <span class="movieGenres">Genres: ';
     foreach ($this->genres as $key => $val) {
       $article .= '<a href=filmer.php?genre='.$val.'>'.$val.'</a> ';
     }
-    $article .= '</span>';
+    $article .= '</span>.<br><br>';
+
+    // IMBb-logo with link
+    $article .= '<span class="movieImdb"><a target="_blank" href="http://www.imdb.com/title/'.$this->sql[0]->imdb.'/"><img title="Läs mer om '.$this->getTitle().' på IMDb." src=img.php?src=imdb.png&width=55&quality=80 alt=IMDB/></a></span></div>';
+
+    $article .= '<div class="movieDetails">';
+
+    // Skådespelare
+    $article .= '<div class="movieActors"><span class="title">Skådespelare</span>: '.$this->imdbInfo->Actors.'</div>';
+    
+    // IMDB-rating
+    $article .= '<div class="movieRating"><span class="title">IMDb-betyg</span>: '.$this->imdbInfo->imdbRating.'</div>';
+  
+    // År
+    $article .= '<div class="movieYear"><span class="title">År: </span>'.$this->sql[0]->YEAR.'</div> ';
+
+   
+    // Hyr-knapp
+    $article .= '<div class="rent"><input type=button value="Hyr filmen för '.$this->sql[0]->price.':-"/></div>';
+
+
 
     $article .= '</div></article>';
     return $article;

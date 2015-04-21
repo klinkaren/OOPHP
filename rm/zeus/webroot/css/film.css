@@ -34,6 +34,12 @@
 	margin-bottom: 10px;
 	color: #888;
 }
+.movieDirector a{
+	color: inherit;
+}
+.movieDirector a:hover{
+	color: #cc3333;
+}
 
 
 /**
@@ -45,6 +51,12 @@
 	float: left;
 	padding: 10px;
 }
+.movieGenres{
+ 	font-weight: bold;
+}
+.movieGenres a{
+ 	font-weight: normal;
+}
 
 
 /**
@@ -53,23 +65,40 @@
  */
 .movieDetails{
 	border-left: 1px solid #222;
+
 	width: 240px;
 	float: right;
 	padding-left: 10px;
+	padding-top: 10px;
 }
-.movieDetails span{
+.movieDetails div{
+	margin: 0px;
+	padding: 0px;
+	padding-bottom:10px;
+}
+.rent{
+	text-align: center;
+}
+div.rent input{
+	margin-top: 25px;
+	padding: 10px;
+	border: 2px solid #222;
+	border-radius: 18px;
+	background-color: #222;
+	color: #fff;
+	font-family: 'Roboto', sans-serif;
+	text-transform: uppercase;
+}
+div.rent input:hover{
+	background-color: #cc3333;
+}
+.movieDetails .title{
+	font-weight: bold;
 
 }
+
 .movieYoutube{
 	margin-left: auto;
     margin-right: auto;
     text-align: center;
-}
-
-
-
-
-
-.movieDirector a{
-	color: inherit;
 }
