@@ -108,13 +108,14 @@ class CMovieSearch extends CDatabase {
    * @return string html for search form and result.
    */
   public function getOverview() {
+    $res = null;
     $this->getParams();
     $this->sql = $this->getData();
-    $res = $this->overviewForm();
+    $res .= $this->getBreadcrumbs();
+    $res .= $this->overviewForm();
 
     // Create navigation options for hits per page
     $res .= $this->getHits();
-    $res .= $this->getBreadcrumbs();
 
     // Send the search query and get the result back as html.
     $res .= $this->htmlTable->overview($this->sql);
@@ -405,15 +406,16 @@ class CMovieSearch extends CDatabase {
    */
   private function overviewForm() {
     $res = "<form>
-      <div class='overviewSearch'>
-        <label>Titel: </label>
-        <input type='text' name='title' value='{$this->title}' size='40'>
-        <label>Regissör: </label>
-        <input type='search' name='director' value='{$this->director}' size='40'>
-        <button type='submit' name='submit'>Sök</button>
-        <a href='?'><strong>Visa alla</strong></a>
-      </div>
-      <div class='overviewFilter'>
+      <h2 class=noTrailingSpace>Sök/Filtrera/Sortera</h2>
+      <div class=overviewMovies>
+        <div class='overviewSearch'>
+          <label>Sök på titel: </label>
+          <input class='searchbox' type='text' name='title' value='{$this->title}' onblur='onBlur(this)' onfocus='onFocus(this)'>
+          <label>och/eller regissör: </label>
+          <input class='searchbox' type='search' name='director' value='{$this->director}' onblur='onBlur(this)' onfocus='onFocus(this)'>
+          <button class='search' type='submit' name='submit'>Sök</button>
+        </div>
+      
         <div class='overviewGenre'>
           {$this->getOverviewGenre()}
         </div>
@@ -428,12 +430,12 @@ class CMovieSearch extends CDatabase {
 
   private function getOverviewSort(){  
     $type = [
-      ['title', 'Titel'],
-      ['YEAR', 'År'],
-      ['director', 'Regissör'],
+      ['title','Titel'],
+      ['YEAR','År'],
+      ['director','Regissör'],
     ];
     
-    $html = "<nav>\n<ul class='sortList'>\n";
+    $html = "<nav><span class='showAll'><a href='?'>Återställ</a></span><ul class='sortList'>Sortera enligt: ";
     foreach($type as list($name, $namn)) {
       $selected = $name==$this->orderby ? " class='selected' " : null;
       $html .= "<li{$selected}><a href='?orderby={$name}";
@@ -441,9 +443,9 @@ class CMovieSearch extends CDatabase {
       $html .= isset($this->title)?('&title='.$this->title):null;
       $html .= isset($this->hits)?('&hits='.$this->hits):null;
       $html .= isset($this->director)?('&director='.$this->director):null;
-      $html .= "''>{$namn}</a></li>\n";
+      $html .= "''>{$namn}</a></li>";
     }
-    $html .= "</ul>\n</nav>\n";
+    $html .= "</ul></nav>";
 
     return $html;
   }
@@ -463,7 +465,7 @@ class CMovieSearch extends CDatabase {
 
     $res = $this->ExecuteSelectQueryAndFetchAll($sql,null,false);
 
-    $html = "<nav>\n<ul class='genreList'>\n";
+    $html = "<ul class='genreList'>\n";
     foreach($res as $item) {
       $selected = $item->name==$this->genre ? " class='selected' " : null;
       $html .= "<li{$selected}><a href='filmer.php?genre={$item->name}";
@@ -473,7 +475,7 @@ class CMovieSearch extends CDatabase {
       $html .= isset($this->director)?'&director='.$this->director:null;
       $html .= "'>{$item->name}</a></li>\n";
     }
-    $html .= "</ul>\n</nav>\n";
+    $html .= "</ul>\n</nav>";
     return $html;
   }
 
@@ -734,7 +736,7 @@ class CMovieSearch extends CDatabase {
    * @return string as a link to this page.
    */
   private function getHits() {
-    $html = "<nav class='galleryDropDown'>
+    $html = "<div class='fullWidth'><nav class='galleryDropDown'>
           <form method='get'>
             <label for='input1'>Visa:</label>
             <input type='hidden' name='genre' value='{$this->genre}'>
@@ -751,7 +753,7 @@ class CMovieSearch extends CDatabase {
           $html .= "<option value='".$value."'>".$name."</option>";
         }
     }
-    $html .="</select></form></nav>";
+    $html .="</select></form></nav></div>";
     return $html;
   }
 

@@ -59,7 +59,7 @@ $zeus['searchbox'] = 'Sökning';
 $zeus['navlogo'] = 'Logo';
 
 $zeus['footer'] = <<<EOD
-<footer><span class='sitefooter'><div class="imdb">Filmography links and data courtesy of <a href="http://www.imdb.com/">IMDb</a>.</div><div class="center">Copyright &copy viktorplay - A <a href="http://www.viktorkjellberg.com">Kjellberg</a> company</div></span></footer>
+<footer><span class='sitefooter'><div class="imdb">Filmography links and data courtesy of <a href="http://www.imdb.com/">IMDb</a>.</div><div class="center">Copyright &copy viktorplay - a <a href="http://www.viktorkjellberg.com">kjellberg</a> company</div></span></footer>
 EOD;
 
 
@@ -77,7 +77,7 @@ $zeus['navbar'] = array(
     'nyheter'     => array('text'=>'Nyheter',          'url'=>'nyheter.php',      'title' => 'Senaste nyheterna'),
     'tavling'    => array('text'=>'Tävling',         'url'=>'tavling.php',     'title' => 'Tävla om gratis filmvisning!'),
     'kalender'    => array('text'=>'Kalender',         'url'=>'kalender.php',     'title' => 'Kalender som visar månadens film'),
-    'omoss'       => array('text'=>'Om oss',           'url'=>'omoss.php',        'title' => 'Informationssida om företaget Rental Movies, RM'),
+    'omoss'       => array('text'=>'Om',           'url'=>'omoss.php',        'title' => 'Informationssida om företaget Rental Movies, RM'),
     'loginout'    => array('text'=>CUser::logOption(), 'url'=>'loginout.php',     'title' => CUser::logOption()),
   ),
  

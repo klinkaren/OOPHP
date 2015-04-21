@@ -1,3 +1,5 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400);
+
 div.homePoster{
 	width: 980px;
 	height: 350px;
@@ -27,14 +29,32 @@ div.homeInfo{
 	position: absolute;
 }
 
+
+
+ul.genreList li:first-child{
+	padding-left: 7px;
+}
 ul.genreList li{
+	background-color: #222;
 	text-align: center;
+	padding: 7px;
+	margin: 2px;
 }
 ul.genreList li a{
-	background-color: red;
+	background-color: inherit;
 	display: inline-block;
-	width: 71px;
+  	color: #fff;
+	font-family: 'Roboto', sans-serif;
+  	font-weight: 400;
+  	font-size: smaller;
+  	text-transform: uppercase;
 }
+ul.genreList li:hover{
+	background-color: #ccc;
+}
+
+
+
 .blogWidget{
 	overflow: auto;
 }

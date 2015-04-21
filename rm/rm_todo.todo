@@ -60,10 +60,11 @@ Krav 5-6:
  ☐ ?Admin ska kunna se källkod @admin
 
 Stil:
- ☐ Header samma gråa nyans
- ☐ Header ljusare grå vid hover
- ☐ film/medlemstabeller - hover i annan färg för enklare se
+ ✔ Header samma gråa nyans @done (15-04-21 11:00)
+ ✔ Header ljusare grå vid hover @done (15-04-21 11:00)
+ ✔ film/medlemstabeller - hover i annan färg för enklare se @done (15-04-21 11:00)
+ ☐ Hem: Banner om ej inloggad
  ☐ 
 
  Övrigt:
-  ☐ Testa att sortera på director AND THEN (SELECT * from movie WHERE director LiKE '%taran%' ORDER BY director)
+  ✘ Testa att sortera på director AND THEN (SELECT * from movie WHERE director LiKE '%taran%' ORDER BY director) @cancelled (15-04-21 11:00)
