@@ -160,10 +160,10 @@ class CCal {
 		$html .= '<div class="monthHeading">'.$this->strMonth.", ".$this->year.'</div>';
 		$html .= '<div class="calNav">';
 			$html .= '<div class="calNavLeft">';		
-				$html .= '<a href="?prev">Föregående månad</a>';
+				$html .= '<a href="?prev">&lt;&lt;Föregående månad</a>';
 			$html .= '</div>';
 			$html .= '<div class="calNavRight">';
-				$html .= '<a href="?next">Nästa månad</a>';
+				$html .= '<a href="?next">Nästa månad&gt;&gt;</a>';
 			$html .= '</div>';
 		$html .= '</div>';
 			

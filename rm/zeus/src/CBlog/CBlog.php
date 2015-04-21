@@ -194,7 +194,7 @@ class CBlog extends CContent{
 
     // Put together as html and return
     $html  = '<aside class='.$side.'><nav>';
-    $html .= '<h1>Kategorier</h1><ul>';
+    $html .= '<h1>Kategorier</h1><ul class="categories">';
     $html .= $categories;
     $html .= '</ul></nav></aside>';
     return $html;
@@ -233,12 +233,9 @@ class CBlog extends CContent{
 	  <h1><a href='nyheter.php?slug={$val->slug}{$cat}'>{$this->title}</a></h1>
 	  <span class="created">Publiserat: {$published->format('Y-m-d')}</span>
 	  </header>
-	  <br>
 	  <content>
 	  {$this->data}
 	  </content>
-	  <footer>
-	  </footer>
 	  <hr>
 	  </article>
 	</section>

@@ -8,6 +8,8 @@ include(__DIR__.'/config.php');
 
 
 
+$zeus['stylesheets'][] = 'css/om.css';
+
 // Create instance of CContent
 $info = new CPart($zeus['database']);
 
@@ -17,8 +19,8 @@ $info = new CPart($zeus['database']);
 $zeus['title'] = "Om oss";
 
 $zeus['main'] = <<<EDO
-{$info->getPart("Företaget")}
 {$info->getPart("Tjänsten")}
+{$info->getPart("Företaget")}
 EDO;
 
 
