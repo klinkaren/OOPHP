@@ -1,0 +1,83 @@
+div.gameBoard {
+	width: 98%;
+	margin: 10px;
+}
+
+div.players {
+	display:inline-block;
+	width: 100%;
+}
+
+div.player,div.player-active {
+	border: 1px solid black;
+	float: left;
+    width: 22%;
+    margin: 5px;
+    padding: 5px;
+    min-height: 300px;
+    display:inline-block;
+}
+
+
+div.info {
+	width:100%;
+	margin: 5px;
+	text-align: center;
+}
+
+div.diceHolder {
+	height: 35px; 
+}
+
+fieldset {
+	width: 300px;
+}
+
+button.startGame{
+  margin-top: 25px;
+  height: 35px;
+  width: 400px;
+  border: 2px solid #222;
+  border-radius: 18px;
+  background-color: #222;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+
+  font-size: 100%;
+}
+button.startGame:hover{
+	background-color: #cc3333;
+	font-style: italic;
+	transition: background-color 2s;
+	-webkit-transition: background-color 2s;
+	-moz-transition: background-color 2s;
+	-o-transition: background-color 2s;
+	-ms-transition: background-color 2s;
+}
+button.startGame:before { 
+	width: 100px; content: "Let the games begin!"; }
+button.startGame:hover:before {
+	content: "...and may the odds be ever in your favour!";
+	transition: 5s;
+	-webkit-transition: 5s;
+	-moz-transition: 5s;
+	-o-transition: 5s;
+	-ms-transition: 5s;
+}
+.win{
+	font-style: italic;
+	font-size: 110%;
+}
+.loose{
+	font-style: italic;
+}
+img.avatar{
+	border-radius: 180px;
+}
+.winner{
+	background-color: yellow;
+	background: -webkit-linear-gradient(left top, yellow, orange); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(bottom right, yellow, orange); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom right, yellow, orange); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom right, yellow, orange); /* Standard syntax (must be last) */
+}

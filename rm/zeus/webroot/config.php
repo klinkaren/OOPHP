@@ -75,10 +75,7 @@ $zeus['navbar'] = array(
   'items' => array(
     'filmer'      => array('text'=>'Filmer',           'url'=>'filmer.php',       'title' => 'Redovisningar för kursmomenten'),
     'nyheter'     => array('text'=>'Nyheter',          'url'=>'nyheter.php',      'title' => 'Senaste nyheterna'),
-    'tavling'    => array('text'=>'Tävling',         'url'=>'tavling.php',     'title' => 'Tävla om gratis filmvisning!'),
     'kalender'    => array('text'=>'Kalender',         'url'=>'kalender.php',     'title' => 'Kalender som visar månadens film'),
-    'omoss'       => array('text'=>'Om',           'url'=>'omoss.php',        'title' => 'Informationssida om företaget Rental Movies, RM'),
-    'loginout'    => array('text'=>CUser::logOption(), 'url'=>'loginout.php',     'title' => CUser::logOption()),
   ),
  
   // This is the callback tracing the current selected menu item base on scriptname
@@ -88,13 +85,18 @@ $zeus['navbar'] = array(
     }
   }
 );
-
+$zeus['navbar']['items']['omoss']        = array('text'=>'Om',         'url'=>'omoss.php',     'title' => 'Informationssida om företaget Rental Movies, RM');
 // Member menu
 if(CUser::authenticated()){
+  // Competition
+  $zeus['navbar']['items']['tavling']      = array('text'=>'Tävling',    'url'=>'tavling.php',   'title' => 'Tävla om gratis filmvisning!');
+
+  // Member menu
   $zeus['navbar']['items']['user'] = array('text'=>'Medlem', 'url'=>'user.php',  'title' => 'Medlemssida där du kan redigera dina inställningar',
           'submenu' => array(
  
         'items' => array(
+
           // This is a menu item of the submenu
           'user_page'  => array(
             'text'  => 'Min sida',   
@@ -165,7 +167,7 @@ if(CUser::authenticatedAsAdmin()){
         ),
       ),);
 }
-
+$zeus['navbar']['items']['loginout']     = array('text'=>CUser::logOption(), 'url'=>'loginout.php',     'title' => CUser::logOption());
 
 
 

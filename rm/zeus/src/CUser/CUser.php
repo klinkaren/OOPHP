@@ -553,6 +553,9 @@ class CUser {
     $this->acronym = null;
     $this->name = null;
     $this->type = null;
+
+    // Unset game (from tavling.php)
+    unset($_SESSION['game']);
   }
 
 
