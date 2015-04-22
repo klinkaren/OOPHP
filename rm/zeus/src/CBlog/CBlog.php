@@ -205,7 +205,7 @@ class CBlog extends CContent{
     $res = mb_substr($text, 0, $chars);
     $res = mb_substr($res, 0, strrpos($res, ' '));
     $cat = isset($this->category) ? '&category='.$this->category : "";
-    $res .= '... <a href="nyheter.php?slug='.$slug.$cat.'">Läs&nbspmer</a>';
+    $res .= '... <a class="readMore" href="nyheter.php?slug='.$slug.$cat.'">läs&nbspmer</a>';
     return $res;
   }
 
@@ -221,7 +221,7 @@ class CBlog extends CContent{
 
 
       // If more than one result, show intro with link
-      $this->data = isset($this->res[1]) ? $this->getIntro($this->data, $val->slug, 200) : $this->data;
+      $this->data = isset($this->res[1]) ? $this->getIntro($this->data, $val->slug, 250) : $this->data;
 
       // Add category to link if set
       $cat = $this->category ? '&category='.$this->category : "";

@@ -143,3 +143,6 @@ aside{
 .success{
   color: green;
 }
+.readMore{
+  font-style: italic;
+}
