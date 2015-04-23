@@ -34,8 +34,12 @@ if(isset($_SESSION['user'])){
 	$zeus['title'] = 'Välkommen';
 	$zeus['main'] = <<<EDO
 	<div class= "homePoster">
-		<div class="homeOpac">"hejsan"</div>
-		<div class="homeBgImage"><img src="img.php?src=screenshot/gatsby.jpg&width=980&height=350&crop-to-fit"/></div>
+		<div class="homeBgImage"><img src="img.php?src=screenshot/there-will-be-blood.jpg&width=980&height=420&crop-to-fit"/></div>
+		<div id=posterText>
+		<span class=block>Välkommen till viktorplay!</span>
+		<span class=posterTitle>Handplockad film till ett bra pris</span>
+		<span class='block whiteLink'>Just nu kan du se <a href=film.php?id=26>There will be blood</a> för endast 9 kr</span>
+		</div>
 	</div>
 EDO;
 			#<div class="homeInfo">"Välkommen till ViktorPlay!"</div>

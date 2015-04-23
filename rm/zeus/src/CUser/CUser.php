@@ -522,10 +522,13 @@ class CUser {
   public function Login($user, $password){
     if (!self::authenticated()){
         $debug = false;
-        $sql = "SELECT id, acronym, name, type, created, website, email FROM USER WHERE acronym = ? AND password = md5(concat(?, salt)) AND deleted IS NULL";
+        $sql = "SELECT id, acronym, name, type, created, website, email FROM user WHERE acronym = ? AND password = md5(concat(?, salt)) AND deleted IS NULL";
         $params = array($user, $password);
         $res = $this->db->ExecuteSelectQueryAndFetchAll($sql,$params,$debug);
         $this->setSessionParams($res);
+
+        // Go to user page if the user was logged in. 
+        $this->authenticated() ? header("Location: user.php?acronym={$user}") : null ;
     }
   }
 
@@ -556,6 +559,9 @@ class CUser {
 
     // Unset game (from tavling.php)
     unset($_SESSION['game']);
+
+    // Go to main page 
+    header("Location: index.php");
   }
 
 

@@ -74,3 +74,5 @@ Stil:
 
  Övrigt:
   ✘ Testa att sortera på director AND THEN (SELECT * from movie WHERE director LiKE '%taran%' ORDER BY director) @cancelled (15-04-21 11:00)
+  ✘ Nyheter + Siddelar - Använd getTableAsHtml() istället @cancelled (15-04-23 06:20)
+  ☐ Spara nyheter: Kategori hoppar till översta automatiskt! Sparas inte kategorien?

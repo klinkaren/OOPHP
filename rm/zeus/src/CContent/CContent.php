@@ -19,6 +19,7 @@ class CContent extends CDatabase{
 	private $save;
 	private $acronym;
 	private $category;
+	private $htmlTable;
 
 
   /**
@@ -27,6 +28,7 @@ class CContent extends CDatabase{
    */
   public function __construct($options) {
 		parent::__construct($options);
+		$this->htmlTable = new CHTMLTable();
   } 
 
 
@@ -44,13 +46,12 @@ class CContent extends CDatabase{
   	// Unset variables
   	$html  = null;
     $parts = null;
-    $publisedPost = null;
-    $unpublisedPost = null;
+    $posts = null;
 
     // Get all content
     $sql = '
       SELECT *, (published <= NOW()) AS available
-      FROM Content
+      FROM content
       WHERE deleted is null AND
       TYPE = ?
       ORDER BY published DESC;
@@ -60,12 +61,15 @@ class CContent extends CDatabase{
 
     // Put results into strings
     foreach($res AS $key => $val) {
+
+    	// Clean and save publish date as datetime.
+    	$published = new DateTime(htmlentities($val->published, null, 'UTF-8'));
+
     	if ($val->TYPE=="part") {
       	$parts .= "<li><a href='content_edit.php?id={$val->id}'>". htmlentities($val->title, null, 'UTF-8') ."</a></li>\n";
-     	}elseif($val->TYPE=="post" && !$val->available){
-			$unpublisedPost .= "<li>Publiceras " . date($val->published) . ": " . htmlentities($val->title, null, 'UTF-8') . " (<a href='content_edit.php?id={$val->id}'>editera</a> <a href='content_delete.php?id={$val->id}'>radera</a>)</li>\n";
-    	}elseif($val->TYPE=="post"){
-    		$publisedPost .= "<li>" . (!$val->available ? 'Inte publicerad' : "Publicerad " . date($val->published)) . ": " . htmlentities($val->title, null, 'UTF-8') . " (<a href='content_edit.php?id={$val->id}'>editera</a> <a href='" . $this->getUrlToContent($val) . "'>visa</a> <a href='content_delete.php?id={$val->id}'>radera</a>)</li>\n";
+     	}elseif($val->TYPE=="post"){
+     		$status = $val->available ? "" : " class='notPublished'";
+				$posts .= "<tr".$status."><td>".date_format($published, 'Y-m-d') . "<td>" . substr(htmlentities($val->title, null, 'UTF-8'),0,40) . "...</td><td>".htmlentities($val->category, null, 'UTF-8')."</td><td><a href='" . $this->getUrlToContent($val) . "'>visa</a></td><td><a href='content_edit.php?id={$val->id}'>editera</a></td><td><a href='content_delete.php?id={$val->id}'>radera</a></td></tr>";
     	}
     }
 
@@ -77,15 +81,12 @@ class CContent extends CDatabase{
     } elseif($type =="post"){
     	$html .= "<div class=adminNews>";
     	$html .= "<h1>Administera nyheter</h1>";
-	    if(isset($unpublisedPost)){
-		  $html .= 	"<h2>Ej publiserat</h2>";
-		  $html .= 		"<ul>$unpublisedPost</ul>";
-	    }
-		$html .= 	"<h2>Publicerat</h2>";
-		$html .= 		"<ul>$publisedPost</ul>";
-	    $html .= "</div>";
+    	$html .= '<table><tr><th>Publisering</th><th>Rubrik</th><th>Kategori</th><th></th><th></th><th></th>';
+			$html .= 	$posts;
+	    $html .= "</table>";
     	$html .= '<p><a href="content_new.php">Skapa nyhet</a></p>';
     }
+
     return $html;
   }
 
@@ -104,8 +105,7 @@ class CContent extends CDatabase{
 		$this->acronym  = isset($_SESSION['user']) ? $_SESSION['user']->acronym : null;
 
 		// If newcategory use that, else check if old category chosen.
-		$this->category = isset($_POST['newcategory']) ? $_POST['newcategory'] : (isset($_POST['category']) ? ($_POST['category']) : null);
-
+		$this->category = !empty($_POST['newcategory']) ? $_POST['newcategory'] : (!empty($_POST['category']) ? ($_POST['category']) : null);
   }
 
   protected function slugify($str) {
@@ -150,7 +150,7 @@ class CContent extends CDatabase{
 			$this->filter = empty($this->filter) ? null : $this->filter;
 			$this->category = empty($this->category) ? null : $this->category;
 			$this->slug = $this->slugify(strip_tags($this->title));
-    	$sql = "INSERT INTO Content(title, slug, TYPE, DATA, FILTER, published, created, category) VALUES(?, ?, ?, ?, ?, ?, NOW(), ?)";
+    	$sql = "INSERT INTO content(title, slug, TYPE, DATA, FILTER, published, created, category) VALUES(?, ?, ?, ?, ?, ?, NOW(), ?)";
    		$params = array($this->title, $this->slug, $this->type, $this->data, $this->filter, $this->published, $this->category);
     	$res = $this->ExecuteQuery($sql, $params);
 		  if($res) {
@@ -197,25 +197,28 @@ EDO;
    * Gives array of all categories with published posts 
    *
    */
-  protected function getDistinctCategories(){
+  protected function getDistinctCategories($onlyPublished = false){
   	// Get all distinct categories
-  	$sql = "SELECT DISTINCT category from content WHERE category IS NOT NULL AND published < NOW()ORDER BY category ASC";
+  	$status = $onlyPublished ? "AND published < NOW()" : "";
+  	$sql = "SELECT DISTINCT category from content WHERE category IS NOT NULL $status ORDER BY category ASC";
   	$res = $this->ExecuteSelectQueryAndFetchAll($sql);
   	return $res;
   }
+
   /**
-   * Gives a dropdown with all unique categories for present content.
+   * Gives a dropdown with all unique categories for content.
    *
    * @return string: HTML for a dropdown (select)
    */
   private function getCategoryDropDown(){
   	// Get all distinct categories
-  	$res = $this->getDistinctCategories();
+  	$res = $this->getDistinctCategories(false);
   	
   	// Create options from sql-result
 		$options = null;
+
   	foreach ($res as $key => $val) {
-  		$selected = $val->category == $this->category ? "selected" : "hjejsan";
+  		$selected = $val->category == $this->category ? "selected" : null;
   		$options .= '<option '.$selected.' value="'.$val->category.'">'.$val->category.'</option>';
   	}
 
@@ -238,7 +241,7 @@ EDO;
 		$output = null;
 		if($this->save) {
 		  $sql = '
-		    UPDATE Content SET
+		    UPDATE content SET
 		      title   = ?,
 		      slug    = ?,
 		      url     = ?,
@@ -270,7 +273,7 @@ EDO;
 		}
 
 		// Select from database
-		$sql = 'SELECT * FROM Content WHERE id = ?';
+		$sql = 'SELECT * FROM content WHERE id = ?';
 		$res = $this->ExecuteSelectQueryAndFetchAll($sql, array($this->id));
 
 		if(isset($res[0])) {
@@ -292,6 +295,7 @@ EDO;
 		$this->category  = htmlentities($c->category, null, 'UTF-8');
 
 
+		$cats = $type == "post" ? "<p>{$this->getCategoryDropDown()}<label>...eller skapa en ny kategori: <input type='text' name='newcategory' value=''></label></p></p>" :"";
 		$html = "";
 		$html = <<<EDO
 <h1>Uppdatera</h1>
@@ -302,10 +306,7 @@ EDO;
   <p><label>Titel:<br/><input type='text' name='title' value='{$title}'/></label></p>
   <p><label>Slug:<br/><input type='text' name='slug' value='{$slug}'/></label></p>
   <p><label>Text:<br/><textarea name='DATA' rows="5" cols="80">{$data}</textarea></label></p>
-	<p>
-		{$this->getCategoryDropDown()}
-		<label>...eller skapa en ny kategori: <input type="text" name="newcategory" value=""></label></p>
-	</p>
+  {$cats}
   <p><label>Filter:<br/><input type='text' name='FILTER' value='{$filter}'/></label></p>
   <p><label>Publiseringsdatum:<br/><input type='text' name='published' value='{$published}'/></label></p>
   <p class=buttons><input type='submit' name='save' value='Spara'/> <input type='reset' value='Återställ'/></p>
@@ -331,7 +332,7 @@ public function getDeleteForm() {
 		$output = null;
 		if($this->save) {
 		  $sql = '
-		    UPDATE Content SET
+		    UPDATE content SET
 		      deleted = NOW()
 		    WHERE 
 		      id = ?
@@ -348,7 +349,7 @@ public function getDeleteForm() {
 		}
 
 		// Select from database
-		$sql = 'SELECT * FROM Content WHERE id = ?';
+		$sql = 'SELECT * FROM content WHERE id = ?';
 		$res = $this->ExecuteSelectQueryAndFetchAll($sql, array($this->id));
 
 		if(isset($res[0])) {
@@ -391,7 +392,7 @@ EDO;
     // Get all content
     $sql = '
       SELECT *, (published <= NOW()) AS available
-      FROM Content
+      FROM content
       WHERE deleted is null;
     ';
     $res = $this->ExecuteSelectQueryAndFetchAll($sql);

@@ -39,7 +39,7 @@ class CBlog extends CContent{
     // Get all content
     $sql = '
       SELECT *, (published <= NOW()) AS available
-      FROM Content
+      FROM content
       WHERE TYPE = "post";
     ';
     $res = $this->ExecuteSelectQueryAndFetchAll($sql);
@@ -60,7 +60,7 @@ class CBlog extends CContent{
     // Get all content
     $sql = '
       SELECT *, (published <= NOW()) AS available
-      FROM Content
+      FROM content
       WHERE TYPE = "post";
     ';
     $res = $this->ExecuteSelectQueryAndFetchAll($sql);
@@ -152,7 +152,7 @@ class CBlog extends CContent{
   }
 	$sql = "
 	SELECT *
-	FROM Content
+	FROM content
 	WHERE
 	  type = 'post' AND
 	  $this->slugSql AND
@@ -182,7 +182,7 @@ class CBlog extends CContent{
 
   private function getAside($side){
     // Get all distinct categories
-    $res = parent::getDistinctCategories();
+    $res = parent::getDistinctCategories(true);
 
     // Create list of categories
     $categories = null;

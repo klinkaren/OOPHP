@@ -51,7 +51,7 @@ class CPart extends CContent{
 	// Get content
 	$sql = "
 	SELECT *
-	FROM Content
+	FROM content
 	WHERE
 	  TYPE = 'part' AND
 	  title = '$part';

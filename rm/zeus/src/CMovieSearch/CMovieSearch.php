@@ -169,14 +169,14 @@ class CMovieSearch extends CDatabase {
 
 
   private function deleteMovie($id){
-    $sql = 'UPDATE Movie SET deleted = NOW() WHERE id = ?';
+    $sql = 'UPDATE movie SET deleted = NOW() WHERE id = ?';
     $params = array($id);
     $res = $this->ExecuteQuery($sql, $params);
   }
 
 
   private function undeleteMovie($id){
-    $sql = 'UPDATE Movie SET deleted = NULL WHERE id = ?';
+    $sql = 'UPDATE movie SET deleted = NULL WHERE id = ?';
     $params = array($id);
     $res = $this->ExecuteQuery($sql, $params);
   }
@@ -242,7 +242,7 @@ class CMovieSearch extends CDatabase {
     if(isset($this->save)){
       $this->updateCategories($id, $_POST['selectedGenre']);
       // sql for update
-      $sql = 'UPDATE movie SET title=?, director=?, YEAR=?, plot=?, image=?, price=?, imdb=?, youtube=?, published=?, updated=NOW() WHERE ID = ?;';
+      $sql = 'UPDATE movie SET title=?, director=?, YEAR=?, plot=?, image=?, price=?, imdb=?, youtube=?, published=?, updated=NOW() WHERE id = ?;';
       $params = array($this->title, $this->director, $this->YEAR, $this->plot, $this->image, $this->price, $this->imdb, $this->youtube, $this->published, $id);
       $res = $this->ExecuteQuery($sql, $params);
       $output = "Redigerade filmen '".$this->title."' med id ".$id;
@@ -347,7 +347,7 @@ class CMovieSearch extends CDatabase {
           $selected = "checked";
       }
 
-      $html .= '<input type="checkbox" name="selectedGenre[]" value="'.$val.'"'.$selected.'>'.$val." | ";
+      $html .= '<input type="checkbox" name="selectedGenre[]" value="'.$val.'"'.$selected.'>'.$val." ";
       $selected = null;
     }
 
@@ -458,8 +458,8 @@ class CMovieSearch extends CDatabase {
    */
   public function getOverviewGenre() {
     $sql = "SELECT DISTINCT G.name
-      FROM Genre AS G
-        INNER JOIN Movie2Genre AS M2G
+      FROM genre AS G
+        INNER JOIN movie2genre AS M2G
         ON G.id = M2G.idGenre
         GROUP BY G.name ASC";
 
@@ -535,7 +535,7 @@ class CMovieSearch extends CDatabase {
     }
 
     // Create sql-query (only show movies that are published and not deleted)
-    $this->query = "SELECT * FROM VMovie WHERE published < NOW() AND deleted IS NULL";
+    $this->query = "SELECT * FROM vmovie WHERE published < NOW() AND deleted IS NULL";
 
     if(!empty($params)) {
       $this->query .= " AND ".join(" AND ",$where);
@@ -619,8 +619,8 @@ class CMovieSearch extends CDatabase {
   public function getGenreList() {
 
     $sql = "SELECT DISTINCT G.name
-            FROM Genre AS G
-              INNER JOIN Movie2Genre AS M2G
+            FROM genre AS G
+              INNER JOIN movie2Genre AS M2G
               ON G.id = M2G.idGenre";
 
     $res = $this->ExecuteSelectQueryAndFetchAll($sql,null,false);
@@ -766,9 +766,10 @@ class CMovieSearch extends CDatabase {
   public function getAllCategories() {
     $cats = array();
     $sql = "SELECT DISTINCT G.name
-      FROM Genre AS G
-        INNER JOIN Movie2Genre AS M2G
-        ON G.id = M2G.idGenre";
+      FROM genre AS G
+        INNER JOIN movie2genre AS M2G
+        ON G.id = M2G.idGenre
+        ORDER BY name ASC";
 
     $res = $this->ExecuteSelectQueryAndFetchAll($sql,null,false);
   

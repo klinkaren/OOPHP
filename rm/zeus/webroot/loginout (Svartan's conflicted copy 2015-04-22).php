@@ -6,7 +6,10 @@
 // Include the essential config-file which also creates the $zeus variable with its defaults.
 include(__DIR__.'/config.php'); 
 
-
+// If logged in, goto member page
+if(CUser::authenticated()){
+	header("Location: user.php?acronym={$_SESSION['user']->acronym}");
+}
 
 // Connect to a MySQL database using PHP PDO
 $db = new CDatabase($zeus['database']);
@@ -27,7 +30,6 @@ $password = isset($_POST['password']) ? strip_tags($_POST['password']) : null;
 // Log in
 if($acronym && $password && !CUser::authenticated()) {
   $user->Login($acronym, $password);
-	//header("Location: user.php?acronym={$_SESSION['user']->acronym}");
 }
 
 
@@ -35,7 +37,7 @@ if($acronym && $password && !CUser::authenticated()) {
 // Log out
 if(isset($_POST['logout'])) {
     $user->Logout();
-    //header("Location: index.php");
+    header("Location: index.php");
 } 
 
 

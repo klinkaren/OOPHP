@@ -1,0 +1,8 @@
+id,acronym,name,password,salt,type,email,website,created,updated,deleted
+1,doe,"Jane Doe",506769ecf623e631b547ebb12f4d3536,2829fc16ad8ca5a79da932f910afad1c,user,johnnybgood@everydayman.com,http://www.none.com,"2014-04-01 10:10:10","2015-04-20 10:32:40",NULL
+2,admin,"Administratören Sören",c0e024d9200b5705bc4804722636378a,21232f297a57a5a743894a0e4a801fc3,admin,admin@viktorkjellberg.com,http://www.viktorkjellberg.com,"2014-04-01 10:10:10",NULL,NULL
+15,borttagen,bortas,NULL,NULL,user,NULL,NULL,"2015-04-17 10:10:10","2015-04-20 10:59:19","2015-04-20 11:19:50"
+16,kalle,kalle,3ad0db1aadf0fbca0f6452bb8f52cacf,c16e24898200c27d89cd30e9abd51984,user,kalle@anka.se,NULL,"2015-04-20 11:16:20",NULL,NULL
+17,bosse,bosse,e25a793925fb4eb3df1df62cfa1bce14,64aee0380db73b03c2b05ec6be8280a2,user,bo@s.se,NULL,"2015-04-20 11:18:24",NULL,NULL
+18,hasse,hasse,3f1cb52cda322293326ff16841b5d7d7,4d138f65e6a40ea952409ec44f8120a0,user,h@s.se,NULL,"2015-04-20 11:40:36",NULL,NULL
+19,marit,Marit,2cea52a56d0e967b4c38fd6cac435338,a10428291dfd3ff9af548f9ddf9f36be,user,m@r.it,NULL,"2015-04-20 11:41:27",NULL,NULL

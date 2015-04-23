@@ -120,7 +120,7 @@ class CDatabase {
   * @param int $fetchStyle can be changed by sending in arguments.
   * @return array with resultset.
   */
-  public function ExecuteSelectQueryAndFetchAll($query, $params=array(), $debug=false, $fetchStyle=null) {
+  public function ExecuteSelectQueryAndFetchAll($query, $params=array(), $debug=true, $fetchStyle=null) {
     
     // Make the query
     $this->stmt = $this->db->prepare($query);

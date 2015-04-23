@@ -1,46 +1,29 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto:400);
 
-/**
- * POSTER
- *
- */
 div.homePoster{
 	width: 980px;
-	text-align: center;
+	height: 350px;
+	position: relative;
 }
-#posterText{
-	position: absolute;
-	top: 326px;
-	width: 980px;
-	color: white;
-	
-	letter-spacing: .04em;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	background-color: #222;
-	opacity: 0.8;
-}
-.block{
-	margin:4px;
-	display: block;
-}
-.posterTitle{
-	font-size: 180%;
-	text-transform: uppercase;
-}
-.whiteLink a{
-	color: #fff;
-}
-
-
+.homeOpac,
 .homeBgImage{
     width: 100%;
     height: 100%;
-    height: 420px;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
+.homeOpac{
+	margin-left: auto;
+    margin-right: auto;
+    height: 250px;
+    width: 880px;
+    margin: 50px;
+    background-color: red;
 
+}
 .homeBgImage{
-
+	z-index: 10;
 }
 div.homeInfo{
 	position: absolute;
@@ -71,12 +54,12 @@ ul.genreList li:hover{
 }
 
 
+
 .blogWidget{
+	overflow: auto;
 }
 .widgetPost{
 	float: left;
-	padding-bottom: 30px;
-	margin-top: -14px;
 }
 .widgetPost h1{
 	font-size: 100%;
@@ -92,5 +75,5 @@ ul.genreList li:hover{
 }
 .threeParted{
 	width: 30%;
-	padding-right: 10px;
+	margin: 10px;
 }
