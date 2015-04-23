@@ -181,19 +181,6 @@ $zeus['database']['password']       = DB_PASSWORD;
 $zeus['database']['driver_options'] = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'");
 
 
-/*
- * Settings for the database.
- *
-define('DB_USER','vikj14'); // The database username
-define('DB_PASSWORD','Zo8E,Da1'); // The database password
-
-$zeus['database']['dsn']            = 'mysql:host=blu-ray.student.bth.se;dbname=vikj14;';
-$zeus['database']['username']       = DB_USER;
-$zeus['database']['password']       = DB_PASSWORD;
-$zeus['database']['driver_options'] = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'");
- */
-
-
 
 /**
  * Theme related settings.
