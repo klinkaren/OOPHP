@@ -1,10 +1,10 @@
 Generellt:
- ☐ Skriv 'Om RM' i markdown och gör möjligt att redigera.
+ ✔ Skriv 'Om RM' i markdown och gör möjligt att redigera. @done (15-04-27 09:29)
  ☐ När login->skicka till medlemssida (om admin->ge möjlighet att lägga till och redigera sidor och blogginlägg)
  ☐ Bestäm hur databasen ska struktureras
 
 Krav 1:
- ☐ Olika förstasida om inloggad eller ej!?
+ ✔ Olika förstasida om inloggad eller ej!? @done (15-04-27 09:29)
 
 Krav 2:
  ✔ Fixa javascript till searchbar så att texten försvinner när man klickar @done (15-04-10 16:48)
@@ -55,15 +55,15 @@ Admin:
 
 Krav 5-6:
  ✔ Tärningsspel: Kan bara delta om medlem!! @done (15-04-22 16:23)
- ☐ extra: Lägg till kommande filmer i kalendern
+ ✔ extra: Lägg till kommande filmer i kalendern @done (15-04-23 13:02)
  ✔ Breadcrumbs till blogg @done (15-04-14 01:28)
- ☐ ?Admin ska kunna se källkod @admin
+ ✘ ?Admin ska kunna se källkod @admin @cancelled (15-04-23 13:02)
 
 Stil:
  ✔ Header samma gråa nyans @done (15-04-21 11:00)
  ✔ Header ljusare grå vid hover @done (15-04-21 11:00)
  ✔ film/medlemstabeller - hover i annan färg för enklare se @done (15-04-21 11:00)
- ☐ Hem: Banner om ej inloggad
+ ✔ Hem: Banner om ej inloggad @done (15-04-23 13:01)
  ✔ Favicon @done (15-04-21 12:50)
  ✔ Filmsidan (specifika filmer) @done (15-04-21 17:26)
  ✔ Kalender (byt färg på från grön till röd) @done (15-04-21 17:55)
@@ -75,4 +75,23 @@ Stil:
  Övrigt:
   ✘ Testa att sortera på director AND THEN (SELECT * from movie WHERE director LiKE '%taran%' ORDER BY director) @cancelled (15-04-21 11:00)
   ✘ Nyheter + Siddelar - Använd getTableAsHtml() istället @cancelled (15-04-23 06:20)
-  ☐ Spara nyheter: Kategori hoppar till översta automatiskt! Sparas inte kategorien?
+  ✔ Spara nyheter: Kategori hoppar till översta automatiskt! Sparas inte kategorien? @done (15-04-23 12:36)
+  ✔ Skriv redovisningstext @done (15-04-24 14:42)
+
+  ✔ Lägg till en clean version av Zeus på github. En version utan alla sidor men med moduler och style. Byt logga. Använd img.php. Skriv en bra README. Ska gå att implementera en ny site direkt från Zeus. @done (15-04-24 14:42)
+  ✔ Inkludera README.md med hjälp av markdown! @done (15-04-24 14:42)
+
+  ✔ Skapa en me-sida för projektet och lägg upp redovisningstexten @done (15-04-24 17:24)
+  ✘ Kör unicorn på hela sidan!!! @cancelled (15-04-24 17:24)
+  ✔ Uppdatera kmom06 enligt rest (se nedan) @done (15-04-27 09:29)
+  ✔ Uppdatera img-modulen i projektet. @done (15-04-27 09:29)
+  ✔ Skicka in @done (15-04-27 09:29)
+  ✔ H5! @done (15-04-27 09:29)
+
+REST:
+Du har inte med någon underkatalog i galleriet för att visa på att även dessa fungerar att visa. Ha med minst en katalog med en eller flera bilder i.
+När man visar bilder i img.php och verbose mode så kommer det upp lite felmeddelanden i PHP, som du bör ta en titt på. Testa detta exempel: http://www.student.bth.se/~vikj14/oophp/kmom06/zeus/webroot/img.php?src=Sintra-Lissabon.jpg&save-as=jpg&width=300&height=300&sharpen&crop-to-fit&verbose
+
+Komplettera:
+ ✔ Underkatalog i galleriet  @done (15-04-27 07:49)
+ ✔ Lös felmeddelanden i img.php  @done (15-04-27 07:49)

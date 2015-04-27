@@ -161,11 +161,11 @@ class CImage {
       $targetRatio = $this->newWidth / $this->newHeight;
       $cropWidth   = $targetRatio > $aspectRatio ? $width : round($height * $targetRatio);
       $cropHeight  = $targetRatio > $aspectRatio ? round($width  / $targetRatio) : $height;
-      if($this->verbose) { $this->verbose("Crop to fit into box of {$this->newWidth}x{$this->newHeight}. Cropping dimensions: {$cropWidth}x{$cropHeight}."); }
+      if($this->verbose) { $this->verbose("Crop to fit into box of {$newWidth}x{$newHeight}. Cropping dimensions: {$cropWidth}x{$cropHeight}."); }
     }
     else if($this->newWidth && !$this->newHeight) {
       $this->newHeight = round($this->newWidth / $aspectRatio);
-      if($this->verbose) { $this->verbose("New width is known {$this->newWidth}, height is calculated to {$this->newHeight}."); }
+      if($this->verbose) { $this->verbose("New width is known {$newWidth}, height is calculated to {$newHeight}."); }
     }
     else if(!$this->newWidth && $this->newHeight) {
       $this->newWidth = round($this->newHeight * $aspectRatio);
@@ -177,7 +177,7 @@ class CImage {
       $ratio = ($ratioWidth > $ratioHeight) ? $ratioWidth : $ratioHeight;
       $this->newWidth  = round($width  / $ratio);
       $this->newHeight = round($height / $ratio);
-      if($this->verbose) { $this->verbose("New width & height is requested, keeping aspect ratio results in {$this->newWidth}x{$this->newHeight}."); }
+      if($this->verbose) { $this->verbose("New width & height is requested, keeping aspect ratio results in {$newWidth}x{$newHeight}."); }
     }
     else {
       $this->newWidth = $width;

@@ -26,11 +26,7 @@ class CGallery {
   private $validImages = array('png', 'jpg', 'jpeg');
 
 
-  /**
-   * CONSTRUCTOR
-   * Creates an instans of CDatabase, that connects to a MySQL database using PHP PDO.
-   *
-   */
+
   public function __construct($options) {
     $this->galleryPath = $options['galleryPath'];
     $this->galleryBaseURL = $options['galleryBaseURL'];

@@ -108,6 +108,6 @@ EOD;
 	return $html;
 }
 function get_navlogo() {
-    $html = "<a href=index.php><img title='ViktorPlay' src=img.php?src=header.png&height=35 alt=''/></a>";
+    $html = "<a href=index.php><img title='ViktorPlay' src='img.php?src=header.png&height=35' alt=''/></a>";
     return $html;
 }

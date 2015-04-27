@@ -1,1 +1,1 @@
-Zeus is a PHP-boilerplate/framework for small websites. Zeus is a modification on Anax, that was built by Mikael Roos (me@mikaelroos.se).
+viktorplay är en websida byggd av Viktor Kjellberg som ett projekt i kursen OOPHP vid Blekinge Tekniska Högskola.
